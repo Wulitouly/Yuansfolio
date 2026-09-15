@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { BookHeart, Mail, MessageCircle, Phone } from "lucide-react";
 
 const outline = [
   ["top", "00", "首页"],
@@ -128,8 +129,31 @@ export default function Home() {
 
       <section className="hero shell" id="top">
         <div className="hero-copy">
-          <h1>刘渊</h1>
-          <blockquote>用文科生的温度去共情世界，<br />持理科生的清醒去解构问题。</blockquote>
+          <div className="hero-title" aria-label="Welcome to 刘渊的世界">
+            <p>WELCOME TO THE WORLD OF</p>
+            <div className="name-lockup">
+              <h1>刘渊</h1>
+              <span>的世界</span>
+            </div>
+          </div>
+          <div className="hero-traits" aria-label="个人特质">
+            <span>行动力</span><span>靠谱</span><span>责任心</span>
+          </div>
+          <p className="hero-statement">用文科生的温度去共情世界，<br />持理科生的清醒去解构问题。</p>
+          <div className="hero-socials" aria-label="联系方式">
+            <button type="button" onClick={copyWechat} aria-label="复制微信号" data-label="WeChat">
+              <MessageCircle size={16} strokeWidth={1.6} />
+            </button>
+            <a href="mailto:2229409057@qq.com" aria-label="发送邮件" data-label="邮箱">
+              <Mail size={16} strokeWidth={1.6} />
+            </a>
+            <a href="#contact" aria-label="查看小红书联系方式" data-label="小红书">
+              <BookHeart size={16} strokeWidth={1.6} />
+            </a>
+            <a href="tel:17616185335" aria-label="拨打电话" data-label="电话">
+              <Phone size={16} strokeWidth={1.6} />
+            </a>
+          </div>
         </div>
         <div className="hero-motion" aria-label="个人 IP 玩偶入场动画">
           <div className="motion-portal" aria-hidden="true">
@@ -149,7 +173,6 @@ export default function Home() {
           >
             <source src="/hero-3d.webm" type="video/webm" />
           </video>
-          <span className="motion-caption">HELLO · NICE TO MEET YOU</span>
         </div>
       </section>
 
