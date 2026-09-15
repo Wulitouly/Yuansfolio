@@ -110,6 +110,7 @@ export default function Home() {
         <div className="topbar-inner">
           <a className="brand" href="#top"><span />LIU YUAN</a>
           <div className="top-links">
+            <a href="#top">首页</a>
             <a href="#work">工作经历</a>
             <a href="#about">关于我</a>
             <a href="#background">学习与能力</a>
@@ -162,17 +163,7 @@ export default function Home() {
           </div>
           <div className="motion-depth one" aria-hidden="true" />
           <div className="motion-depth two" aria-hidden="true" />
-          <video
-            className="hero-video"
-            autoPlay
-            muted
-            playsInline
-            preload="auto"
-            poster="/hero-3d-poster.webp"
-            disablePictureInPicture
-          >
-            <source src="/hero-3d.webm" type="video/webm" />
-          </video>
+          <img className="hero-animation" src="/hero-3d-animation.webp" alt="个人 IP 玩偶走近并挥手" />
         </div>
       </section>
 
