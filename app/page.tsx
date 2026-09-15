@@ -84,9 +84,13 @@ export default function Home() {
   const [aboutMode, setAboutMode] = useState<"work" | "life">("work");
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
+  const [characterActive, setCharacterActive] = useState(false);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
 
   useEffect(() => {
+    const hoverAnimation = new Image();
+    hoverAnimation.src = "/hero-3d-hover.webp";
+
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((entry) => entry.isIntersecting && setActiveSection(entry.target.id)),
       { rootMargin: "-38% 0px -52%", threshold: 0 },
@@ -130,12 +134,9 @@ export default function Home() {
 
       <section className="hero shell" id="top">
         <div className="hero-copy">
-          <div className="hero-title" aria-label="Welcome to 刘渊的世界">
-            <p>WELCOME TO THE WORLD OF</p>
-            <div className="name-lockup">
-              <h1>刘渊</h1>
-              <span>的世界</span>
-            </div>
+          <div className="hero-title" aria-label="Welcome to Liu Yuan's World，刘渊">
+            <p>WELCOME TO LIU YUAN&apos;S WORLD</p>
+            <h1>刘渊</h1>
           </div>
           <div className="hero-traits" aria-label="个人特质">
             <span>行动力</span><span>靠谱</span><span>责任心</span>
@@ -156,14 +157,31 @@ export default function Home() {
             </a>
           </div>
         </div>
-        <div className="hero-motion" aria-label="个人 IP 玩偶入场动画">
+        <div className="hero-motion" aria-label="个人 IP 玩偶互动动画">
           <div className="motion-portal" aria-hidden="true">
             <span>WELCOME</span>
             <i />
           </div>
           <div className="motion-depth one" aria-hidden="true" />
           <div className="motion-depth two" aria-hidden="true" />
-          <img className="hero-animation" src="/hero-3d-animation.webp" alt="个人 IP 玩偶走近并挥手" />
+          <button
+            className="hero-character"
+            type="button"
+            aria-label="播放人物互动动画"
+            aria-pressed={characterActive}
+            onMouseEnter={() => setCharacterActive(true)}
+            onMouseLeave={() => setCharacterActive(false)}
+            onFocus={() => setCharacterActive(true)}
+            onBlur={() => setCharacterActive(false)}
+            onClick={() => setCharacterActive(true)}
+          >
+            <img
+              key={characterActive ? "active" : "intro"}
+              className="hero-animation"
+              src={characterActive ? "/hero-3d-hover.webp" : "/hero-3d-animation.webp"}
+              alt={characterActive ? "个人 IP 玩偶微笑挥手" : "个人 IP 玩偶走近并挥手"}
+            />
+          </button>
         </div>
       </section>
 
