@@ -128,27 +128,28 @@ export default function Home() {
 
       <section className="hero shell" id="top">
         <div className="hero-copy">
-          <p className="overline">OPERATIONS × DATA × AI</p>
           <h1>刘渊</h1>
-          <p className="role">运营分析 · 数据运营 · 业务分析</p>
           <blockquote>用文科生的温度去共情世界，<br />持理科生的清醒去解构问题。</blockquote>
-          <div className="hero-actions">
-            <a className="primary-btn" href="#work">查看工作经历 <span>↓</span></a>
-            <a className="plain-link" href="#contact">联系我 ↗</a>
-          </div>
         </div>
-        <div className="hero-portrait">
-          <div className="portrait-arch">
-            <img src="/liuyuan-ip-main.jpg" alt="刘渊的个人 IP 玩偶" />
+        <div className="hero-motion" aria-label="个人 IP 玩偶入场动画">
+          <div className="motion-portal" aria-hidden="true">
+            <span>WELCOME</span>
+            <i />
           </div>
-          <span className="portrait-label one">理性拆解 ✦</span>
-          <span className="portrait-label two">感性观察 ☼</span>
-        </div>
-        <div className="quick-facts" aria-label="职业概览">
-          <div><strong>3+ 年</strong><span>用户运营经验</span></div>
-          <div><strong>50 万+</strong><span>私域用户池实践</span></div>
-          <div><strong>Python · SQL</strong><span>数据与流程工具</span></div>
-          <div><strong>USYD</strong><span>计算机科学硕士在读</span></div>
+          <div className="motion-depth one" aria-hidden="true" />
+          <div className="motion-depth two" aria-hidden="true" />
+          <video
+            className="hero-video"
+            autoPlay
+            muted
+            playsInline
+            preload="auto"
+            poster="/hero-3d-poster.webp"
+            disablePictureInPicture
+          >
+            <source src="/hero-3d.webm" type="video/webm" />
+          </video>
+          <span className="motion-caption">HELLO · NICE TO MEET YOU</span>
         </div>
       </section>
 
