@@ -144,9 +144,6 @@ export default function Home() {
             <h1>刘渊</h1>
           </div>
           <p className="hero-path"><span>User Operations</span><i>→</i><span>Data</span><i>→</i><span>AI</span></p>
-          <div className="hero-traits" aria-label="个人特质">
-            <span>数据思维</span><span>解决问题</span><span>持续探索</span>
-          </div>
           <p className="hero-statement">用<span>文科生</span>的温度去共情世界，<br />持<span>理科生</span>的清醒去解构问题。</p>
           <p className="hero-identity"><span aria-hidden="true" />Master of Computer Science <i>@ University of Sydney</i></p>
           <div className="hero-actions">
@@ -174,6 +171,11 @@ export default function Home() {
             <div className="motion-links"><i /><i /><i /></div>
             <span>HUMAN · DATA · AI</span>
             <b />
+          </div>
+          <div className="hero-tags" aria-label="职业关键词">
+            <span>数据思维</span>
+            <span>解决问题</span>
+            <span>持续探索</span>
           </div>
           <div className="motion-depth one" aria-hidden="true" />
           <div className="motion-depth two" aria-hidden="true" />
