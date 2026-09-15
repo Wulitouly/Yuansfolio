@@ -88,8 +88,10 @@ export default function Home() {
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
 
   useEffect(() => {
-    const hoverAnimation = new Image();
-    hoverAnimation.src = "/hero-3d-hover.webp";
+    const preloadTimer = window.setTimeout(() => {
+      const hoverAnimation = new Image();
+      hoverAnimation.src = "/hero-3d-hover.webp";
+    }, 1200);
 
     const observer = new IntersectionObserver(
       (entries) => entries.forEach((entry) => entry.isIntersecting && setActiveSection(entry.target.id)),
@@ -99,7 +101,10 @@ export default function Home() {
       const element = document.getElementById(id);
       if (element) observer.observe(element);
     });
-    return () => observer.disconnect();
+    return () => {
+      window.clearTimeout(preloadTimer);
+      observer.disconnect();
+    };
   }, []);
 
   const copyWechat = async () => {
@@ -134,33 +139,41 @@ export default function Home() {
 
       <section className="hero shell" id="top">
         <div className="hero-copy">
-          <div className="hero-title" aria-label="Welcome to Liu Yuan's World，刘渊">
-            <p>WELCOME TO LIU YUAN&apos;S WORLD</p>
+          <div className="hero-title" aria-label="Data, Product and AI，刘渊">
+            <p>DATA · PRODUCT · AI</p>
             <h1>刘渊</h1>
           </div>
+          <p className="hero-path"><span>User Operations</span><i>→</i><span>Data</span><i>→</i><span>AI</span></p>
           <div className="hero-traits" aria-label="个人特质">
-            <span>行动力</span><span>靠谱</span><span>责任心</span>
+            <span>数据思维</span><span>解决问题</span><span>持续探索</span>
           </div>
-          <p className="hero-statement">用文科生的温度去共情世界，<br />持理科生的清醒去解构问题。</p>
-          <div className="hero-socials" aria-label="联系方式">
-            <button type="button" onClick={copyWechat} aria-label="复制微信号" data-label="WeChat">
-              <MessageCircle size={16} strokeWidth={1.6} />
-            </button>
-            <a href="mailto:2229409057@qq.com" aria-label="发送邮件" data-label="邮箱">
-              <Mail size={16} strokeWidth={1.6} />
-            </a>
-            <a href="#contact" aria-label="查看小红书联系方式" data-label="小红书">
-              <BookHeart size={16} strokeWidth={1.6} />
-            </a>
-            <a href="tel:17616185335" aria-label="拨打电话" data-label="电话">
-              <Phone size={16} strokeWidth={1.6} />
-            </a>
+          <p className="hero-statement">用<span>文科生</span>的温度去共情世界，<br />持<span>理科生</span>的清醒去解构问题。</p>
+          <p className="hero-identity"><span aria-hidden="true" />Master of Computer Science <i>@ University of Sydney</i></p>
+          <div className="hero-actions">
+            <a className="hero-cta" href="#work"><span>Explore My Work</span><b>↓</b></a>
+            <div className="hero-socials" aria-label="联系方式">
+              <button type="button" onClick={copyWechat} aria-label="复制微信号" data-label="WeChat">
+                <MessageCircle size={16} strokeWidth={1.6} />
+              </button>
+              <a href="mailto:2229409057@qq.com" aria-label="发送邮件" data-label="邮箱">
+                <Mail size={16} strokeWidth={1.6} />
+              </a>
+              <a href="#contact" aria-label="查看小红书联系方式" data-label="小红书">
+                <BookHeart size={16} strokeWidth={1.6} />
+              </a>
+              <a href="tel:17616185335" aria-label="拨打电话" data-label="电话">
+                <Phone size={16} strokeWidth={1.6} />
+              </a>
+            </div>
           </div>
         </div>
         <div className="hero-motion" aria-label="个人 IP 玩偶互动动画">
           <div className="motion-portal" aria-hidden="true">
-            <span>WELCOME</span>
-            <i />
+            <div className="motion-grid" />
+            <div className="motion-nodes"><i /><i /><i /><i /></div>
+            <div className="motion-links"><i /><i /><i /></div>
+            <span>HUMAN · DATA · AI</span>
+            <b />
           </div>
           <div className="motion-depth one" aria-hidden="true" />
           <div className="motion-depth two" aria-hidden="true" />
@@ -183,6 +196,13 @@ export default function Home() {
             />
           </button>
         </div>
+        <div className="hero-stats" aria-label="个人经历摘要">
+          <div><strong>3+ YEARS</strong><span>WORK EXPERIENCE</span></div>
+          <div><strong>500K+</strong><span>USER POOL EXPERIENCE</span></div>
+          <div><strong>MASTER&apos;S</strong><span>COMPUTER SCIENCE</span></div>
+          <div><strong>DATA · AI</strong><span>CURRENT FOCUS</span></div>
+        </div>
+        <a className="hero-transition" href="#work"><span>EXPLORE MY JOURNEY</span><b>↓</b></a>
       </section>
 
       <section className="work shell section" id="work">
