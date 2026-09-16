@@ -164,10 +164,11 @@ export default function Home() {
   const [characterActive, setCharacterActive] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [timelinePulling, setTimelinePulling] = useState(false);
+  const [timelinePullCycle, setTimelinePullCycle] = useState(0);
   const experienceCarousel = useRef<HTMLDivElement | null>(null);
   const timelineScroller = useRef<HTMLDivElement | null>(null);
-  const timelinePullVideo = useRef<HTMLVideoElement | null>(null);
   const timelinePullTimer = useRef<number | null>(null);
+  const timelinePullEndTimer = useRef<number | null>(null);
   const carouselDrag = useRef<{ pointerId: number; startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const carouselScrollFrame = useRef<number | null>(null);
   const suppressCarouselClick = useRef(false);
@@ -212,6 +213,7 @@ export default function Home() {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("resize", handleResize);
       if (timelinePullTimer.current) window.clearTimeout(timelinePullTimer.current);
+      if (timelinePullEndTimer.current) window.clearTimeout(timelinePullEndTimer.current);
     };
   }, []);
 
@@ -243,10 +245,7 @@ export default function Home() {
     const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
     setTimelinePulling(true);
-    if (!reduceMotion && timelinePullVideo.current) {
-      timelinePullVideo.current.currentTime = 0;
-      void timelinePullVideo.current.play();
-    }
+    if (!reduceMotion) setTimelinePullCycle((cycle) => cycle + 1);
 
     timelinePullTimer.current = window.setTimeout(() => {
       showExperience(nextExperience);
@@ -257,6 +256,9 @@ export default function Home() {
       }
       if (reduceMotion) setTimelinePulling(false);
     }, reduceMotion ? 0 : 760);
+    if (!reduceMotion) {
+      timelinePullEndTimer.current = window.setTimeout(() => setTimelinePulling(false), 2200);
+    }
   };
 
   return (
@@ -372,19 +374,10 @@ export default function Home() {
               disabled={timelinePulling}
               aria-label="拉动时间线，查看下一段重点经历"
             >
-              <video
-                ref={timelinePullVideo}
-                src="/media/career-pull-alpha.webm"
-                poster="/media/career-pull-poster.png"
-                muted
-                playsInline
-                preload="metadata"
-                onEnded={(event) => {
-                  event.currentTarget.currentTime = 0;
-                  setTimelinePulling(false);
-                }}
+              <img
+                src={timelinePulling ? `/media/career-pull-alpha.webp?play=${timelinePullCycle}` : "/media/career-pull-poster.png"}
+                alt=""
               />
-              <span><strong>{timelinePulling ? "正在拉动" : "拉一下"}</strong><small>下一段重点经历</small></span>
             </button>
             <div className="timeline-scroller" ref={timelineScroller} aria-label="完整工作经历时间线">
               <div className="career-timeline">
