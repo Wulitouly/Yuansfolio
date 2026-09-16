@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { BookHeart, ChevronDown, ChevronLeft, ChevronRight, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
+import { BookHeart, ChevronDown, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
 
 const outline = [
   ["top", "00", "首页"],
@@ -158,17 +158,23 @@ const education = [
 export default function Home() {
   const [activeCase, setActiveCase] = useState("inventory");
   const [activeExperience, setActiveExperience] = useState(0);
-  const [experienceDirection, setExperienceDirection] = useState<"next" | "prev">("next");
   const [aboutMode, setAboutMode] = useState<"work" | "life">("work");
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
-  const swipeStartX = useRef<number | null>(null);
+  const experienceCarousel = useRef<HTMLDivElement | null>(null);
+  const carouselDrag = useRef<{ pointerId: number; startX: number; startScrollLeft: number; moved: boolean } | null>(null);
+  const carouselScrollFrame = useRef<number | null>(null);
+  const suppressCarouselClick = useRef(false);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
-  const selectedExperience = featuredExperiences[activeExperience];
-  const previousExperience = featuredExperiences[(activeExperience - 1 + featuredExperiences.length) % featuredExperiences.length];
-  const nextExperience = featuredExperiences[(activeExperience + 1) % featuredExperiences.length];
+
+  const centerExperience = (index: number, behavior: ScrollBehavior = "smooth") => {
+    const carousel = experienceCarousel.current;
+    const card = carousel?.querySelector<HTMLElement>(`[data-experience-index="${index}"]`);
+    if (!carousel || !card) return;
+    carousel.scrollTo({ left: card.offsetLeft - (carousel.clientWidth - card.offsetWidth) / 2, behavior });
+  };
 
   useEffect(() => {
     const preloadTimer = window.setTimeout(() => {
@@ -190,6 +196,20 @@ export default function Home() {
     };
   }, []);
 
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => centerExperience(activeExperience, "auto"));
+    const handleResize = () => {
+      const current = experienceCarousel.current?.querySelector<HTMLElement>(".experience-slide.is-active");
+      const index = Number(current?.dataset.experienceIndex ?? 0);
+      centerExperience(index, "auto");
+    };
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   const copyWechat = async () => {
     await navigator.clipboard.writeText("yolohhly");
     setCopied(true);
@@ -197,13 +217,12 @@ export default function Home() {
   };
 
   const showExperience = (index: number) => {
-    setExperienceDirection(index >= activeExperience ? "next" : "prev");
     setActiveExperience(index);
+    window.requestAnimationFrame(() => centerExperience(index));
   };
 
   const moveExperience = (delta: number) => {
-    setExperienceDirection(delta > 0 ? "next" : "prev");
-    setActiveExperience((current) => (current + delta + featuredExperiences.length) % featuredExperiences.length);
+    showExperience(Math.min(featuredExperiences.length - 1, Math.max(0, activeExperience + delta)));
   };
 
   const showTimelineExperience = (featuredId?: string) => {
@@ -374,13 +393,14 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <p className="experience-hint">拖动卡片，或点击两侧继续</p>
+            <p className="experience-hint">拖动卡片，像选片一样浏览经历</p>
           </div>
 
           <div
             className="experience-card-shell"
+            ref={experienceCarousel}
             role="region"
-            aria-label="重点经历详情，可左右滑动切换"
+            aria-label="重点经历选片式轮播，可左右拖动切换"
             tabIndex={0}
             onKeyDown={(event) => {
               if (event.target !== event.currentTarget) return;
@@ -389,125 +409,162 @@ export default function Home() {
             }}
             onPointerDown={(event) => {
               if ((event.target as HTMLElement).closest("button, a")) return;
-              swipeStartX.current = event.clientX;
+              suppressCarouselClick.current = false;
+              carouselDrag.current = {
+                pointerId: event.pointerId,
+                startX: event.clientX,
+                startScrollLeft: event.currentTarget.scrollLeft,
+                moved: false,
+              };
               event.currentTarget.setPointerCapture(event.pointerId);
             }}
-            onPointerUp={(event) => {
-              if (swipeStartX.current === null) return;
-              const distance = event.clientX - swipeStartX.current;
-              swipeStartX.current = null;
-              if (Math.abs(distance) < 70) return;
-              moveExperience(distance < 0 ? 1 : -1);
+            onPointerMove={(event) => {
+              const drag = carouselDrag.current;
+              if (!drag || drag.pointerId !== event.pointerId) return;
+              const distance = event.clientX - drag.startX;
+              if (Math.abs(distance) > 4) {
+                drag.moved = true;
+                suppressCarouselClick.current = true;
+              }
+              event.currentTarget.scrollLeft = drag.startScrollLeft - distance;
             }}
-            onPointerCancel={() => { swipeStartX.current = null; }}
+            onPointerUp={(event) => {
+              const drag = carouselDrag.current;
+              if (!drag || drag.pointerId !== event.pointerId) return;
+              carouselDrag.current = null;
+              event.currentTarget.releasePointerCapture(event.pointerId);
+              const carouselCenter = event.currentTarget.scrollLeft + event.currentTarget.clientWidth / 2;
+              const cards = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("[data-experience-index]"));
+              const nearest = cards.reduce((best, card, index) => {
+                const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - carouselCenter);
+                return distance < best.distance ? { index, distance } : best;
+              }, { index: activeExperience, distance: Number.POSITIVE_INFINITY });
+              showExperience(nearest.index);
+            }}
+            onPointerCancel={() => { carouselDrag.current = null; }}
+            onScroll={(event) => {
+              if (carouselScrollFrame.current !== null) return;
+              const carousel = event.currentTarget;
+              carouselScrollFrame.current = window.requestAnimationFrame(() => {
+                carouselScrollFrame.current = null;
+                const carouselCenter = carousel.scrollLeft + carousel.clientWidth / 2;
+                const cards = Array.from(carousel.querySelectorAll<HTMLElement>("[data-experience-index]"));
+                const nearest = cards.reduce((best, card, index) => {
+                  const distance = Math.abs(card.offsetLeft + card.offsetWidth / 2 - carouselCenter);
+                  return distance < best.distance ? { index, distance } : best;
+                }, { index: activeExperience, distance: Number.POSITIVE_INFINITY });
+                setActiveExperience(nearest.index);
+              });
+            }}
           >
-            <button className="experience-edge previous" type="button" aria-label={`上一段：${previousExperience.shortName}`} onClick={() => moveExperience(-1)}>
-              <ChevronLeft size={19} strokeWidth={1.45} />
-              <span>{previousExperience.shortName}</span>
-            </button>
-            <article className={`experience-card experience-slide slide-${experienceDirection}`} key={selectedExperience.id}>
-              <header className="company-head experience-company-head">
-                <div className="company-index">{String(activeExperience + 1).padStart(2, "0")}</div>
-                <div>
-                  <p>{selectedExperience.period} · {selectedExperience.location}</p>
-                  <h3>{selectedExperience.company}</h3>
-                  <span>{selectedExperience.role}</span>
-                </div>
-                <p className="company-summary">{selectedExperience.summary}</p>
-              </header>
-
-              {selectedExperience.id === "lyz" && (
-                <>
-                  <div className="impact-strip">
-                    <div><span>出库流程</span><strong>30–60 min → 2 min</strong></div>
-                    <div><span>路线规划</span><strong>30–40 min → 10 min</strong></div>
-                    <div><span>单张发票</span><strong>3 min → 10–20 sec</strong></div>
+            {featuredExperiences.map((experience, experienceIndex) => (
+              <article
+                className={`experience-card experience-slide ${experienceIndex === activeExperience ? "is-active" : ""}`}
+                data-experience-index={experienceIndex}
+                aria-current={experienceIndex === activeExperience ? "true" : undefined}
+                key={experience.id}
+                onClick={() => {
+                  if (suppressCarouselClick.current) {
+                    suppressCarouselClick.current = false;
+                    return;
+                  }
+                  if (experienceIndex !== activeExperience) showExperience(experienceIndex);
+                }}
+              >
+                <header className="company-head experience-company-head">
+                  <div className="company-index">{String(experienceIndex + 1).padStart(2, "0")}</div>
+                  <div>
+                    <p>{experience.period} · {experience.location}</p>
+                    <h3>{experience.company}</h3>
+                    <span>{experience.role}</span>
                   </div>
-                  <div className="case-workbench">
-                    <div className="case-tabs" role="tablist" aria-label="LYZ FOOD 成果案例">
-                      <p>成果案例</p>
-                      {lyzCases.map((item) => (
-                        <button
-                          key={item.id}
-                          role="tab"
-                          aria-selected={activeCase === item.id}
-                          className={activeCase === item.id ? "active" : ""}
-                          onClick={() => setActiveCase(item.id)}
-                        >
-                          <span>{item.number}</span>{item.label}<i>→</i>
-                        </button>
+                  <p className="company-summary">{experience.summary}</p>
+                </header>
+
+                {experience.id === "lyz" && (
+                  <>
+                    <div className="impact-strip">
+                      <div><span>出库流程</span><strong>30–60 min → 2 min</strong></div>
+                      <div><span>路线规划</span><strong>30–40 min → 10 min</strong></div>
+                      <div><span>单张发票</span><strong>3 min → 10–20 sec</strong></div>
+                    </div>
+                    <div className="case-workbench">
+                      <div className="case-tabs" role="tablist" aria-label="LYZ FOOD 成果案例">
+                        <p>成果案例</p>
+                        {lyzCases.map((item) => (
+                          <button
+                            key={item.id}
+                            role="tab"
+                            aria-selected={activeCase === item.id}
+                            className={activeCase === item.id ? "active" : ""}
+                            onClick={() => setActiveCase(item.id)}
+                          >
+                            <span>{item.number}</span>{item.label}<i>→</i>
+                          </button>
+                        ))}
+                      </div>
+                      <div className="case-panel" role="tabpanel">
+                        <div className="case-copy">
+                          <p className="case-kicker">{selectedCase.label} / CASE {selectedCase.number}</p>
+                          <h4>{selectedCase.title}</h4>
+                          <div className="case-flow">
+                            <div><span>发现的问题</span><p>{selectedCase.problem}</p></div>
+                            <div><span>我做了什么</span><p>{selectedCase.action}</p></div>
+                          </div>
+                          <div className="tool-row">{selectedCase.tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
+                          <div className="case-result"><span>最终结果</span><strong>{selectedCase.result}</strong><p>{selectedCase.note}</p></div>
+                        </div>
+                      </div>
+                    </div>
+                    <p className="recognition">因稳定完成客户承接与日常运营，并持续推动流程优化，获得负责人认可，受邀以居家办公方式继续参与后续业务。</p>
+                  </>
+                )}
+
+                {experience.id === "haochengji" && (
+                  <div className="achievement-grid">
+                    {hzAchievements.map((item, index) => (
+                      <div className="achievement" key={item.title}>
+                        <span>0{index + 1}</span><strong>{item.metric}</strong><h4>{item.title}</h4><p>{item.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {experience.id === "kuaishou" && (
+                  <>
+                    <div className="impact-strip story-impact">
+                      <div><span>信息建设</span><strong>知识库 0 → 1</strong></div>
+                      <div><span>内容交付</span><strong>50+ 篇</strong></div>
+                      <div><span>工作方式</span><strong>内容 · 数据 · 协作</strong></div>
+                    </div>
+                    <div className="experience-story-grid">
+                      {kuaishouHighlights.map((item, index) => (
+                        <div className="story-point" key={item.title}>
+                          <span>0{index + 1}</span><h4>{item.title}</h4><p>{item.text}</p>
+                        </div>
                       ))}
                     </div>
-                    <div className="case-panel" role="tabpanel">
-                      <div className="case-copy">
-                        <p className="case-kicker">{selectedCase.label} / CASE {selectedCase.number}</p>
-                        <h4>{selectedCase.title}</h4>
-                        <div className="case-flow">
-                          <div><span>发现的问题</span><p>{selectedCase.problem}</p></div>
-                          <div><span>我做了什么</span><p>{selectedCase.action}</p></div>
+                  </>
+                )}
+
+                {experience.id === "mint" && (
+                  <>
+                    <div className="impact-strip story-impact">
+                      <div><span>付费社群</span><strong>4 个</strong></div>
+                      <div><span>服务规模</span><strong>约 800 人</strong></div>
+                      <div><span>用户评价</span><strong>好评率第 1</strong></div>
+                    </div>
+                    <div className="experience-story-grid mint-grid">
+                      {mintHighlights.map((item, index) => (
+                        <div className="story-point" key={item.title}>
+                          <span>0{index + 1}</span><h4>{item.title}</h4><p>{item.text}</p>
                         </div>
-                        <div className="tool-row">{selectedCase.tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
-                        <div className="case-result"><span>最终结果</span><strong>{selectedCase.result}</strong><p>{selectedCase.note}</p></div>
-                      </div>
-                      <div className="case-character">
-                        <div className="character-halo" />
-                        <img key={selectedCase.id} src={selectedCase.image} alt={`IP 玩偶演示${selectedCase.label}案例`} />
-                      </div>
+                      ))}
                     </div>
-                  </div>
-                  <p className="recognition">因稳定完成客户承接与日常运营，并持续推动流程优化，获得负责人认可，受邀以居家办公方式继续参与后续业务。</p>
-                </>
-              )}
-
-              {selectedExperience.id === "haochengji" && (
-                <div className="achievement-grid">
-                  {hzAchievements.map((item, index) => (
-                    <div className="achievement" key={item.title}>
-                      <span>0{index + 1}</span><strong>{item.metric}</strong><h4>{item.title}</h4><p>{item.text}</p>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {selectedExperience.id === "kuaishou" && (
-                <>
-                  <div className="impact-strip story-impact">
-                    <div><span>信息建设</span><strong>知识库 0 → 1</strong></div>
-                    <div><span>内容交付</span><strong>50+ 篇</strong></div>
-                    <div><span>工作方式</span><strong>内容 · 数据 · 协作</strong></div>
-                  </div>
-                  <div className="experience-story-grid">
-                    {kuaishouHighlights.map((item, index) => (
-                      <div className="story-point" key={item.title}>
-                        <span>0{index + 1}</span><h4>{item.title}</h4><p>{item.text}</p>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-
-              {selectedExperience.id === "mint" && (
-                <>
-                  <div className="impact-strip story-impact">
-                    <div><span>付费社群</span><strong>4 个</strong></div>
-                    <div><span>服务规模</span><strong>约 800 人</strong></div>
-                    <div><span>用户评价</span><strong>好评率第 1</strong></div>
-                  </div>
-                  <div className="experience-story-grid mint-grid">
-                    {mintHighlights.map((item, index) => (
-                      <div className="story-point" key={item.title}>
-                        <span>0{index + 1}</span><h4>{item.title}</h4><p>{item.text}</p>
-                      </div>
-                    ))}
-                  </div>
-                </>
-              )}
-
-            </article>
-            <button className="experience-edge next" type="button" aria-label={`下一段：${nextExperience.shortName}`} onClick={() => moveExperience(1)}>
-              <span>{nextExperience.shortName}</span>
-              <ChevronRight size={19} strokeWidth={1.45} />
-            </button>
+                  </>
+                )}
+              </article>
+            ))}
           </div>
         </div>
 

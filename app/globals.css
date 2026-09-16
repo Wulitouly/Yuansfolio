@@ -31,4 +31,143 @@
 @media(max-width:620px){.career-overview-head{align-items:flex-start;gap:16px}.career-overview-head p{max-width:150px;text-align:right;line-height:1.5}.career-timeline{min-width:1180px;height:232px;grid-template-columns:repeat(10,118px)}.timeline-item{height:232px}.timeline-copy{left:12px;right:12px}.experience-stage{margin-top:52px}.experience-toolbar{grid-template-columns:1fr auto;gap:14px}.experience-heading{grid-column:1}.experience-pager{grid-column:1/-1;grid-row:2;justify-content:flex-start;gap:0;padding-bottom:4px}.experience-pager button{padding:8px 11px}.experience-arrows{grid-column:2;grid-row:1}.experience-card-shell{padding:0 7px 10px 0}.experience-card-shell:before{inset:8px 1px 1px 8px;border-radius:20px}.experience-card-shell:after{inset:15px -2px -2px 15px;border-radius:20px}.experience-slide{border-radius:20px}.experience-company-head h3{font-size:22px}.experience-story-grid,.mint-grid{grid-template-columns:1fr}.story-point,.mint-grid .story-point{min-height:auto;padding:28px 22px;border-right:0;border-bottom:1px solid var(--line)}.story-point:nth-last-child(-n+2){border-bottom:1px solid var(--line)}.story-point:last-child,.mint-grid .story-point:last-child{border-bottom:0}.story-point h4{margin:26px 0 12px;font-size:21px}.evidence-rail{grid-template-columns:1fr 1fr;padding:14px;gap:9px}.evidence-intro{grid-column:1/-1;display:block;padding:10px 4px}.evidence-intro>span{margin-bottom:10px}.evidence-intro strong{font-size:15px}.evidence-intro p{margin-top:7px}.evidence-placeholder{min-height:118px;padding:14px}.evidence-placeholder:last-child{grid-column:1/-1;min-height:104px}.story-impact strong{font-size:17px}}
 @media(max-width:900px){.work .section-head{grid-template-columns:1fr;gap:20px}.work .section-head>p{max-width:560px;justify-self:start}.experience-toolbar{width:calc(100% - 32px);grid-template-columns:auto 1fr;gap:16px}.experience-hint{grid-column:1/-1;justify-self:end;margin:0}.experience-card-shell{width:calc(100vw - 48px);padding:0;grid-template-columns:44px minmax(0,1fr) 44px;gap:8px}.experience-edge{height:130px;border-radius:15px}.gallery-grid{grid-template-columns:repeat(3,1fr)}.gallery-placeholder.item-1,.gallery-placeholder.item-7{grid-column:span 2}}
 @media(max-width:620px){.work .section-head>p{max-width:100%;font-size:12px}.experience-toolbar{width:100%;grid-template-columns:1fr;gap:10px}.experience-heading{grid-column:1}.experience-pager{grid-column:1;grid-row:2}.experience-hint{grid-column:1;grid-row:3;justify-self:start}.experience-card-shell{width:100%;display:block;padding:0;cursor:default}.experience-slide{width:calc(100% - 18px);margin-inline:auto;border-radius:20px}.experience-edge{position:absolute;z-index:5;top:50%;width:34px;height:104px;padding:0;transform:translateY(-50%);border-radius:999px;background:var(--plum);color:#fff}.experience-edge.previous{left:-4px}.experience-edge.next{right:-4px}.experience-edge span{display:none}.experience-edge:hover,.experience-edge:focus-visible{transform:translateY(calc(-50% - 2px))}.gallery-toggle{padding:20px 0;align-items:flex-start}.gallery-title{display:block}.gallery-title small{display:block;margin-bottom:8px}.gallery-title strong{font-size:17px;line-height:1.45}.gallery-action{white-space:nowrap}.gallery-note{grid-template-columns:1fr;gap:8px}.gallery-note span{text-align:left}.gallery-grid{grid-template-columns:1fr 1fr;grid-auto-rows:125px}.gallery-placeholder.item-1,.gallery-placeholder.item-7{grid-column:span 2;grid-row:span 1}.gallery-placeholder.item-4,.gallery-placeholder.item-6{grid-column:span 1}}
+/* Film-strip experience carousel */
+.experience-stage{--experience-card-width:min(1060px,calc(100vw - 220px));margin-top:68px}
+.experience-toolbar{width:min(1060px,calc(100% - 80px));margin:0 auto 14px;grid-template-columns:auto 1fr auto}
+.experience-hint{margin-bottom:7px}
+.experience-card-shell{
+  width:100vw;
+  margin-left:calc(50% - 50vw);
+  padding:30px calc((100vw - var(--experience-card-width))/2) 44px;
+  display:flex;
+  align-items:stretch;
+  gap:28px;
+  overflow-x:auto;
+  overflow-y:hidden;
+  scroll-snap-type:x mandatory;
+  scroll-padding-inline:calc((100vw - var(--experience-card-width))/2);
+  scrollbar-width:none;
+  overscroll-behavior-inline:contain;
+  touch-action:pan-y;
+  cursor:grab;
+  isolation:isolate;
+  outline:none;
+}
+.experience-card-shell::-webkit-scrollbar{display:none}
+.experience-card-shell:active{cursor:grabbing}
+.experience-card-shell:before,.experience-card-shell:after,.experience-edge{display:none}
+.experience-slide{
+  flex:0 0 var(--experience-card-width);
+  width:var(--experience-card-width);
+  height:620px;
+  margin:0;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  scroll-snap-align:center;
+  scroll-snap-stop:always;
+  border-radius:28px;
+  opacity:.34;
+  filter:saturate(.72) brightness(.98);
+  transform:scale(.925) translateY(8px);
+  transform-origin:center;
+  box-shadow:0 12px 34px rgba(62,48,58,.08);
+  transition:opacity .38s ease,filter .38s ease,transform .42s cubic-bezier(.2,.8,.2,1),box-shadow .42s ease;
+  cursor:pointer;
+}
+.experience-slide.is-active{
+  opacity:1;
+  filter:none;
+  transform:none;
+  box-shadow:0 28px 72px rgba(62,48,58,.14),0 4px 14px rgba(62,48,58,.06);
+  cursor:default;
+}
+.experience-slide.is-active:hover{
+  transform:translateY(-5px) scale(1.006);
+  box-shadow:0 35px 82px rgba(62,48,58,.17),0 7px 18px rgba(62,48,58,.07);
+}
+.experience-slide:not(.is-active):hover{opacity:.52;filter:saturate(.86);transform:scale(.94) translateY(4px)}
+.experience-slide .experience-company-head{height:134px;min-height:134px;padding:23px 30px;grid-template-columns:52px minmax(300px,.95fr) 1.05fr}
+.experience-slide .experience-company-head h3{font-size:23px;line-height:1.15}
+.experience-slide .impact-strip{min-height:72px;flex:0 0 72px}
+.experience-slide .impact-strip div{padding:15px 24px}
+.experience-slide .case-workbench{min-height:0;flex:1;grid-template-columns:176px 1fr}
+.experience-slide .case-tabs{padding:21px 17px}
+.experience-slide .case-tabs>p{margin-bottom:16px}
+.experience-slide .case-tabs button{padding:12px 0}
+.experience-slide .case-panel{display:block;min-width:0}
+.experience-slide .case-copy{
+  height:100%;
+  padding:27px 32px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 218px;
+  grid-template-rows:auto auto 1fr auto;
+  column-gap:34px;
+  align-items:start;
+}
+.experience-slide .case-kicker{grid-column:1;margin-bottom:9px}
+.experience-slide .case-copy h4{grid-column:1;margin:0 0 13px;font-size:29px}
+.experience-slide .case-flow{grid-column:1;gap:10px}
+.experience-slide .case-flow>div{padding-top:10px}
+.experience-slide .case-flow p{font-size:11px;line-height:1.62}
+.experience-slide .tool-row{grid-column:1;margin-top:14px}
+.experience-slide .case-result{
+  grid-column:2;
+  grid-row:1/5;
+  width:100%;
+  height:100%;
+  margin:0;
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  background:linear-gradient(155deg,rgba(232,207,210,.42),#ead8da);
+}
+.experience-slide .case-result:before{content:"";width:44px;height:1px;margin-bottom:auto;background:rgba(184,120,134,.58)}
+.experience-slide .case-result strong{font-size:29px}
+.experience-slide .recognition{min-height:49px;padding:13px 28px;flex:0 0 auto}
+.experience-slide .achievement-grid{flex:1;min-height:0}
+.experience-slide .achievement{min-height:0;padding:26px 23px}
+.experience-slide .achievement>strong{margin:36px 0 18px}
+.experience-slide .experience-story-grid{flex:1;min-height:0;grid-template-rows:repeat(2,1fr)}
+.experience-slide .story-point{min-height:0;padding:26px 30px}
+.experience-slide .story-point h4{margin:24px 0 10px;font-size:21px}
+.experience-slide .mint-grid{grid-template-rows:1fr}
+
+@media(max-width:900px){
+  .experience-stage{--experience-card-width:calc(100vw - 108px)}
+  .experience-toolbar{width:calc(100% - 32px)}
+  .experience-card-shell{gap:20px;padding-top:24px;padding-bottom:38px}
+  .experience-slide{height:660px;border-radius:24px}
+  .experience-slide .experience-company-head{height:150px;min-height:150px;grid-template-columns:48px 1fr}
+  .experience-slide .company-summary{grid-column:2}
+  .experience-slide .case-workbench{grid-template-columns:158px 1fr}
+  .experience-slide .case-copy{grid-template-columns:minmax(0,1fr) 185px;column-gap:22px;padding:25px}
+  .experience-slide .case-copy h4{font-size:26px}
+  .experience-slide .achievement{padding:23px 20px}
+  .experience-slide .achievement>strong{margin:25px 0 14px}
+}
+
+@media(max-width:620px){
+  .experience-stage{--experience-card-width:calc(100vw - 44px)}
+  .experience-toolbar{width:100%;margin-bottom:6px}
+  .experience-hint{font-size:7.5px}
+  .experience-card-shell{display:flex;width:100vw;margin-left:calc(50% - 50vw);padding:18px 22px 34px;gap:12px;align-items:flex-start;cursor:grab}
+  .experience-slide{flex:0 0 var(--experience-card-width);width:var(--experience-card-width);height:auto;min-height:650px;margin:0;border-radius:20px;transform:scale(.96)}
+  .experience-slide.is-active:hover{transform:none}
+  .experience-slide .experience-company-head{height:auto;min-height:188px;padding:22px 18px;grid-template-columns:42px 1fr}
+  .experience-slide .company-summary{grid-column:1/-1}
+  .experience-slide .impact-strip{min-height:0;flex:0 0 auto}
+  .experience-slide .case-workbench{display:block;min-height:0}
+  .experience-slide .case-tabs{grid-template-columns:repeat(3,1fr);padding:0}
+  .experience-slide .case-copy{height:auto;padding:28px 22px;display:block}
+  .experience-slide .case-copy h4{font-size:28px}
+  .experience-slide .case-result{width:auto;height:auto;margin-top:24px;padding:21px;display:block}
+  .experience-slide .case-result:before{display:none}
+  .experience-slide .recognition{min-height:0;padding:16px 20px}
+  .experience-slide .achievement-grid{grid-template-columns:1fr}
+  .experience-slide .achievement{min-height:190px}
+  .experience-slide .experience-story-grid,.experience-slide .mint-grid{grid-template-columns:1fr;grid-template-rows:none}
+}
+
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
