@@ -373,6 +373,19 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="experience-bridge">
+          <div className="experience-bridge-copy">
+            <span>从经历到方法</span>
+            <p>每一段经历，都留下了一种解决问题的方法。</p>
+            <small>从完整时间线进入四段重点案例，看看我如何理解问题、推动行动并交付结果。</small>
+          </div>
+          <div className="experience-bridge-art" aria-hidden="true">
+            <i>选择一段经历<br />继续往下看</i>
+            <span />
+            <img src="/career-guide.png" alt="" />
+          </div>
+        </div>
+
         <div className="experience-stage">
           <div className="experience-toolbar">
             <div className="experience-heading">
