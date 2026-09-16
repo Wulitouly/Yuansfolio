@@ -220,3 +220,25 @@
 .gallery-title small{color:var(--muted);font-size:9px;font-weight:400;letter-spacing:0}
 @media(max-width:900px){.career-timeline-interaction{grid-template-columns:132px minmax(0,1fr)}.timeline-puller-art img{width:132px}.experience-toolbar{width:100%}}
 @media(max-width:620px){.career-timeline-interaction{grid-template-columns:104px minmax(0,1fr)}.timeline-puller-art{height:232px}.timeline-puller-art img{width:104px;height:224px;transform:translateY(16px)}.gallery-title{display:block}.gallery-title small{display:block;margin-top:7px;line-height:1.55}.career-overview-head strong,.experience-heading span,.gallery-title strong{font-size:17px}}
+
+/* The character's rope and the career path form one continuous, gently snaking line. */
+.career-timeline-interaction{grid-template-columns:142px minmax(0,1fr)}
+.timeline-puller-art{z-index:5}
+.timeline-puller-art img{width:150px;max-width:none;transform:translate(0,13px)}
+.career-timeline{overflow:visible}
+.career-timeline:before{display:none}
+.timeline-snake{position:absolute;z-index:1;inset:0;display:block;pointer-events:none}
+.timeline-snake span{position:absolute;height:1px;background:rgba(41,36,42,.16);transform-origin:left center}
+.timeline-snake span:nth-child(1){left:0;top:calc(50% - 6px);width:5%}
+.timeline-snake span:nth-child(2){left:5%;top:calc(50% - 6px);width:10%;transform:rotate(-2.7deg)}
+.timeline-snake span:nth-child(3){left:15%;top:calc(50% - 11px);width:10%;transform:rotate(2.2deg)}
+.timeline-snake span:nth-child(4){left:25%;top:calc(50% - 7px);width:10%;transform:rotate(4.9deg)}
+.timeline-snake span:nth-child(5){left:35%;top:calc(50% + 2px);width:10%;transform:rotate(3.8deg)}
+.timeline-snake span:nth-child(6){left:45%;top:calc(50% + 9px);width:10%;transform:rotate(-2.2deg)}
+.timeline-snake span:nth-child(7){left:55%;top:calc(50% + 5px);width:10%;transform:rotate(-4.9deg)}
+.timeline-snake span:nth-child(8){left:65%;top:calc(50% - 4px);width:10%;transform:rotate(-3.3deg)}
+.timeline-snake span:nth-child(9){left:75%;top:calc(50% - 10px);width:10%;transform:rotate(2.2deg)}
+.timeline-snake span:nth-child(10){left:85%;top:calc(50% - 6px);width:10%;transform:rotate(4.9deg)}
+.timeline-item:nth-child(1){--curve-y:-6px}.timeline-item:nth-child(2){--curve-y:-11px}.timeline-item:nth-child(3){--curve-y:-7px}.timeline-item:nth-child(4){--curve-y:2px}.timeline-item:nth-child(5){--curve-y:9px}.timeline-item:nth-child(6){--curve-y:5px}.timeline-item:nth-child(7){--curve-y:-4px}.timeline-item:nth-child(8){--curve-y:-10px}.timeline-item:nth-child(9){--curve-y:-6px}.timeline-item:nth-child(10){--curve-y:3px}
+@media(max-width:900px){.career-timeline-interaction{grid-template-columns:124px minmax(0,1fr)}.timeline-puller-art img{width:132px}}
+@media(max-width:620px){.career-timeline-interaction{grid-template-columns:96px minmax(0,1fr)}.timeline-puller-art img{width:104px;transform:translate(0,16px)}}

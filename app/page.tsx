@@ -348,6 +348,9 @@ export default function Home() {
             </div>
             <div className="timeline-scroller" aria-label="完整工作经历时间线">
               <div className="career-timeline">
+              <i className="timeline-snake" aria-hidden="true">
+                {Array.from({ length: 10 }, (_, index) => <span key={index} />)}
+              </i>
               {careerTimeline.map((item) => {
                 const featuredIndex = item.featuredId ? featuredExperiences.findIndex((experience) => experience.id === item.featuredId) : -1;
                 const isActive = featuredIndex === activeExperience;
