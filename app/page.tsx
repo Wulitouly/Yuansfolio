@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { BookHeart, ChevronLeft, ChevronRight, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
+import { BookHeart, ChevronDown, ChevronLeft, ChevronRight, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
 
 const outline = [
   ["top", "00", "首页"],
@@ -138,12 +138,16 @@ const mintHighlights = [
   { title: "好评率第一", text: "实习接近尾声时，在老师好评率评比中获得第一，用户服务质量得到直接验证。" },
 ];
 
-const evidenceSlots: Record<string, string[]> = {
-  lyz: ["工作现场", "工具界面", "成果记录"],
-  haochengji: ["增长活动", "数据复盘", "团队协作"],
-  kuaishou: ["知识库页面", "内容作品", "职场项目"],
-  mint: ["社群运营", "用户反馈", "好评记录"],
-};
+const photoArchive = [
+  { period: "2017", title: "Massachusetts", note: "Dunkin’ Donuts · 工作与生活" },
+  { period: "2018", title: "英语教学", note: "海之子教育 · 山木培训" },
+  { period: "2019", title: "薄荷阅读", note: "社群运营 · 用户反馈" },
+  { period: "2019—2020", title: "北京快手", note: "知识库 · 内容作品 · 职场项目" },
+  { period: "2020—2023", title: "杭州好成绩", note: "增长活动 · 数据复盘 · 团队协作" },
+  { period: "2024", title: "菲律宾", note: "SMEAG · 学生管理与跨文化生活" },
+  { period: "2024—2026", title: "洛杉矶", note: "Matcha Village · 贰万猪脚饭" },
+  { period: "2026", title: "澳大利亚", note: "LYZ FOOD · 业务现场与工具成果" },
+];
 
 const education = [
   ["2026 — 至今", "悉尼大学", "计算机科学 · 硕士"],
@@ -159,9 +163,12 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(false);
   const swipeStartX = useRef<number | null>(null);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
   const selectedExperience = featuredExperiences[activeExperience];
+  const previousExperience = featuredExperiences[(activeExperience - 1 + featuredExperiences.length) % featuredExperiences.length];
+  const nextExperience = featuredExperiences[(activeExperience + 1) % featuredExperiences.length];
 
   useEffect(() => {
     const preloadTimer = window.setTimeout(() => {
@@ -302,7 +309,7 @@ export default function Home() {
       <section className="work shell section" id="work">
         <header className="section-head">
           <div><p className="section-id">工作经历 / Experience</p><h2>经历很多，重点讲结果。</h2></div>
-          <p>完整时间线记录我走过的现场；重点卡片只展开那些塑造了运营、数据与解决问题能力的经历。</p>
+          <p>从业务现场发现问题，用数据、工具与持续迭代，把重复劳动变成能真正运行的解决方案。</p>
         </header>
 
         <div className="career-overview">
@@ -367,10 +374,7 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <div className="experience-arrows" aria-label="切换重点经历">
-              <button type="button" aria-label="上一段经历" onClick={() => moveExperience(-1)}><ChevronLeft size={18} strokeWidth={1.5} /></button>
-              <button type="button" aria-label="下一段经历" onClick={() => moveExperience(1)}><ChevronRight size={18} strokeWidth={1.5} /></button>
-            </div>
+            <p className="experience-hint">拖动卡片，或点击两侧继续</p>
           </div>
 
           <div
@@ -383,17 +387,24 @@ export default function Home() {
               if (event.key === "ArrowLeft") moveExperience(-1);
               if (event.key === "ArrowRight") moveExperience(1);
             }}
-            onTouchStart={(event) => { swipeStartX.current = event.touches[0]?.clientX ?? null; }}
-            onTouchEnd={(event) => {
+            onPointerDown={(event) => {
+              if ((event.target as HTMLElement).closest("button, a")) return;
+              swipeStartX.current = event.clientX;
+              event.currentTarget.setPointerCapture(event.pointerId);
+            }}
+            onPointerUp={(event) => {
               if (swipeStartX.current === null) return;
-              const endX = event.changedTouches[0]?.clientX;
-              if (endX === undefined) return;
-              const distance = endX - swipeStartX.current;
+              const distance = event.clientX - swipeStartX.current;
               swipeStartX.current = null;
-              if (Math.abs(distance) < 55) return;
+              if (Math.abs(distance) < 70) return;
               moveExperience(distance < 0 ? 1 : -1);
             }}
+            onPointerCancel={() => { swipeStartX.current = null; }}
           >
+            <button className="experience-edge previous" type="button" aria-label={`上一段：${previousExperience.shortName}`} onClick={() => moveExperience(-1)}>
+              <ChevronLeft size={19} strokeWidth={1.45} />
+              <span>{previousExperience.shortName}</span>
+            </button>
             <article className={`experience-card experience-slide slide-${experienceDirection}`} key={selectedExperience.id}>
               <header className="company-head experience-company-head">
                 <div className="company-index">{String(activeExperience + 1).padStart(2, "0")}</div>
@@ -492,21 +503,34 @@ export default function Home() {
                 </>
               )}
 
-              <div className="evidence-rail">
-                <div className="evidence-intro">
-                  <span>工作证据</span>
-                  <strong>照片不做装饰，只用来证明过程与结果。</strong>
-                  <p>后续建议每段保留 2–3 张：现场、作品或数据截图。</p>
-                </div>
-                {evidenceSlots[selectedExperience.id].map((label, index) => (
-                  <div className="evidence-placeholder" key={label}>
-                    <ImagePlus size={20} strokeWidth={1.35} aria-hidden="true" />
-                    <span>{label}</span>
-                    <small>照片位 {String(index + 1).padStart(2, "0")}</small>
-                  </div>
-                ))}
-              </div>
             </article>
+            <button className="experience-edge next" type="button" aria-label={`下一段：${nextExperience.shortName}`} onClick={() => moveExperience(1)}>
+              <span>{nextExperience.shortName}</span>
+              <ChevronRight size={19} strokeWidth={1.45} />
+            </button>
+          </div>
+        </div>
+
+        <div className={`experience-gallery ${galleryOpen ? "open" : ""}`}>
+          <button className="gallery-toggle" type="button" aria-expanded={galleryOpen} onClick={() => setGalleryOpen((current) => !current)}>
+            <span className="gallery-title"><small>经历影集</small><strong>工作、教学与海外生活，都值得被看见。</strong></span>
+            <span className="gallery-action">{galleryOpen ? "收起影集" : "查看照片档案"}<ChevronDown size={18} strokeWidth={1.4} /></span>
+          </button>
+          <div className="gallery-panel" aria-hidden={!galleryOpen}>
+            <div className="gallery-note">
+              <p>照片不再依附某一张工作卡，而是沿着整条经历时间线组织。</p>
+              <span>后续每个阶段建议放 1–3 张：现场、人物、作品或能说明当时状态的细节。</span>
+            </div>
+            <div className="gallery-grid">
+              {photoArchive.map((item, index) => (
+                <div className={`gallery-placeholder item-${index + 1}`} key={`${item.period}-${item.title}`}>
+                  <ImagePlus size={22} strokeWidth={1.3} aria-hidden="true" />
+                  <span>{item.period}</span>
+                  <strong>{item.title}</strong>
+                  <small>{item.note}</small>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
