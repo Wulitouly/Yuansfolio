@@ -139,15 +139,15 @@ export default function Home() {
 
       <section className="hero shell" id="top">
         <div className="hero-copy">
-          <div className="hero-title" aria-label="Data, Product and AI，刘渊">
-            <p>DATA · PRODUCT · AI</p>
+          <div className="hero-title" aria-label="数据、产品与人工智能，刘渊">
+            <p>Data, product &amp; AI</p>
             <h1>刘渊</h1>
           </div>
-          <p className="hero-path"><span>User Operations</span><i>→</i><span>Data</span><i>→</i><span>AI</span></p>
-          <p className="hero-statement">用<span>文科生</span>的温度去共情世界，<br />持<span>理科生</span>的清醒去解构问题。</p>
-          <p className="hero-identity"><span aria-hidden="true" />Master of Computer Science <i>@ University of Sydney</i></p>
+          <p className="hero-path">从用户运营出发，走向数据与 AI</p>
+          <p className="hero-statement">有温度地理解，<br />有逻辑地行动。</p>
+          <p className="hero-identity"><span aria-hidden="true" /><strong>悉尼大学</strong><i>计算机科学硕士在读</i></p>
           <div className="hero-actions">
-            <a className="hero-cta" href="#work"><span>Explore My Work</span><b>↓</b></a>
+            <a className="hero-cta" href="#work"><span>查看工作经历</span><b>↓</b></a>
             <div className="hero-socials" aria-label="联系方式">
               <button type="button" onClick={copyWechat} aria-label="复制微信号" data-label="WeChat">
                 <MessageCircle size={16} strokeWidth={1.6} />
@@ -169,7 +169,7 @@ export default function Home() {
             <div className="motion-grid" />
             <div className="motion-nodes"><i /><i /><i /><i /></div>
             <div className="motion-links"><i /><i /><i /></div>
-            <span>HUMAN · DATA · AI</span>
+            <span>理解人，看懂数据，用好 AI</span>
             <b />
           </div>
           <div className="hero-tags" aria-label="职业关键词">
@@ -199,12 +199,12 @@ export default function Home() {
           </button>
         </div>
         <div className="hero-stats" aria-label="个人经历摘要">
-          <div><strong>3+ YEARS</strong><span>WORK EXPERIENCE</span></div>
-          <div><strong>500K+</strong><span>USER POOL EXPERIENCE</span></div>
-          <div><strong>MASTER&apos;S</strong><span>COMPUTER SCIENCE</span></div>
-          <div><strong>DATA · AI</strong><span>CURRENT FOCUS</span></div>
+          <div><strong>3 年+</strong><span>工作经验</span></div>
+          <div><strong>50 万+</strong><span>私域用户池实践</span></div>
+          <div><strong>计算机科学</strong><span>硕士在读</span></div>
+          <div><strong>数据与 AI</strong><span>当前方向</span></div>
         </div>
-        <a className="hero-transition" href="#work"><span>EXPLORE MY JOURNEY</span><b>↓</b></a>
+        <a className="hero-transition" href="#work"><span>继续了解我的经历</span><b>↓</b></a>
       </section>
 
       <section className="work shell section" id="work">

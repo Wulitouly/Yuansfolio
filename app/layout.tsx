@@ -9,22 +9,22 @@ export async function generateMetadata(): Promise<Metadata> {
   const origin = `${protocol}://${host}`;
 
   return {
-    title: "刘渊｜运营分析与数据运营",
-    description: "刘渊的个人主页：用文科生的温度共情世界，持理科生的清醒解构问题。",
+    title: "刘渊｜Data, Product & AI",
+    description: "刘渊的个人主页：有温度地理解，有逻辑地行动。",
     icons: {
       icon: "/favicon.jpg",
       shortcut: "/favicon.jpg",
     },
     openGraph: {
       title: "刘渊｜有温度地理解 有逻辑地行动",
-      description: "运营分析、数据运营与业务分析个人主页",
+      description: "从用户运营出发，走向数据与 AI。",
       type: "website",
       images: [{ url: new URL("/og.png", origin).toString(), width: 1734, height: 907, alt: "刘渊个人主页" }],
     },
     twitter: {
       card: "summary_large_image",
       title: "刘渊｜有温度地理解 有逻辑地行动",
-      description: "运营分析、数据运营与业务分析个人主页",
+      description: "从用户运营出发，走向数据与 AI。",
       images: [new URL("/og.png", origin).toString()],
     },
   };
