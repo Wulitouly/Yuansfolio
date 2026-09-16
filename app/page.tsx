@@ -163,12 +163,8 @@ export default function Home() {
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
-  const [timelinePulling, setTimelinePulling] = useState(false);
-  const [timelinePullCycle, setTimelinePullCycle] = useState(0);
   const experienceCarousel = useRef<HTMLDivElement | null>(null);
-  const timelineScroller = useRef<HTMLDivElement | null>(null);
-  const timelinePullTimer = useRef<number | null>(null);
-  const timelinePullEndTimer = useRef<number | null>(null);
+  const experienceStage = useRef<HTMLDivElement | null>(null);
   const carouselDrag = useRef<{ pointerId: number; startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const carouselScrollFrame = useRef<number | null>(null);
   const suppressCarouselClick = useRef(false);
@@ -212,8 +208,6 @@ export default function Home() {
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("resize", handleResize);
-      if (timelinePullTimer.current) window.clearTimeout(timelinePullTimer.current);
-      if (timelinePullEndTimer.current) window.clearTimeout(timelinePullEndTimer.current);
     };
   }, []);
 
@@ -235,29 +229,11 @@ export default function Home() {
   const showTimelineExperience = (featuredId?: string) => {
     if (!featuredId) return;
     const index = featuredExperiences.findIndex((item) => item.id === featuredId);
-    if (index >= 0) showExperience(index);
-  };
-
-  const pullNextExperience = () => {
-    if (timelinePulling) return;
-    const nextExperience = (activeExperience + 1) % featuredExperiences.length;
-    const nextTimelineIndex = careerTimeline.findIndex((item) => item.featuredId === featuredExperiences[nextExperience].id);
-    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-    setTimelinePulling(true);
-    if (!reduceMotion) setTimelinePullCycle((cycle) => cycle + 1);
-
-    timelinePullTimer.current = window.setTimeout(() => {
-      showExperience(nextExperience);
-      const scroller = timelineScroller.current;
-      const item = scroller?.querySelector<HTMLElement>(`[data-timeline-index="${nextTimelineIndex}"]`);
-      if (scroller && item) {
-        scroller.scrollTo({ left: item.offsetLeft - (scroller.clientWidth - item.offsetWidth) / 2, behavior: reduceMotion ? "auto" : "smooth" });
-      }
-      if (reduceMotion) setTimelinePulling(false);
-    }, reduceMotion ? 0 : 760);
-    if (!reduceMotion) {
-      timelinePullEndTimer.current = window.setTimeout(() => setTimelinePulling(false), 2200);
+    if (index >= 0) {
+      showExperience(index);
+      window.setTimeout(() => {
+        experienceStage.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      }, 120);
     }
   };
 
@@ -367,19 +343,10 @@ export default function Home() {
             <p><span />重点节点可以点击，下方将展开详细成果。</p>
           </div>
           <div className="career-timeline-interaction">
-            <button
-              className={`timeline-puller ${timelinePulling ? "is-pulling" : ""}`}
-              type="button"
-              onClick={pullNextExperience}
-              disabled={timelinePulling}
-              aria-label="拉动时间线，查看下一段重点经历"
-            >
-              <img
-                src={timelinePulling ? `/media/career-pull-alpha.webp?play=${timelinePullCycle}` : "/media/career-pull-poster.png"}
-                alt=""
-              />
-            </button>
-            <div className="timeline-scroller" ref={timelineScroller} aria-label="完整工作经历时间线">
+            <div className="timeline-puller-art" aria-hidden="true">
+              <img src="/media/career-puller-static.png" alt="" />
+            </div>
+            <div className="timeline-scroller" aria-label="完整工作经历时间线">
               <div className="career-timeline">
               {careerTimeline.map((item) => {
                 const featuredIndex = item.featuredId ? featuredExperiences.findIndex((experience) => experience.id === item.featuredId) : -1;
@@ -418,7 +385,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="experience-stage">
+        <div className="experience-stage" ref={experienceStage}>
           <div className="experience-toolbar">
             <div className="experience-heading">
               <span>重点经历</span>
@@ -438,7 +405,7 @@ export default function Home() {
                 </button>
               ))}
             </div>
-            <p className="experience-hint">拖动卡片，像选片一样浏览经历</p>
+            <p className="experience-hint">滑动卡片，浏览经历</p>
           </div>
 
           <div
@@ -615,7 +582,7 @@ export default function Home() {
 
         <div className={`experience-gallery ${galleryOpen ? "open" : ""}`}>
           <button className="gallery-toggle" type="button" aria-expanded={galleryOpen} onClick={() => setGalleryOpen((current) => !current)}>
-            <span className="gallery-title"><small>经历影集</small><strong>工作、教学与海外生活，都值得被看见。</strong></span>
+            <span className="gallery-title"><strong>经历影集</strong><small>工作、教学与海外生活，都值得被看见。</small></span>
             <span className="gallery-action">{galleryOpen ? "收起影集" : "查看照片档案"}<ChevronDown size={18} strokeWidth={1.4} /></span>
           </button>
           <div className="gallery-panel" aria-hidden={!galleryOpen}>

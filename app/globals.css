@@ -194,3 +194,29 @@
 @media(max-width:620px){.career-timeline-interaction{grid-template-columns:98px minmax(0,1fr)}.timeline-puller img{width:92px;height:224px;object-position:left center}}
 
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+
+/* Final career timeline composition: static puller, curved axis, unified module titles. */
+.career-overview{border-top:0;border-bottom:0}
+.career-overview-head{padding-inline:0}
+.career-overview-head strong,.experience-heading span,.gallery-title strong{font:500 19px/1.35 "Songti SC","Noto Serif SC",Georgia,serif;color:var(--ink)}
+.career-timeline-interaction{grid-template-columns:150px minmax(0,1fr);background:transparent}
+.timeline-puller-art{position:relative;z-index:3;height:224px;overflow:visible;pointer-events:none}
+.timeline-puller-art img{width:150px;height:224px;object-fit:contain;object-position:left center;transform:translateY(13px);filter:drop-shadow(0 8px 7px rgba(60,44,38,.09))}
+.career-timeline:before{left:0;right:4%;top:calc(50% - 9px);height:30px;border-top:1px solid var(--line);border-radius:50%;background:none}
+.timeline-item{--curve-y:0px}
+.timeline-item:nth-child(1),.timeline-item:nth-child(10){--curve-y:7px}
+.timeline-item:nth-child(2),.timeline-item:nth-child(9){--curve-y:2px}
+.timeline-item:nth-child(3),.timeline-item:nth-child(8){--curve-y:-3px}
+.timeline-item:nth-child(4),.timeline-item:nth-child(7){--curve-y:-7px}
+.timeline-item:nth-child(5),.timeline-item:nth-child(6){--curve-y:-9px}
+.timeline-dot{top:calc(50% - 4px + var(--curve-y))}
+.timeline-item:nth-child(odd) .timeline-copy{bottom:calc(50% + 22px - var(--curve-y))}
+.timeline-item:nth-child(even) .timeline-copy{top:calc(50% + 22px + var(--curve-y))}
+.experience-toolbar{width:100%;margin:0 0 14px;grid-template-columns:auto 1fr auto}
+.experience-stage{scroll-margin-top:92px}
+.experience-gallery{margin-top:76px}
+.gallery-toggle{padding-inline:0}
+.gallery-title{display:flex;align-items:baseline;gap:18px}
+.gallery-title small{color:var(--muted);font-size:9px;font-weight:400;letter-spacing:0}
+@media(max-width:900px){.career-timeline-interaction{grid-template-columns:132px minmax(0,1fr)}.timeline-puller-art img{width:132px}.experience-toolbar{width:100%}}
+@media(max-width:620px){.career-timeline-interaction{grid-template-columns:104px minmax(0,1fr)}.timeline-puller-art{height:232px}.timeline-puller-art img{width:104px;height:224px;transform:translateY(16px)}.gallery-title{display:block}.gallery-title small{display:block;margin-top:7px;line-height:1.55}.career-overview-head strong,.experience-heading span,.gallery-title strong{font-size:17px}}
