@@ -246,3 +246,5 @@
 .timeline-continue{position:absolute;z-index:2;left:95%;top:calc(50% + 1px);width:150px;padding-top:14px;color:var(--rose);font:500 10px/1.4 "Songti SC","Noto Serif SC",Georgia,serif;letter-spacing:.08em;white-space:nowrap}
 .timeline-continue:before{content:"";position:absolute;left:0;top:0;width:82px;height:1px;background:linear-gradient(90deg,rgba(41,36,42,.16),rgba(184,120,134,.72));transform:rotate(3deg);transform-origin:left center}
 @media(max-width:620px){.timeline-scroller{padding-right:110px}.timeline-continue{width:130px;font-size:9px}.timeline-continue:before{width:68px}}
+.career-timeline{min-width:1155px;grid-template-columns:repeat(11,1fr)}
+.timeline-item:nth-child(11){--curve-y:7px}

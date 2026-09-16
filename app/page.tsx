@@ -117,6 +117,7 @@ const careerTimeline = [
   { period: "2018.08", company: "山东海之子教育", role: "暑期英语老师", location: "山东" },
   { period: "2018.08–12", company: "山木培训", role: "兼职英语老师", location: "山东" },
   { period: "2019.01–02", company: "薄荷阅读", role: "用户运营实习生", location: "北京", featuredId: "mint" },
+  { period: "2019.06–08", company: "凯顿儿童美语", role: "中教实习生", location: "烟台" },
   { period: "2019.11–2020.04", company: "快手", role: "行政助理实习生", location: "北京", featuredId: "kuaishou" },
   { period: "2020.06–2023.09", company: "好成绩", role: "用户运营", location: "杭州", featuredId: "haochengji" },
   { period: "2024.05–07", company: "SMEAG 语言学校", role: "学生经理", location: "菲律宾" },
