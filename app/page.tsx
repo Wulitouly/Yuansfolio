@@ -163,7 +163,11 @@ export default function Home() {
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
   const [galleryOpen, setGalleryOpen] = useState(false);
+  const [timelinePulling, setTimelinePulling] = useState(false);
   const experienceCarousel = useRef<HTMLDivElement | null>(null);
+  const timelineScroller = useRef<HTMLDivElement | null>(null);
+  const timelinePullVideo = useRef<HTMLVideoElement | null>(null);
+  const timelinePullTimer = useRef<number | null>(null);
   const carouselDrag = useRef<{ pointerId: number; startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const carouselScrollFrame = useRef<number | null>(null);
   const suppressCarouselClick = useRef(false);
@@ -207,6 +211,7 @@ export default function Home() {
     return () => {
       window.cancelAnimationFrame(frame);
       window.removeEventListener("resize", handleResize);
+      if (timelinePullTimer.current) window.clearTimeout(timelinePullTimer.current);
     };
   }, []);
 
@@ -229,6 +234,29 @@ export default function Home() {
     if (!featuredId) return;
     const index = featuredExperiences.findIndex((item) => item.id === featuredId);
     if (index >= 0) showExperience(index);
+  };
+
+  const pullNextExperience = () => {
+    if (timelinePulling) return;
+    const nextExperience = (activeExperience + 1) % featuredExperiences.length;
+    const nextTimelineIndex = careerTimeline.findIndex((item) => item.featuredId === featuredExperiences[nextExperience].id);
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    setTimelinePulling(true);
+    if (!reduceMotion && timelinePullVideo.current) {
+      timelinePullVideo.current.currentTime = 0;
+      void timelinePullVideo.current.play();
+    }
+
+    timelinePullTimer.current = window.setTimeout(() => {
+      showExperience(nextExperience);
+      const scroller = timelineScroller.current;
+      const item = scroller?.querySelector<HTMLElement>(`[data-timeline-index="${nextTimelineIndex}"]`);
+      if (scroller && item) {
+        scroller.scrollTo({ left: item.offsetLeft - (scroller.clientWidth - item.offsetWidth) / 2, behavior: reduceMotion ? "auto" : "smooth" });
+      }
+      if (reduceMotion) setTimelinePulling(false);
+    }, reduceMotion ? 0 : 760);
   };
 
   return (
@@ -336,8 +364,30 @@ export default function Home() {
             <div><strong>完整时间线</strong><span>2017 — 现在</span></div>
             <p><span />重点节点可以点击，下方将展开详细成果。</p>
           </div>
-          <div className="timeline-scroller" aria-label="完整工作经历时间线">
-            <div className="career-timeline">
+          <div className="career-timeline-interaction">
+            <button
+              className={`timeline-puller ${timelinePulling ? "is-pulling" : ""}`}
+              type="button"
+              onClick={pullNextExperience}
+              disabled={timelinePulling}
+              aria-label="拉动时间线，查看下一段重点经历"
+            >
+              <video
+                ref={timelinePullVideo}
+                src="/media/career-pull.mp4"
+                poster="/media/career-pull-poster.jpg"
+                muted
+                playsInline
+                preload="metadata"
+                onEnded={(event) => {
+                  event.currentTarget.currentTime = 0;
+                  setTimelinePulling(false);
+                }}
+              />
+              <span><strong>{timelinePulling ? "正在拉动" : "拉一下"}</strong><small>下一段重点经历</small></span>
+            </button>
+            <div className="timeline-scroller" ref={timelineScroller} aria-label="完整工作经历时间线">
+              <div className="career-timeline">
               {careerTimeline.map((item) => {
                 const featuredIndex = item.featuredId ? featuredExperiences.findIndex((experience) => experience.id === item.featuredId) : -1;
                 const isActive = featuredIndex === activeExperience;
@@ -358,17 +408,19 @@ export default function Home() {
                     type="button"
                     aria-label={`查看重点经历：${item.company}`}
                     aria-pressed={isActive}
+                    data-timeline-index={careerTimeline.indexOf(item)}
                     onClick={() => showTimelineExperience(item.featuredId)}
                     key={`${item.period}-${item.company}`}
                   >
                     {content}
                   </button>
                 ) : (
-                  <div className="timeline-item" key={`${item.period}-${item.company}`}>
+                  <div className="timeline-item" data-timeline-index={careerTimeline.indexOf(item)} key={`${item.period}-${item.company}`}>
                     {content}
                   </div>
                 );
               })}
+              </div>
             </div>
           </div>
         </div>
