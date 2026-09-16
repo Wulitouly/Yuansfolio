@@ -383,6 +383,7 @@ export default function Home() {
                   </div>
                 );
               })}
+              <span className="timeline-continue" aria-hidden="true">未完待续...</span>
               </div>
             </div>
           </div>
