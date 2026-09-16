@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { BookHeart, Mail, MessageCircle, Phone } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { BookHeart, ChevronLeft, ChevronRight, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
 
 const outline = [
   ["top", "00", "首页"],
@@ -73,6 +73,78 @@ const hzAchievements = [
   },
 ];
 
+const featuredExperiences = [
+  {
+    id: "lyz",
+    shortName: "LYZ FOOD",
+    period: "2026.03 — 至今",
+    company: "LYZ FOOD Ltd",
+    role: "用户运营 · 兼职",
+    location: "澳大利亚",
+    summary: "从一线业务里识别效率瓶颈，把配送、库存和发票中的重复操作转化为可运行的自动化工具。",
+  },
+  {
+    id: "haochengji",
+    shortName: "好成绩",
+    period: "2020.06 — 2023.09",
+    company: "杭州好成绩教育科技有限公司",
+    role: "用户运营 · 后晋升小组长",
+    location: "杭州",
+    summary: "围绕用户获取、激活、留存和转化开展运营工作，参与搭建 50 万+私域用户池，并承担团队协作与新人培养。",
+  },
+  {
+    id: "kuaishou",
+    shortName: "快手",
+    period: "2019.11 — 2020.04",
+    company: "北京快手科技有限公司",
+    role: "行政助理实习生",
+    location: "北京",
+    summary: "在行政与内部传播场景中，完成知识库从 0 到 1、内容撰写与数据支持，建立对组织流程和信息效率的理解。",
+  },
+  {
+    id: "mint",
+    shortName: "薄荷阅读",
+    period: "2019.01 — 2019.02",
+    company: "成都超有爱科技有限公司 · 薄荷阅读",
+    role: "用户运营实习生",
+    location: "北京运营组",
+    summary: "负责四个付费用户群的用户交付，在高密度社群服务中积累用户沟通、节奏管理与体验优化经验。",
+  },
+];
+
+const careerTimeline = [
+  { period: "2017.06–09", company: "Dunkin’ Donuts", role: "Crew Member", location: "Massachusetts" },
+  { period: "2018.08", company: "山东海之子教育", role: "暑期英语老师", location: "山东" },
+  { period: "2018.08–12", company: "山木培训", role: "兼职英语老师", location: "山东" },
+  { period: "2019.01–02", company: "薄荷阅读", role: "用户运营实习生", location: "北京", featuredId: "mint" },
+  { period: "2019.11–2020.04", company: "快手", role: "行政助理实习生", location: "北京", featuredId: "kuaishou" },
+  { period: "2020.06–2023.09", company: "好成绩", role: "用户运营", location: "杭州", featuredId: "haochengji" },
+  { period: "2024.05–07", company: "SMEAG 语言学校", role: "学生经理", location: "菲律宾" },
+  { period: "2024.09–2025.08", company: "Matcha Village", role: "店员", location: "洛杉矶" },
+  { period: "2025.08–2026.02", company: "贰万猪脚饭", role: "后厨店员", location: "洛杉矶" },
+  { period: "2026.03–至今", company: "LYZ FOOD", role: "用户运营", location: "澳大利亚", featuredId: "lyz" },
+];
+
+const kuaishouHighlights = [
+  { title: "知识库从 0 到 1", text: "负责行政部门知识库的组织与维护，完成信息结构梳理，并协助“小当家”线上系统落地。" },
+  { title: "50+ 篇内容交付", text: "修改或撰写日常通知、活动文案等五十余篇，保持内容准确与稳定，多次获得领导肯定。" },
+  { title: "内部传播协作", text: "协助宣传组进行公众号运营、推文与通知审核，并参与内部活动策划。" },
+  { title: "数据与项目支持", text: "支持新职场预算、会议室与工位使用率统计等工作，为行政决策提供基础信息。" },
+];
+
+const mintHighlights = [
+  { title: "付费社群交付", text: "独立负责四个付费用户群，每个群约 200 人，围绕课程节奏完成提醒、答疑与日常用户维护。" },
+  { title: "用户体验反馈", text: "持续观察群内问题与参与状态，及时回应用户需求，保障短周期阅读产品的服务体验。" },
+  { title: "好评率第一", text: "实习接近尾声时，在老师好评率评比中获得第一，用户服务质量得到直接验证。" },
+];
+
+const evidenceSlots: Record<string, string[]> = {
+  lyz: ["工作现场", "工具界面", "成果记录"],
+  haochengji: ["增长活动", "数据复盘", "团队协作"],
+  kuaishou: ["知识库页面", "内容作品", "职场项目"],
+  mint: ["社群运营", "用户反馈", "好评记录"],
+};
+
 const education = [
   ["2026 — 至今", "悉尼大学", "计算机科学 · 硕士"],
   ["2024 — 2026", "圣莫妮卡学院", "数据科学 · Associate · GPA 4.0"],
@@ -81,11 +153,15 @@ const education = [
 
 export default function Home() {
   const [activeCase, setActiveCase] = useState("inventory");
+  const [activeExperience, setActiveExperience] = useState(0);
+  const [experienceDirection, setExperienceDirection] = useState<"next" | "prev">("next");
   const [aboutMode, setAboutMode] = useState<"work" | "life">("work");
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
+  const swipeStartX = useRef<number | null>(null);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
+  const selectedExperience = featuredExperiences[activeExperience];
 
   useEffect(() => {
     const preloadTimer = window.setTimeout(() => {
@@ -111,6 +187,22 @@ export default function Home() {
     await navigator.clipboard.writeText("yolohhly");
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1800);
+  };
+
+  const showExperience = (index: number) => {
+    setExperienceDirection(index >= activeExperience ? "next" : "prev");
+    setActiveExperience(index);
+  };
+
+  const moveExperience = (delta: number) => {
+    setExperienceDirection(delta > 0 ? "next" : "prev");
+    setActiveExperience((current) => (current + delta + featuredExperiences.length) % featuredExperiences.length);
+  };
+
+  const showTimelineExperience = (featuredId?: string) => {
+    if (!featuredId) return;
+    const index = featuredExperiences.findIndex((item) => item.id === featuredId);
+    if (index >= 0) showExperience(index);
   };
 
   return (
@@ -209,73 +301,214 @@ export default function Home() {
 
       <section className="work shell section" id="work">
         <header className="section-head">
-          <div><p className="section-id">01 / EXPERIENCE</p><h2>先看我做过什么。</h2></div>
-          <p>从业务现场发现问题，用数据、工具与持续迭代，把重复劳动变成能真正运行的解决方案。</p>
+          <div><p className="section-id">工作经历 / Experience</p><h2>经历很多，重点讲结果。</h2></div>
+          <p>完整时间线记录我走过的现场；重点卡片只展开那些塑造了运营、数据与解决问题能力的经历。</p>
         </header>
 
-        <article className="experience-card featured">
-          <header className="company-head">
-            <div className="company-index">01</div>
-            <div><p>2026.03 — 至今</p><h3>LYZ FOOD Ltd</h3><span>用户运营 · 兼职</span></div>
-            <p className="company-summary">负责老人餐业务的客户承接、日常运营与转化，参与配送、库存和发票等业务流程；结合一线操作识别效率瓶颈，并推动自动化方案落地。</p>
-          </header>
-
-          <div className="impact-strip">
-            <div><span>出库流程</span><strong>30–60 min → 2 min</strong></div>
-            <div><span>路线规划</span><strong>30–40 min → 10 min</strong></div>
-            <div><span>单张发票</span><strong>3 min → 10–20 sec</strong></div>
+        <div className="career-overview">
+          <div className="career-overview-head">
+            <div><strong>完整时间线</strong><span>2017 — 现在</span></div>
+            <p><span />重点节点可以点击，下方将展开详细成果。</p>
           </div>
+          <div className="timeline-scroller" aria-label="完整工作经历时间线">
+            <div className="career-timeline">
+              {careerTimeline.map((item) => {
+                const featuredIndex = item.featuredId ? featuredExperiences.findIndex((experience) => experience.id === item.featuredId) : -1;
+                const isActive = featuredIndex === activeExperience;
+                const content = (
+                  <>
+                    <span className="timeline-copy">
+                      <small>{item.period}</small>
+                      <strong>{item.company}</strong>
+                      <em>{item.role}</em>
+                      <b>{item.location}</b>
+                    </span>
+                    <i className="timeline-dot" aria-hidden="true" />
+                  </>
+                );
+                return item.featuredId ? (
+                  <button
+                    className={`timeline-item is-featured ${isActive ? "is-active" : ""}`}
+                    type="button"
+                    aria-label={`查看重点经历：${item.company}`}
+                    aria-pressed={isActive}
+                    onClick={() => showTimelineExperience(item.featuredId)}
+                    key={`${item.period}-${item.company}`}
+                  >
+                    {content}
+                  </button>
+                ) : (
+                  <div className="timeline-item" key={`${item.period}-${item.company}`}>
+                    {content}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
 
-          <div className="case-workbench">
-            <div className="case-tabs" role="tablist" aria-label="LYZ FOOD 成果案例">
-              <p>成果案例</p>
-              {lyzCases.map((item) => (
+        <div className="experience-stage">
+          <div className="experience-toolbar">
+            <div className="experience-heading">
+              <span>重点经历</span>
+              <strong>{String(activeExperience + 1).padStart(2, "0")} / {String(featuredExperiences.length).padStart(2, "0")}</strong>
+            </div>
+            <div className="experience-pager" role="tablist" aria-label="重点工作经历">
+              {featuredExperiences.map((item, index) => (
                 <button
-                  key={item.id}
+                  className={index === activeExperience ? "active" : ""}
+                  type="button"
                   role="tab"
-                  aria-selected={activeCase === item.id}
-                  className={activeCase === item.id ? "active" : ""}
-                  onClick={() => setActiveCase(item.id)}
+                  aria-selected={index === activeExperience}
+                  onClick={() => showExperience(index)}
+                  key={item.id}
                 >
-                  <span>{item.number}</span>{item.label}<i>→</i>
+                  {item.shortName}
                 </button>
               ))}
             </div>
-
-            <div className="case-panel" role="tabpanel">
-              <div className="case-copy">
-                <p className="case-kicker">{selectedCase.label} / CASE {selectedCase.number}</p>
-                <h4>{selectedCase.title}</h4>
-                <div className="case-flow">
-                  <div><span>发现的问题</span><p>{selectedCase.problem}</p></div>
-                  <div><span>我做了什么</span><p>{selectedCase.action}</p></div>
-                </div>
-                <div className="tool-row">{selectedCase.tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
-                <div className="case-result"><span>最终结果</span><strong>{selectedCase.result}</strong><p>{selectedCase.note}</p></div>
-              </div>
-              <div className="case-character">
-                <div className="character-halo" />
-                <img key={selectedCase.id} src={selectedCase.image} alt={`IP 玩偶演示${selectedCase.label}案例`} />
-              </div>
+            <div className="experience-arrows" aria-label="切换重点经历">
+              <button type="button" aria-label="上一段经历" onClick={() => moveExperience(-1)}><ChevronLeft size={18} strokeWidth={1.5} /></button>
+              <button type="button" aria-label="下一段经历" onClick={() => moveExperience(1)}><ChevronRight size={18} strokeWidth={1.5} /></button>
             </div>
           </div>
-          <p className="recognition">因稳定完成客户承接与日常运营，并持续推动流程优化，获得负责人认可，受邀以居家办公方式继续参与后续业务。</p>
-        </article>
 
-        <article className="experience-card hz-card">
-          <header className="company-head compact">
-            <div className="company-index">02</div>
-            <div><p>2020.06 — 2023.09</p><h3>杭州好成绩教育科技有限公司</h3><span>用户运营 · 后晋升小组长</span></div>
-            <p className="company-summary">围绕用户获取、激活、留存和转化开展运营工作，参与搭建 50 万+私域用户池，后期承担团队协作与新人培养。</p>
-          </header>
-          <div className="achievement-grid">
-            {hzAchievements.map((item, index) => (
-              <div className="achievement" key={item.title}>
-                <span>0{index + 1}</span><strong>{item.metric}</strong><h4>{item.title}</h4><p>{item.text}</p>
+          <div
+            className="experience-card-shell"
+            role="region"
+            aria-label="重点经历详情，可左右滑动切换"
+            tabIndex={0}
+            onKeyDown={(event) => {
+              if (event.target !== event.currentTarget) return;
+              if (event.key === "ArrowLeft") moveExperience(-1);
+              if (event.key === "ArrowRight") moveExperience(1);
+            }}
+            onTouchStart={(event) => { swipeStartX.current = event.touches[0]?.clientX ?? null; }}
+            onTouchEnd={(event) => {
+              if (swipeStartX.current === null) return;
+              const endX = event.changedTouches[0]?.clientX;
+              if (endX === undefined) return;
+              const distance = endX - swipeStartX.current;
+              swipeStartX.current = null;
+              if (Math.abs(distance) < 55) return;
+              moveExperience(distance < 0 ? 1 : -1);
+            }}
+          >
+            <article className={`experience-card experience-slide slide-${experienceDirection}`} key={selectedExperience.id}>
+              <header className="company-head experience-company-head">
+                <div className="company-index">{String(activeExperience + 1).padStart(2, "0")}</div>
+                <div>
+                  <p>{selectedExperience.period} · {selectedExperience.location}</p>
+                  <h3>{selectedExperience.company}</h3>
+                  <span>{selectedExperience.role}</span>
+                </div>
+                <p className="company-summary">{selectedExperience.summary}</p>
+              </header>
+
+              {selectedExperience.id === "lyz" && (
+                <>
+                  <div className="impact-strip">
+                    <div><span>出库流程</span><strong>30–60 min → 2 min</strong></div>
+                    <div><span>路线规划</span><strong>30–40 min → 10 min</strong></div>
+                    <div><span>单张发票</span><strong>3 min → 10–20 sec</strong></div>
+                  </div>
+                  <div className="case-workbench">
+                    <div className="case-tabs" role="tablist" aria-label="LYZ FOOD 成果案例">
+                      <p>成果案例</p>
+                      {lyzCases.map((item) => (
+                        <button
+                          key={item.id}
+                          role="tab"
+                          aria-selected={activeCase === item.id}
+                          className={activeCase === item.id ? "active" : ""}
+                          onClick={() => setActiveCase(item.id)}
+                        >
+                          <span>{item.number}</span>{item.label}<i>→</i>
+                        </button>
+                      ))}
+                    </div>
+                    <div className="case-panel" role="tabpanel">
+                      <div className="case-copy">
+                        <p className="case-kicker">{selectedCase.label} / CASE {selectedCase.number}</p>
+                        <h4>{selectedCase.title}</h4>
+                        <div className="case-flow">
+                          <div><span>发现的问题</span><p>{selectedCase.problem}</p></div>
+                          <div><span>我做了什么</span><p>{selectedCase.action}</p></div>
+                        </div>
+                        <div className="tool-row">{selectedCase.tools.map((tool) => <span key={tool}>{tool}</span>)}</div>
+                        <div className="case-result"><span>最终结果</span><strong>{selectedCase.result}</strong><p>{selectedCase.note}</p></div>
+                      </div>
+                      <div className="case-character">
+                        <div className="character-halo" />
+                        <img key={selectedCase.id} src={selectedCase.image} alt={`IP 玩偶演示${selectedCase.label}案例`} />
+                      </div>
+                    </div>
+                  </div>
+                  <p className="recognition">因稳定完成客户承接与日常运营，并持续推动流程优化，获得负责人认可，受邀以居家办公方式继续参与后续业务。</p>
+                </>
+              )}
+
+              {selectedExperience.id === "haochengji" && (
+                <div className="achievement-grid">
+                  {hzAchievements.map((item, index) => (
+                    <div className="achievement" key={item.title}>
+                      <span>0{index + 1}</span><strong>{item.metric}</strong><h4>{item.title}</h4><p>{item.text}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {selectedExperience.id === "kuaishou" && (
+                <>
+                  <div className="impact-strip story-impact">
+                    <div><span>信息建设</span><strong>知识库 0 → 1</strong></div>
+                    <div><span>内容交付</span><strong>50+ 篇</strong></div>
+                    <div><span>工作方式</span><strong>内容 · 数据 · 协作</strong></div>
+                  </div>
+                  <div className="experience-story-grid">
+                    {kuaishouHighlights.map((item, index) => (
+                      <div className="story-point" key={item.title}>
+                        <span>0{index + 1}</span><h4>{item.title}</h4><p>{item.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              {selectedExperience.id === "mint" && (
+                <>
+                  <div className="impact-strip story-impact">
+                    <div><span>付费社群</span><strong>4 个</strong></div>
+                    <div><span>服务规模</span><strong>约 800 人</strong></div>
+                    <div><span>用户评价</span><strong>好评率第 1</strong></div>
+                  </div>
+                  <div className="experience-story-grid mint-grid">
+                    {mintHighlights.map((item, index) => (
+                      <div className="story-point" key={item.title}>
+                        <span>0{index + 1}</span><h4>{item.title}</h4><p>{item.text}</p>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              <div className="evidence-rail">
+                <div className="evidence-intro">
+                  <span>工作证据</span>
+                  <strong>照片不做装饰，只用来证明过程与结果。</strong>
+                  <p>后续建议每段保留 2–3 张：现场、作品或数据截图。</p>
+                </div>
+                {evidenceSlots[selectedExperience.id].map((label, index) => (
+                  <div className="evidence-placeholder" key={label}>
+                    <ImagePlus size={20} strokeWidth={1.35} aria-hidden="true" />
+                    <span>{label}</span>
+                    <small>照片位 {String(index + 1).padStart(2, "0")}</small>
+                  </div>
+                ))}
               </div>
-            ))}
+            </article>
           </div>
-        </article>
+        </div>
       </section>
 
       <section className="about shell section" id="about">
