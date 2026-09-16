@@ -374,8 +374,8 @@ export default function Home() {
             >
               <video
                 ref={timelinePullVideo}
-                src="/media/career-pull.mp4"
-                poster="/media/career-pull-poster.jpg"
+                src="/media/career-pull-alpha.webm"
+                poster="/media/career-pull-poster.png"
                 muted
                 playsInline
                 preload="metadata"
