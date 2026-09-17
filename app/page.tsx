@@ -166,10 +166,20 @@ export default function Home() {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const experienceCarousel = useRef<HTMLDivElement | null>(null);
   const experienceStage = useRef<HTMLDivElement | null>(null);
+  const timelineScrollTimer = useRef<number | null>(null);
   const carouselDrag = useRef<{ pointerId: number; startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const carouselScrollFrame = useRef<number | null>(null);
   const suppressCarouselClick = useRef(false);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
+
+  const revealTimelineScrollbar = (scroller: HTMLDivElement) => {
+    scroller.classList.add("is-scrolling");
+    if (timelineScrollTimer.current !== null) window.clearTimeout(timelineScrollTimer.current);
+    timelineScrollTimer.current = window.setTimeout(() => {
+      scroller.classList.remove("is-scrolling");
+      timelineScrollTimer.current = null;
+    }, 650);
+  };
 
   const centerExperience = (index: number, behavior: ScrollBehavior = "smooth") => {
     const carousel = experienceCarousel.current;
@@ -347,7 +357,12 @@ export default function Home() {
             <div className="timeline-puller-art" aria-hidden="true">
               <img src="/media/career-puller-static.png" alt="" />
             </div>
-            <div className="timeline-scroller" aria-label="完整工作经历时间线">
+            <div
+              className="timeline-scroller"
+              aria-label="完整工作经历时间线"
+              onScroll={(event) => revealTimelineScrollbar(event.currentTarget)}
+              onPointerDown={(event) => revealTimelineScrollbar(event.currentTarget)}
+            >
               <div className="career-timeline">
               <i className="timeline-snake" aria-hidden="true">
                 {Array.from({ length: 10 }, (_, index) => <span key={index} />)}
