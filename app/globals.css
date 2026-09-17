@@ -242,15 +242,15 @@
 .timeline-item:nth-child(1){--curve-y:-6px}.timeline-item:nth-child(2){--curve-y:-11px}.timeline-item:nth-child(3){--curve-y:-7px}.timeline-item:nth-child(4){--curve-y:2px}.timeline-item:nth-child(5){--curve-y:9px}.timeline-item:nth-child(6){--curve-y:5px}.timeline-item:nth-child(7){--curve-y:-4px}.timeline-item:nth-child(8){--curve-y:-10px}.timeline-item:nth-child(9){--curve-y:-6px}.timeline-item:nth-child(10){--curve-y:3px}
 @media(max-width:900px){.career-timeline-interaction{grid-template-columns:124px minmax(0,1fr)}.timeline-puller-art img{width:132px}}
 @media(max-width:620px){.career-timeline-interaction{grid-template-columns:96px minmax(0,1fr)}.timeline-puller-art img{width:104px;transform:translate(0,16px)}}
-.timeline-scroller{padding-right:150px;scrollbar-color:transparent transparent;transition:scrollbar-color .2s ease}
-.timeline-scroller.is-scrolling{scrollbar-color:rgba(95,82,98,.3) transparent}
-.timeline-scroller::-webkit-scrollbar{height:7px}
-.timeline-scroller::-webkit-scrollbar-track{background:transparent}
-.timeline-scroller::-webkit-scrollbar-thumb{border-radius:999px;background:transparent;transition:background .2s ease}
-.timeline-scroller.is-scrolling::-webkit-scrollbar-thumb{background:rgba(95,82,98,.3)}
+.timeline-scroller{padding-right:150px;scrollbar-width:none}
+.timeline-scroller::-webkit-scrollbar{display:none;width:0;height:0}
+.timeline-scroll-indicator{--timeline-thumb-width:40%;--timeline-thumb-x:0%;position:absolute;z-index:8;left:158px;right:12px;bottom:2px;height:5px;overflow:hidden;border-radius:999px;background:rgba(95,82,98,.06);opacity:0;pointer-events:none;transform:translateY(3px);transition:opacity .18s ease,transform .18s ease}
+.timeline-scroll-indicator i{display:block;width:var(--timeline-thumb-width);height:100%;margin-left:var(--timeline-thumb-x);border-radius:inherit;background:rgba(95,82,98,.34);transition:width .12s ease,margin-left .05s linear}
+.timeline-scroll-indicator.is-visible{opacity:1;transform:translateY(0)}
 .timeline-continue{position:absolute;z-index:2;left:calc(100% + 54px);top:calc(50% + 14px);width:120px;padding-top:18px;color:var(--rose);font:500 10px/1.4 "Songti SC","Noto Serif SC",Georgia,serif;letter-spacing:.08em;white-space:nowrap}
 .timeline-continue:before{content:"";position:absolute;left:-107px;top:0;width:107px;height:1px;background:linear-gradient(90deg,rgba(41,36,42,.16),rgba(184,120,134,.72));transform:rotate(3.7deg);transform-origin:right center}
 .timeline-continue:after{content:"";position:absolute;left:-5px;top:-5px;width:10px;height:10px;border-radius:50%;background:var(--rose);box-shadow:0 0 0 6px rgba(184,120,134,.13)}
-@media(max-width:620px){.timeline-scroller{padding-right:130px}.timeline-continue{width:105px;font-size:9px}}
+@media(max-width:900px){.timeline-scroll-indicator{left:140px}}
+@media(max-width:620px){.timeline-scroller{padding-right:130px}.timeline-scroll-indicator{left:108px;right:8px}.timeline-continue{width:105px;font-size:9px}}
 .career-timeline{min-width:1155px;grid-template-columns:repeat(11,1fr)}
 .timeline-item:nth-child(11){--curve-y:7px}

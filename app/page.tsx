@@ -166,6 +166,7 @@ export default function Home() {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const experienceCarousel = useRef<HTMLDivElement | null>(null);
   const experienceStage = useRef<HTMLDivElement | null>(null);
+  const timelineScrollIndicator = useRef<HTMLSpanElement | null>(null);
   const timelineScrollTimer = useRef<number | null>(null);
   const carouselDrag = useRef<{ pointerId: number; startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const carouselScrollFrame = useRef<number | null>(null);
@@ -173,10 +174,17 @@ export default function Home() {
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
 
   const revealTimelineScrollbar = (scroller: HTMLDivElement) => {
-    scroller.classList.add("is-scrolling");
+    const indicator = timelineScrollIndicator.current;
+    if (!indicator) return;
+    const scrollableWidth = scroller.scrollWidth - scroller.clientWidth;
+    const thumbWidth = Math.max(12, (scroller.clientWidth / scroller.scrollWidth) * 100);
+    const progress = scrollableWidth > 0 ? scroller.scrollLeft / scrollableWidth : 0;
+    indicator.style.setProperty("--timeline-thumb-width", `${thumbWidth}%`);
+    indicator.style.setProperty("--timeline-thumb-x", `${progress * (100 - thumbWidth)}%`);
+    indicator.classList.add("is-visible");
     if (timelineScrollTimer.current !== null) window.clearTimeout(timelineScrollTimer.current);
     timelineScrollTimer.current = window.setTimeout(() => {
-      scroller.classList.remove("is-scrolling");
+      indicator.classList.remove("is-visible");
       timelineScrollTimer.current = null;
     }, 650);
   };
@@ -361,7 +369,6 @@ export default function Home() {
               className="timeline-scroller"
               aria-label="完整工作经历时间线"
               onScroll={(event) => revealTimelineScrollbar(event.currentTarget)}
-              onPointerDown={(event) => revealTimelineScrollbar(event.currentTarget)}
             >
               <div className="career-timeline">
               <i className="timeline-snake" aria-hidden="true">
@@ -402,6 +409,7 @@ export default function Home() {
               <span className="timeline-continue" aria-hidden="true">未完待续...</span>
               </div>
             </div>
+            <span className="timeline-scroll-indicator" ref={timelineScrollIndicator} aria-hidden="true"><i /></span>
           </div>
         </div>
 
