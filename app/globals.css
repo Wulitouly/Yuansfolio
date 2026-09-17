@@ -348,3 +348,7 @@
 .about-deck-character .character-body,.about-deck-character .character-arm{opacity:1}.about-deck-character .character-arm{z-index:2;transform-origin:64% 35%;will-change:transform}.about-deck.is-pulling .about-deck-character{animation:none}.about-deck.is-pulling .about-deck-character .character-body{opacity:1}.about-deck.is-pulling .about-deck-character .character-arm{animation:armPullOnly .42s cubic-bezier(.35,.02,.6,1)}
 @keyframes armPullOnly{0%{transform:none}55%{transform:translateY(28px) rotate(2.5deg)}100%{transform:none}}
 @media(prefers-reduced-motion:reduce){.about-deck.is-pulling .about-deck-character .character-arm{animation:none}}
+
+/* User-matched full frames: the canvas and body stay fixed while only the arm pose changes. */
+.about-deck-character img{transition:opacity .045s linear}
+.about-deck.is-pulling .about-deck-character{animation:none}
