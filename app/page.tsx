@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import type { CSSProperties } from "react";
 import { BookHeart, ChevronDown, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
 
 const outline = [
@@ -156,10 +157,21 @@ const education = [
   ["2016 — 2020", "烟台大学", "汉语言文学 · 学士 · 专业前 5%"],
 ];
 
+const aboutReceipts = [
+  ["前同事", "“这个事情交给她，我比较放心。”"],
+  ["团队项目", "“你放心，她会把它接住。”"],
+  ["合作伙伴", "“做事情认真，而且每件事都有回应。”"],
+];
+
+const travelStops = ["中国", "东南亚", "菲律宾", "日本", "美国", "澳大利亚"];
+
+const aboutHoverLines = ["天生的吧。", "……大概。", "好吧，确实有一点。"];
+
 export default function Home() {
   const [activeCase, setActiveCase] = useState("inventory");
   const [activeExperience, setActiveExperience] = useState(0);
-  const [aboutMode, setAboutMode] = useState<"work" | "life">("work");
+  const [unhingedMode, setUnhingedMode] = useState(false);
+  const [aboutHoverLine, setAboutHoverLine] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
@@ -632,32 +644,101 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="about shell section" id="about">
-        <header className="section-head">
-          <div><p className="section-id">02 / ABOUT</p><h2>工作之外，仍是同一个我。</h2></div>
-          <p>靠谱，是我的职场名片；探索，是我的生活姿态。它们共享同一种认真与好奇。</p>
-        </header>
-        <div className="about-stage">
-          <div className="about-switch" role="tablist" aria-label="关于我的两种状态">
-            <button className={aboutMode === "work" ? "active" : ""} onClick={() => setAboutMode("work")} role="tab" aria-selected={aboutMode === "work"}>
-              <span>WORK MODE</span><strong>靠谱</strong><p>把问题想清楚，再让方案跑起来。</p>
-            </button>
-            <button className={aboutMode === "life" ? "active" : ""} onClick={() => setAboutMode("life")} role="tab" aria-selected={aboutMode === "life"}>
-              <span>LIFE MODE</span><strong>探索</strong><p>去陌生的地方，收集新的答案。</p>
-            </button>
+      <section className={`about-story section ${unhingedMode ? "is-unhinged" : ""}`} id="about">
+        <div className="shell">
+          <div className="about-story-topline"><span>02 / ABOUT ME</span><span>人物档案 · 持续更新</span></div>
+
+          <div className="about-hero">
+            <div className="about-hero-copy">
+              <p>Hi, I’m Yuan.</p>
+              <h2>A serious person with a<br />slightly unserious side.</h2>
+              <blockquote>“你是怎么做到，工作的时候这么投入，<br />玩的时候又这么颠？”</blockquote>
+              <button
+                className="about-answer"
+                type="button"
+                onMouseEnter={() => setAboutHoverLine((value) => (value + 1) % aboutHoverLines.length)}
+                onFocus={() => setAboutHoverLine((value) => (value + 1) % aboutHoverLines.length)}
+              >{aboutHoverLines[aboutHoverLine]}</button>
+            </div>
+            <div className="about-portrait">
+              <span>认真生活的人，<br />不一定时时刻刻都很严肃。</span>
+              <img src={unhingedMode ? "/ip-music.webp" : "/ip-wave.webp"} alt="Yuan 的个人 IP 形象" />
+            </div>
           </div>
-          <div className="about-panel" role="tabpanel">
-            <div className="about-text">
-              <p className="about-lead">{aboutMode === "work" ? "可靠不是口号，是让每件事都有回应。" : "保持移动，也保持对世界的感受力。"}</p>
-              <h3>{aboutMode === "work" ? "对结果负责，\n也对协作负责。" : "背包走过 10 多个国家，\n仍期待下一次出发。"}</h3>
-              <p>{aboutMode === "work" ? "这里将继续补充我的工作原则、协作方式，以及我如何面对复杂问题。先留一个位置，等我用真实经历慢慢写满。" : "这里将记录旅行、日常观察和工作之外的兴趣。在不同文化与陌生环境中，我学会快速理解信息，也学会用不同方式与人沟通。"}</p>
-              <div className="traits">{(aboutMode === "work" ? ["对结果负责", "用数据说话", "让协作有回应"] : ["跨文化沟通", "独立解决问题", "对未知保持好奇"]).map((item) => <span key={item}>{item}</span>)}</div>
+
+          <div className="about-duality">
+            <div><small>工作状态</small><strong>极度专注</strong><span>责任感 · 靠谱 · 耐心 · 二把手</span></div>
+            <p><span>Somehow,</span>I’m both.</p>
+            <div><small>生活状态</small><strong>极度放飞</strong><span>背包客 · 搞笑女 · 急着出发</span></div>
+            <div className="about-personality-meter"><span>INFJ</span><i><b /></i><span>ENFJ</span><small>社交电量取决于心情、任务和咖啡因摄入量。</small></div>
+          </div>
+
+          <div className="single-threaded">
+            <div className="single-copy">
+              <span>I’m a single-threaded person.</span>
+              <h3>我一次只能认真<br />做一件事。</h3>
+              <p>工作的时候，把注意力全部放进去；决定去旅行，就真的收拾行李出发。喜欢一件事情，也会一头扎进去。</p>
+              <strong>既然决定做，就认真一点。</strong>
             </div>
-            <div className={`about-character ${aboutMode}`}>
-              <img key={aboutMode} src={aboutMode === "work" ? "/ip-wave.webp" : "/ip-music.webp"} alt={aboutMode === "work" ? "挥手问候的 IP 玩偶" : "戴耳机听音乐的 IP 玩偶"} />
+            <div className="focus-sequence" aria-label="专注的三个阶段"><span>ONE THING</span><i /><span>FOCUS</span><i /><span>GO ALL IN</span></div>
+          </div>
+
+          <article className="about-chapter responsible-chapter">
+            <header><span>01</span><div><small>Reliable</small><h3>Apparently, people<br />trust me with things.</h3></div></header>
+            <div className="chapter-grid">
+              <div className="chapter-story">
+                <p>合作过的人，最后往往都会给我一个评价：<strong>“负责。”</strong></p>
+                <p>不管是工作、学习，还是别人交给我的事情，我都会下意识地觉得：既然这件事交给我了，那我就得把它做好。</p>
+                <p>我不一定是最喜欢站在台前的人，但通常是那个会默默把事情接住的人。</p>
+              </div>
+              <div className="explain-card">
+                <span>责任感从哪里来？</span>
+                <div><strong>科学解释</strong><p>对承诺的重视，以及对事情完成度的要求。</p></div>
+                <div><strong>玄学解释</strong><p>八字火旺土多。前半句，我暂时认了。</p></div>
+              </div>
             </div>
+            <div className="evidence-wall">
+              <div className="evidence-heading"><span>I have receipts.</span><p>Receipts collected: 03</p></div>
+              {aboutReceipts.map(([source, quote], index) => <div className={`receipt receipt-${index + 1}`} key={source}><ImagePlus size={18} strokeWidth={1.25} /><small>{String(index + 1).padStart(2, "0")} / {source}</small><strong>{quote}</strong><p>聊天截图待补充</p></div>)}
+            </div>
+          </article>
+
+          <article className="about-chapter travel-chapter">
+            <header><span>02</span><div><small>Driven</small><h3>Somehow, I became<br />a backpacker.</h3></div></header>
+            <div className="travel-map-placeholder">
+              <div className="travel-stats"><strong>10+<small>COUNTRIES</small></strong><strong>1<small>BACKPACK</small></strong><strong>∞<small>STORIES</small></strong></div>
+              <div className="route-line">{travelStops.map((stop, index) => <span key={stop} style={{ "--stop": index } as CSSProperties}><i />{stop}</span>)}</div>
+              <p>WORLD MAP / 路线地图待补充</p>
+            </div>
+            <div className="travel-narrative">
+              <p>一个人查路线、订住宿、赶飞机、坐夜车，在陌生的城市里迷路，然后再自己找到路。</p>
+              <blockquote>“我想去，那我就去。”</blockquote>
+              <p>很多事情开始之前，都有一点麻烦和不确定。但真的背上包出发以后，就会发现——路总会自己长出来。</p>
+            </div>
+            <div className="travel-log">
+              {["PHILIPPINES", "JAPAN", "NEXT STOP"].map((place, index) => <div key={place} className={`travel-photo travel-photo-${index + 1}`}><ImagePlus size={22} strokeWidth={1.2} /><span>{place}</span><small>{index === 2 ? "旅途还在继续" : "旅行照片待补充"}</small></div>)}
+            </div>
+          </article>
+
+          <article className="about-chapter playful-chapter">
+            <header><span>03</span><div><small>Playful</small><h3>I like comedy.<br />A lot.</h3></div></header>
+            <div className="playful-grid">
+              <div className="playful-copy"><p>脱口秀、喜剧、话剧，还有一些没有必要但很好笑的东西。</p><strong>认真生活，偶尔发疯。</strong></div>
+              <div className="meme-placeholder tall"><ImagePlus size={22} /><span>搞笑照片</span></div>
+              <div className="meme-placeholder"><ImagePlus size={22} /><span>抽象截图</span></div>
+              <div className="meme-placeholder quote"><p>Basically, I find life funnier when it shouldn’t be.</p></div>
+            </div>
+          </article>
+
+          <div className="about-closing">
+            <p>So, who am I?</p>
+            <h3>认真，但不总是严肃。<br />靠谱，但偶尔很颠。</h3>
+            <span>我喜欢把正在做的事情，认真做到自己满意。然后，再去做下一件。</span>
           </div>
         </div>
+        <button className="about-mode-toggle" type="button" onClick={() => setUnhingedMode((value) => !value)} aria-pressed={unhingedMode}>
+          <span>{unhingedMode ? "UNHINGED MODE" : "SERIOUS MODE"}</span><i>{unhingedMode ? "切回认真" : "点一下试试"}</i>
+        </button>
       </section>
 
       <section className="background shell section" id="background">
