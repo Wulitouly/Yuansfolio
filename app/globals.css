@@ -343,3 +343,8 @@
 @media(max-width:620px){.about-deck-character{right:-19%;bottom:-5%;width:58%;height:50%;opacity:.9}.poster-note{margin-bottom:24px}.poster-footnote{bottom:225px;font-size:9px}.question-slide{padding:72px 3% 230px;justify-content:flex-start}.question-slide h3{margin:25px 0;font-size:29px;line-height:1.5}.question-slide h3 span:nth-child(n){padding-left:0}.question-slide h3 span:nth-child(2){padding-left:4%}.question-slide h3 span:nth-child(3){padding-left:8%}.question-slide>button,.question-slide .question-answer{margin-left:8%;padding-left:0}}
 .hand-trigger span{right:82%;top:-8%}.question-slide h3{font-size:clamp(32px,3.2vw,46px)}.question-slide h3 span{white-space:nowrap}
 @media(max-width:620px){.hand-trigger span{right:85%;top:0}.question-slide h3 span{white-space:normal}}
+
+/* The body is one fixed layer; only the isolated right arm responds to the pull. */
+.about-deck-character .character-body,.about-deck-character .character-arm{opacity:1}.about-deck-character .character-arm{z-index:2;transform-origin:64% 35%;will-change:transform}.about-deck.is-pulling .about-deck-character{animation:none}.about-deck.is-pulling .about-deck-character .character-body{opacity:1}.about-deck.is-pulling .about-deck-character .character-arm{animation:armPullOnly .42s cubic-bezier(.35,.02,.6,1)}
+@keyframes armPullOnly{0%{transform:none}55%{transform:translateY(28px) rotate(2.5deg)}100%{transform:none}}
+@media(prefers-reduced-motion:reduce){.about-deck.is-pulling .about-deck-character .character-arm{animation:none}}
