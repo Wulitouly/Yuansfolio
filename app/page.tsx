@@ -186,6 +186,7 @@ export default function Home() {
   const [answerVisible, setAnswerVisible] = useState(false);
   const [activeAboutChapter, setActiveAboutChapter] = useState<number | null>(null);
   const [aboutSlide, setAboutSlide] = useState(0);
+  const [aboutAdvancing, setAboutAdvancing] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
@@ -199,11 +200,15 @@ export default function Home() {
   const suppressCarouselClick = useRef(false);
   const personalityBoard = useRef<HTMLDivElement | null>(null);
   const personalityDrag = useRef<{ pointerId: number; element: HTMLButtonElement; offsetX: number; offsetY: number } | null>(null);
+  const aboutAdvanceTimer = useRef<number | null>(null);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
 
   const advanceAboutSlide = () => {
+    setAboutAdvancing(true);
+    if (aboutAdvanceTimer.current) window.clearTimeout(aboutAdvanceTimer.current);
     setAboutSlide((current) => (current + 1) % 5);
     setActiveAboutChapter(null);
+    aboutAdvanceTimer.current = window.setTimeout(() => setAboutAdvancing(false), 420);
   };
 
   const movePersonalityTag = (event: ReactPointerEvent<HTMLButtonElement>) => {
@@ -683,7 +688,7 @@ export default function Home() {
           <div className="about-deck">
             <div className="about-slide-window" aria-live="polite">
               <div className="about-slide" key={aboutSlide}>
-                {aboutSlide === 0 && <div className="about-slide-copy poster-slide"><div className="poster-note"><span>认真是底色</span><i /> <span>有趣是余量</span></div><h2 className="about-poster-title"><span className="poster-intro">Hi, I’m <b>Yuan.</b></span><span className="poster-primary">A <strong>serious</strong> person</span><span className="poster-bridge">with a slightly</span><span className="poster-final"><strong>unserious</strong> side.</span></h2><p className="poster-footnote">我把认真留给承诺，<br />把不严肃留给生活。</p></div>}
+                {aboutSlide === 0 && <div className="about-slide-copy poster-slide"><div className="poster-note"><span>认真是底色，但不是全部</span><i /></div><h2 className="about-poster-title new-poster-title"><span className="poster-intro">Hi, I’m <b>Yuan.</b></span><span className="poster-work">I take work <strong>seriously.</strong></span><span className="poster-life"><em>Life?</em> Not always.</span></h2><div className="poster-support"><p>我把认真留给该认真的事，把不着调留给生活。</p><span>A serious person with a slightly unserious side.</span></div></div>}
                 {aboutSlide === 1 && <div className={`about-slide-copy question-slide ${answerVisible ? "has-answer" : ""}`}><div className="question-kicker"><span>01</span><small>前同事问我</small></div><h3><span>“你是怎么做到，</span><span>工作的时候这么投入，</span><span>玩的时候又这么颠？”</span></h3><button type="button" onClick={() => setAnswerVisible((value) => !value)} aria-expanded={answerVisible}>{answerVisible ? "好吧，被你看到了" : "别偷看答案"}</button><div className="question-answer" aria-hidden={!answerVisible}><p>天生的吧。</p><span>算命先生说我八字火旺土多，责任感太强，重感情和承诺……</span></div></div>}
                 {aboutSlide === 2 && <div className="about-slide-copy focus-slide"><span>I’m a single-threaded person.</span><h3>我一次只能认真<br />做一件事。</h3><p>工作的时候，把注意力全部放进去；决定去旅行，就真的收拾行李出发。喜欢一件事情，也会一头扎进去。</p><div className="focus-sequence"><span>ONE THING</span><i /><span>FOCUS</span><i /><span>GO ALL IN</span></div><strong>既然决定做，就认真一点。</strong></div>}
                 {aboutSlide === 3 && <div className="about-slide-copy label-slide">
@@ -693,7 +698,7 @@ export default function Home() {
               </div>
             </div>
             <div className="about-deck-character" aria-hidden="true"><img className="character-static" src="/media/about-character-rest-user.png" alt="" /></div>
-            <button className="about-next-page" type="button" onClick={advanceAboutSlide} aria-label="翻到下一页"><span>点这翻页</span><i aria-hidden="true" /></button>
+            <button className={`about-next-page ${aboutAdvancing ? "is-turning" : ""}`} type="button" onClick={advanceAboutSlide} aria-label="翻到下一页"><span>点这翻页</span><i aria-hidden="true" /></button>
             <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3,4].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { setAboutSlide(index); setActiveAboutChapter(null); }} />)}</div>
           </div>
         </div>
