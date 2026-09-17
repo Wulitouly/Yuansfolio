@@ -352,3 +352,4 @@
 /* User-matched full frames: the canvas and body stay fixed while only the arm pose changes. */
 .about-deck-character img{transition:opacity .045s linear}
 .about-deck.is-pulling .about-deck-character{animation:none}
+.about-deck-character .character-pull-flat{filter:none}
