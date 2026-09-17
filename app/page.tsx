@@ -172,6 +172,7 @@ export default function Home() {
   const [activeExperience, setActiveExperience] = useState(0);
   const [unhingedMode, setUnhingedMode] = useState(false);
   const [aboutHoverLine, setAboutHoverLine] = useState(0);
+  const [activeAboutChapter, setActiveAboutChapter] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
@@ -683,52 +684,46 @@ export default function Home() {
             <div className="focus-sequence" aria-label="专注的三个阶段"><span>ONE THING</span><i /><span>FOCUS</span><i /><span>GO ALL IN</span></div>
           </div>
 
-          <article className="about-chapter responsible-chapter">
-            <header><span>01</span><div><small>Reliable</small><h3>Apparently, people<br />trust me with things.</h3></div></header>
-            <div className="chapter-grid">
-              <div className="chapter-story">
-                <p>合作过的人，最后往往都会给我一个评价：<strong>“负责。”</strong></p>
-                <p>不管是工作、学习，还是别人交给我的事情，我都会下意识地觉得：既然这件事交给我了，那我就得把它做好。</p>
-                <p>我不一定是最喜欢站在台前的人，但通常是那个会默默把事情接住的人。</p>
-              </div>
-              <div className="explain-card">
-                <span>责任感从哪里来？</span>
-                <div><strong>科学解释</strong><p>对承诺的重视，以及对事情完成度的要求。</p></div>
-                <div><strong>玄学解释</strong><p>八字火旺土多。前半句，我暂时认了。</p></div>
-              </div>
+          <section className="about-dossier" aria-label="我的三个侧面">
+            <div className="dossier-intro">
+              <span>THREE SIDES, ONE PERSON</span>
+              <h3>不是三个标签，<br />是同一种认真。</h3>
+              <p>对承诺认真，所以可靠；对想法认真，所以出发；对生活认真，所以总能发现一点好笑的东西。</p>
             </div>
-            <div className="evidence-wall">
-              <div className="evidence-heading"><span>I have receipts.</span><p>Receipts collected: 03</p></div>
-              {aboutReceipts.map(([source, quote], index) => <div className={`receipt receipt-${index + 1}`} key={source}><ImagePlus size={18} strokeWidth={1.25} /><small>{String(index + 1).padStart(2, "0")} / {source}</small><strong>{quote}</strong><p>聊天截图待补充</p></div>)}
+            <div className="dossier-tabs" role="tablist" aria-label="切换人物故事">
+              {["Reliable", "Driven", "Playful"].map((label, index) => (
+                <button key={label} type="button" role="tab" aria-selected={activeAboutChapter === index} className={activeAboutChapter === index ? "active" : ""} onClick={() => setActiveAboutChapter(index)}>
+                  <span>0{index + 1}</span><strong>{label}</strong><small>{["把事情接住", "想去就出发", "生活别太严肃"][index]}</small>
+                </button>
+              ))}
             </div>
-          </article>
 
-          <article className="about-chapter travel-chapter">
-            <header><span>02</span><div><small>Driven</small><h3>Somehow, I became<br />a backpacker.</h3></div></header>
-            <div className="travel-map-placeholder">
-              <div className="travel-stats"><strong>10+<small>COUNTRIES</small></strong><strong>1<small>BACKPACK</small></strong><strong>∞<small>STORIES</small></strong></div>
-              <div className="route-line">{travelStops.map((stop, index) => <span key={stop} style={{ "--stop": index } as CSSProperties}><i />{stop}</span>)}</div>
-              <p>WORLD MAP / 路线地图待补充</p>
-            </div>
-            <div className="travel-narrative">
-              <p>一个人查路线、订住宿、赶飞机、坐夜车，在陌生的城市里迷路，然后再自己找到路。</p>
-              <blockquote>“我想去，那我就去。”</blockquote>
-              <p>很多事情开始之前，都有一点麻烦和不确定。但真的背上包出发以后，就会发现——路总会自己长出来。</p>
-            </div>
-            <div className="travel-log">
-              {["PHILIPPINES", "JAPAN", "NEXT STOP"].map((place, index) => <div key={place} className={`travel-photo travel-photo-${index + 1}`}><ImagePlus size={22} strokeWidth={1.2} /><span>{place}</span><small>{index === 2 ? "旅途还在继续" : "旅行照片待补充"}</small></div>)}
-            </div>
-          </article>
+            <div className={`dossier-stage chapter-${activeAboutChapter + 1}`} role="tabpanel">
+              {activeAboutChapter === 0 && <div className="dossier-panel reliable-panel">
+                <div className="dossier-copy"><small>01 / RELIABLE</small><h3>People trust me<br />with things.</h3><p>我不一定是最喜欢站在台前的人，但通常是那个会默默把事情接住的人。既然交给我了，就认真把它做好。</p><blockquote>“负责。”是合作过的人最常留给我的评价。</blockquote></div>
+                <div className="receipt-stack">
+                  {aboutReceipts.map(([source, quote], index) => <button className={`receipt-card card-${index + 1}`} type="button" key={source}><ImagePlus size={17} /><small>0{index + 1} / {source}</small><strong>{quote}</strong><span>点击后可放大真实截图</span></button>)}
+                </div>
+                <details className="origin-note"><summary>责任感从哪里来？</summary><div><p><strong>科学解释</strong> 对承诺的重视，以及对完成度的要求。</p><p><strong>玄学解释</strong> 八字火旺土多。前半句，我暂时认了。</p></div></details>
+              </div>}
 
-          <article className="about-chapter playful-chapter">
-            <header><span>03</span><div><small>Playful</small><h3>I like comedy.<br />A lot.</h3></div></header>
-            <div className="playful-grid">
-              <div className="playful-copy"><p>脱口秀、喜剧、话剧，还有一些没有必要但很好笑的东西。</p><strong>认真生活，偶尔发疯。</strong></div>
-              <div className="meme-placeholder tall"><ImagePlus size={22} /><span>搞笑照片</span></div>
-              <div className="meme-placeholder"><ImagePlus size={22} /><span>抽象截图</span></div>
-              <div className="meme-placeholder quote"><p>Basically, I find life funnier when it shouldn’t be.</p></div>
+              {activeAboutChapter === 1 && <div className="dossier-panel driven-panel">
+                <div className="travel-map-placeholder">
+                  <div className="travel-stats"><strong>10+<small>COUNTRIES</small></strong><strong>1<small>BACKPACK</small></strong><strong>∞<small>STORIES</small></strong></div>
+                  <div className="route-line">{travelStops.map((stop, index) => <span key={stop} style={{ "--stop": index } as CSSProperties}><i />{stop}</span>)}</div>
+                  <p>WORLD MAP / 路线地图待补充</p>
+                </div>
+                <div className="travel-side"><small>02 / DRIVEN</small><h3>I wanted to go.<br />So I went.</h3><p>一个人查路线、订住宿、赶飞机、坐夜车，在陌生的城市里迷路，再自己找到路。</p><blockquote>真的背上包以后，路总会自己长出来。</blockquote><div className="travel-mini-log">{["PHILIPPINES", "JAPAN"].map((place) => <span key={place}><ImagePlus size={15} />{place}<small>照片待补充</small></span>)}</div></div>
+              </div>}
+
+              {activeAboutChapter === 2 && <div className="dossier-panel playful-panel">
+                <div className="playful-copy"><small>03 / PLAYFUL</small><h3>I like comedy.<br />A lot.</h3><p>脱口秀、喜剧、话剧，还有一些没有必要但很好笑的东西。</p><strong>认真生活，偶尔发疯。</strong></div>
+                <div className="meme-stage"><div className="meme-placeholder tall"><ImagePlus size={22} /><span>搞笑照片</span></div><div className="meme-placeholder"><ImagePlus size={22} /><span>抽象截图</span></div><div className="meme-placeholder quote"><p>Life is funnier when it shouldn’t be.</p></div></div>
+              </div>}
+
+              <div className="dossier-controls"><span>0{activeAboutChapter + 1} / 03</span><div><button type="button" aria-label="上一个人物故事" onClick={() => setActiveAboutChapter((activeAboutChapter + 2) % 3)}>←</button><button type="button" aria-label="下一个人物故事" onClick={() => setActiveAboutChapter((activeAboutChapter + 1) % 3)}>→</button></div></div>
             </div>
-          </article>
+          </section>
 
           <div className="about-closing">
             <p>So, who am I?</p>
