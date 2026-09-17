@@ -183,9 +183,10 @@ const personalityTags = [
 export default function Home() {
   const [activeCase, setActiveCase] = useState("inventory");
   const [activeExperience, setActiveExperience] = useState(0);
-  const [unhingedMode, setUnhingedMode] = useState(false);
   const [answerVisible, setAnswerVisible] = useState(false);
-  const [activeAboutChapter, setActiveAboutChapter] = useState(0);
+  const [activeAboutChapter, setActiveAboutChapter] = useState<number | null>(null);
+  const [aboutSlide, setAboutSlide] = useState(0);
+  const [aboutPulling, setAboutPulling] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
@@ -199,7 +200,19 @@ export default function Home() {
   const suppressCarouselClick = useRef(false);
   const personalityBoard = useRef<HTMLDivElement | null>(null);
   const personalityDrag = useRef<{ pointerId: number; element: HTMLButtonElement; offsetX: number; offsetY: number } | null>(null);
+  const aboutPullTimer = useRef<number | null>(null);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
+
+  const pullToNextAboutSlide = () => {
+    if (aboutPulling) return;
+    setAboutPulling(true);
+    if (aboutPullTimer.current) window.clearTimeout(aboutPullTimer.current);
+    aboutPullTimer.current = window.setTimeout(() => {
+      setAboutSlide((current) => (current + 1) % 5);
+      setActiveAboutChapter(null);
+      setAboutPulling(false);
+    }, 420);
+  };
 
   const movePersonalityTag = (event: ReactPointerEvent<HTMLButtonElement>) => {
     const drag = personalityDrag.current;
@@ -672,113 +685,26 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={`about-story section ${unhingedMode ? "is-unhinged" : ""}`} id="about">
+      <section className="about-story section" id="about">
         <div className="shell">
-          <div className="about-story-topline"><span>02 / ABOUT ME</span><span>PERSONAL ARCHIVE</span></div>
-
-          <div className="about-hero">
-            <div className="about-hero-copy">
-              <h2 className="about-poster-title"><span className="poster-intro">Hi, I’m <b>Yuan.</b></span><span className="poster-primary">A <strong>serious</strong> person</span><span className="poster-bridge">with a slightly</span><span className="poster-final"><strong>unserious</strong> side.</span></h2>
+          <div className="about-story-topline"><span>02 / ABOUT ME</span><span>{String(aboutSlide + 1).padStart(2, "0")} / 05</span></div>
+          <div className={`about-deck ${aboutPulling ? "is-pulling" : ""}`}>
+            <div className="about-slide-window" aria-live="polite">
+              <div className="about-slide" key={aboutSlide}>
+                {aboutSlide === 0 && <div className="about-slide-copy poster-slide"><h2 className="about-poster-title"><span className="poster-intro">Hi, I’m <b>Yuan.</b></span><span className="poster-primary">A <strong>serious</strong> person</span><span className="poster-bridge">with a slightly</span><span className="poster-final"><strong>unserious</strong> side.</span></h2></div>}
+                {aboutSlide === 1 && <div className={`about-slide-copy question-slide ${answerVisible ? "has-answer" : ""}`}><small>前同事问我</small><h3>“你是怎么做到，工作的时候这么投入，<br />玩的时候又这么颠？”</h3><button type="button" onClick={() => setAnswerVisible((value) => !value)} aria-expanded={answerVisible}>{answerVisible ? "好吧，被你看到了" : "别偷看答案"}</button><div className="question-answer" aria-hidden={!answerVisible}><p>天生的吧。</p><span>算命先生说我八字火旺土多，责任感太强，重感情和承诺……</span></div></div>}
+                {aboutSlide === 2 && <div className="about-slide-copy focus-slide"><span>I’m a single-threaded person.</span><h3>我一次只能认真<br />做一件事。</h3><p>工作的时候，把注意力全部放进去；决定去旅行，就真的收拾行李出发。喜欢一件事情，也会一头扎进去。</p><div className="focus-sequence"><span>ONE THING</span><i /><span>FOCUS</span><i /><span>GO ALL IN</span></div><strong>既然决定做，就认真一点。</strong></div>}
+                {aboutSlide === 3 && <div className="about-slide-copy label-slide">
+                  {activeAboutChapter === null ? <><span>THREE SIDES, ONE PERSON</span><h3>点开一个标签，<br />再认识我一点。</h3><div className="label-portals">{["Reliable", "Driven", "Playful"].map((label, index) => <button type="button" key={label} onClick={() => setActiveAboutChapter(index)}><small>0{index + 1}</small><strong>{label}</strong><em>{["把事情接住", "想去就出发", "生活别太严肃"][index]}</em></button>)}</div></> : <div className={`label-detail detail-${activeAboutChapter}`}><button className="label-back" type="button" onClick={() => setActiveAboutChapter(null)}>← 返回三个标签</button>{activeAboutChapter === 0 && <><small>01 / RELIABLE</small><h3>People trust me<br />with things.</h3><p>我不一定最喜欢站在台前，但通常是那个会默默把事情接住的人。既然交给我了，就认真把它做好。</p><div className="mini-receipts">{aboutReceipts.map(([source, quote]) => <blockquote key={source}><span>{source}</span>{quote}</blockquote>)}</div></>}{activeAboutChapter === 1 && <><small>02 / DRIVEN</small><h3>I wanted to go.<br />So I went.</h3><p>一个人查路线、订住宿、赶飞机、坐夜车，在陌生的城市里迷路，再自己找到路。</p><div className="travel-stamps">{travelStops.map((stop) => <span key={stop}>{stop}</span>)}</div></>}{activeAboutChapter === 2 && <><small>03 / PLAYFUL</small><h3>I like comedy.<br />A lot.</h3><p>脱口秀、喜剧、话剧，还有一些没有必要但很好笑的东西。</p><blockquote className="playful-quote">认真生活，偶尔发疯。</blockquote></>}</div>}
+                </div>}
+                {aboutSlide === 4 && <div className="about-slide-copy personality-slide"><header><small>最后，轮到你回答</small><h3>你眼里的我，<br />是什么样的？</h3><p>拖动标签，把它们放到你觉得合适的位置。没有标准答案。</p></header><div className="personality-board" ref={personalityBoard}><div className="board-side board-serious"><span>INFJ / 工作模式</span></div><div className="board-question"><span>Somehow,</span><strong>I’m both.</strong><small>把标签拖到这里</small></div><div className="board-side board-playful"><span>ENFJ / 生活模式</span></div>{personalityTags.map((tag) => <button type="button" className={`personality-tag ${tag.tone}`} style={{ left: `${tag.x}%`, top: `${tag.y}%` }} key={tag.label} onPointerDown={(event) => { const rect = event.currentTarget.getBoundingClientRect(); personalityDrag.current = { pointerId: event.pointerId, element: event.currentTarget, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top }; event.currentTarget.setPointerCapture(event.pointerId); event.currentTarget.classList.add("is-dragging"); }} onPointerMove={movePersonalityTag} onPointerUp={(event) => { event.currentTarget.classList.remove("is-dragging"); event.currentTarget.releasePointerCapture(event.pointerId); personalityDrag.current = null; }}>{tag.label}</button>)}</div></div>}
+              </div>
             </div>
-            <div className="about-portrait">
-              <img src="/media/about-bus-character.png" alt="戴着飞行帽、拎着野花铁桶并抓住公交吊环的 Yuan IP 形象" />
-            </div>
+            <div className="about-character" aria-hidden="true"><img src="/media/about-bus-character.png" alt="" /></div>
+            <button className="hand-trigger" type="button" onClick={pullToNextAboutSlide} aria-label="拉动吊环，翻到下一页"><span>点这里，有惊喜</span><i /></button>
+            <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3,4].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { setAboutSlide(index); setActiveAboutChapter(null); }} />)}</div>
           </div>
-
-          <div className={`about-question ${answerVisible ? "has-answer" : ""}`}>
-            <small>前同事问我</small>
-            <h3>“你是怎么做到，工作的时候这么投入，<br />玩的时候又这么颠？”</h3>
-            <button type="button" onClick={() => setAnswerVisible((value) => !value)} aria-expanded={answerVisible}>{answerVisible ? "好吧，被你看到了" : "别偷看答案"}</button>
-            <div className="question-answer" aria-hidden={!answerVisible}><p>天生的吧。</p><span>算命先生说我八字火旺土多，责任感太强，重感情和承诺……</span></div>
-          </div>
-
-          <div className="single-threaded">
-            <div className="single-copy">
-              <span>I’m a single-threaded person.</span>
-              <h3>我一次只能认真<br />做一件事。</h3>
-              <p>工作的时候，把注意力全部放进去；决定去旅行，就真的收拾行李出发。喜欢一件事情，也会一头扎进去。</p>
-              <strong>既然决定做，就认真一点。</strong>
-            </div>
-            <div className="focus-sequence" aria-label="专注的三个阶段"><span>ONE THING</span><i /><span>FOCUS</span><i /><span>GO ALL IN</span></div>
-          </div>
-
-          <section className="about-dossier" aria-label="我的三个侧面">
-            <div className="dossier-intro">
-              <span>THREE SIDES, ONE PERSON</span>
-              <h3>不是三个标签，<br />是同一种认真。</h3>
-              <p>对承诺认真，所以可靠；对想法认真，所以出发；对生活认真，所以总能发现一点好笑的东西。</p>
-            </div>
-            <div className="dossier-tabs" role="tablist" aria-label="切换人物故事">
-              {["Reliable", "Driven", "Playful"].map((label, index) => (
-                <button key={label} type="button" role="tab" aria-selected={activeAboutChapter === index} className={activeAboutChapter === index ? "active" : ""} onClick={() => setActiveAboutChapter(index)}>
-                  <span>0{index + 1}</span><strong>{label}</strong><small>{["把事情接住", "想去就出发", "生活别太严肃"][index]}</small>
-                </button>
-              ))}
-            </div>
-
-            <div className={`dossier-stage chapter-${activeAboutChapter + 1}`} role="tabpanel">
-              {activeAboutChapter === 0 && <div className="dossier-panel reliable-panel">
-                <div className="dossier-copy"><small>01 / RELIABLE</small><h3>People trust me<br />with things.</h3><p>我不一定是最喜欢站在台前的人，但通常是那个会默默把事情接住的人。既然交给我了，就认真把它做好。</p><blockquote>“负责。”是合作过的人最常留给我的评价。</blockquote></div>
-                <div className="receipt-stack">
-                  {aboutReceipts.map(([source, quote], index) => <button className={`receipt-card card-${index + 1}`} type="button" key={source}><ImagePlus size={17} /><small>0{index + 1} / {source}</small><strong>{quote}</strong><span>点击后可放大真实截图</span></button>)}
-                </div>
-                <details className="origin-note"><summary>责任感从哪里来？</summary><div><p><strong>科学解释</strong> 对承诺的重视，以及对完成度的要求。</p><p><strong>玄学解释</strong> 八字火旺土多。前半句，我暂时认了。</p></div></details>
-              </div>}
-
-              {activeAboutChapter === 1 && <div className="dossier-panel driven-panel">
-                <div className="travel-map-placeholder">
-                  <div className="travel-stats"><strong>10+<small>COUNTRIES</small></strong><strong>1<small>BACKPACK</small></strong><strong>∞<small>STORIES</small></strong></div>
-                  <div className="route-line">{travelStops.map((stop, index) => <span key={stop} style={{ "--stop": index } as CSSProperties}><i />{stop}</span>)}</div>
-                  <p>WORLD MAP / 路线地图待补充</p>
-                </div>
-                <div className="travel-side"><small>02 / DRIVEN</small><h3>I wanted to go.<br />So I went.</h3><p>一个人查路线、订住宿、赶飞机、坐夜车，在陌生的城市里迷路，再自己找到路。</p><blockquote>真的背上包以后，路总会自己长出来。</blockquote><div className="travel-mini-log">{["PHILIPPINES", "JAPAN"].map((place) => <span key={place}><ImagePlus size={15} />{place}<small>照片待补充</small></span>)}</div></div>
-              </div>}
-
-              {activeAboutChapter === 2 && <div className="dossier-panel playful-panel">
-                <div className="playful-copy"><small>03 / PLAYFUL</small><h3>I like comedy.<br />A lot.</h3><p>脱口秀、喜剧、话剧，还有一些没有必要但很好笑的东西。</p><strong>认真生活，偶尔发疯。</strong></div>
-                <div className="meme-stage"><div className="meme-placeholder tall"><ImagePlus size={22} /><span>搞笑照片</span></div><div className="meme-placeholder"><ImagePlus size={22} /><span>抽象截图</span></div><div className="meme-placeholder quote"><p>Life is funnier when it shouldn’t be.</p></div></div>
-              </div>}
-
-              <div className="dossier-controls"><span>0{activeAboutChapter + 1} / 03</span><div><button type="button" aria-label="上一个人物故事" onClick={() => setActiveAboutChapter((activeAboutChapter + 2) % 3)}>←</button><button type="button" aria-label="下一个人物故事" onClick={() => setActiveAboutChapter((activeAboutChapter + 1) % 3)}>→</button></div></div>
-            </div>
-          </section>
-
-          <div className="about-closing">
-            <p>So, who am I?</p>
-            <h3>认真，但不总是严肃。<br />靠谱，但偶尔很颠。</h3>
-            <span>我喜欢把正在做的事情，认真做到自己满意。然后，再去做下一件。</span>
-          </div>
-
-          <section className="personality-playground">
-            <header><small>最后，轮到你回答</small><h3>你眼里的我，<br />是什么样的？</h3><p>拖动标签，把它们放到你觉得合适的位置。没有标准答案。</p></header>
-            <div className="personality-board" ref={personalityBoard}>
-              <div className="board-side board-serious"><span>INFJ / 工作模式</span></div>
-              <div className="board-question"><span>Somehow,</span><strong>I’m both.</strong><small>把标签拖到这里</small></div>
-              <div className="board-side board-playful"><span>ENFJ / 生活模式</span></div>
-              {personalityTags.map((tag) => <button
-                type="button"
-                className={`personality-tag ${tag.tone}`}
-                style={{ left: `${tag.x}%`, top: `${tag.y}%` }}
-                key={tag.label}
-                onPointerDown={(event) => {
-                  const rect = event.currentTarget.getBoundingClientRect();
-                  personalityDrag.current = { pointerId: event.pointerId, element: event.currentTarget, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top };
-                  event.currentTarget.setPointerCapture(event.pointerId);
-                  event.currentTarget.classList.add("is-dragging");
-                }}
-                onPointerMove={movePersonalityTag}
-                onPointerUp={(event) => {
-                  event.currentTarget.classList.remove("is-dragging");
-                  event.currentTarget.releasePointerCapture(event.pointerId);
-                  personalityDrag.current = null;
-                }}
-              >{tag.label}</button>)}
-            </div>
-          </section>
         </div>
-        <button className="about-mode-toggle" type="button" onClick={() => setUnhingedMode((value) => !value)} aria-pressed={unhingedMode}>
-          <span>{unhingedMode ? "UNHINGED MODE" : "SERIOUS MODE"}</span><i>{unhingedMode ? "切回认真" : "点一下试试"}</i>
-        </button>
       </section>
 
       <section className="background shell section" id="background">
