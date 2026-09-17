@@ -186,7 +186,6 @@ export default function Home() {
   const [answerVisible, setAnswerVisible] = useState(false);
   const [activeAboutChapter, setActiveAboutChapter] = useState<number | null>(null);
   const [aboutSlide, setAboutSlide] = useState(0);
-  const [aboutPulling, setAboutPulling] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
@@ -200,18 +199,11 @@ export default function Home() {
   const suppressCarouselClick = useRef(false);
   const personalityBoard = useRef<HTMLDivElement | null>(null);
   const personalityDrag = useRef<{ pointerId: number; element: HTMLButtonElement; offsetX: number; offsetY: number } | null>(null);
-  const aboutPullTimer = useRef<number | null>(null);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
 
-  const pullToNextAboutSlide = () => {
-    if (aboutPulling) return;
-    setAboutPulling(true);
-    if (aboutPullTimer.current) window.clearTimeout(aboutPullTimer.current);
-    aboutPullTimer.current = window.setTimeout(() => {
-      setAboutSlide((current) => (current + 1) % 5);
-      setActiveAboutChapter(null);
-      setAboutPulling(false);
-    }, 420);
+  const advanceAboutSlide = () => {
+    setAboutSlide((current) => (current + 1) % 5);
+    setActiveAboutChapter(null);
   };
 
   const movePersonalityTag = (event: ReactPointerEvent<HTMLButtonElement>) => {
@@ -688,7 +680,7 @@ export default function Home() {
       <section className="about-story section" id="about">
         <div className="shell">
           <div className="about-story-topline"><span>02 / ABOUT ME</span><span>{String(aboutSlide + 1).padStart(2, "0")} / 05</span></div>
-          <div className={`about-deck ${aboutPulling ? "is-pulling" : ""}`}>
+          <div className="about-deck">
             <div className="about-slide-window" aria-live="polite">
               <div className="about-slide" key={aboutSlide}>
                 {aboutSlide === 0 && <div className="about-slide-copy poster-slide"><div className="poster-note"><span>认真是底色</span><i /> <span>有趣是余量</span></div><h2 className="about-poster-title"><span className="poster-intro">Hi, I’m <b>Yuan.</b></span><span className="poster-primary">A <strong>serious</strong> person</span><span className="poster-bridge">with a slightly</span><span className="poster-final"><strong>unserious</strong> side.</span></h2><p className="poster-footnote">我把认真留给承诺，<br />把不严肃留给生活。</p></div>}
@@ -700,8 +692,8 @@ export default function Home() {
                 {aboutSlide === 4 && <div className="about-slide-copy personality-slide"><header><small>最后，轮到你回答</small><h3>你眼里的我，<br />是什么样的？</h3><p>拖动标签，把它们放到你觉得合适的位置。没有标准答案。</p></header><div className="personality-board" ref={personalityBoard}><div className="board-side board-serious"><span>INFJ / 工作模式</span></div><div className="board-question"><span>Somehow,</span><strong>I’m both.</strong><small>把标签拖到这里</small></div><div className="board-side board-playful"><span>ENFJ / 生活模式</span></div>{personalityTags.map((tag) => <button type="button" className={`personality-tag ${tag.tone}`} style={{ left: `${tag.x}%`, top: `${tag.y}%` }} key={tag.label} onPointerDown={(event) => { const rect = event.currentTarget.getBoundingClientRect(); personalityDrag.current = { pointerId: event.pointerId, element: event.currentTarget, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top }; event.currentTarget.setPointerCapture(event.pointerId); event.currentTarget.classList.add("is-dragging"); }} onPointerMove={movePersonalityTag} onPointerUp={(event) => { event.currentTarget.classList.remove("is-dragging"); event.currentTarget.releasePointerCapture(event.pointerId); personalityDrag.current = null; }}>{tag.label}</button>)}</div></div>}
               </div>
             </div>
-            <div className="about-deck-character" aria-hidden="true"><img className="character-rest" src="/media/about-character-rest-user.png" alt="" /><img className="character-pull character-pull-flat" src="/media/about-character-pull-flat.png" alt="" /></div>
-            <button className="hand-trigger" type="button" onClick={pullToNextAboutSlide} aria-label="拉动吊环，翻到下一页"><span>点这里，有惊喜</span><i /></button>
+            <div className="about-deck-character" aria-hidden="true"><img className="character-static" src="/media/about-character-rest-user.png" alt="" /></div>
+            <button className="about-next-page" type="button" onClick={advanceAboutSlide} aria-label="翻到下一页"><span>点这翻页</span><i aria-hidden="true" /></button>
             <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3,4].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { setAboutSlide(index); setActiveAboutChapter(null); }} />)}</div>
           </div>
         </div>
