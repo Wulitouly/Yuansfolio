@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties } from "react";
+import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
 import { BookHeart, ChevronDown, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
 
 const outline = [
@@ -165,13 +165,26 @@ const aboutReceipts = [
 
 const travelStops = ["中国", "东南亚", "菲律宾", "日本", "美国", "澳大利亚"];
 
-const aboutHoverLines = ["天生的吧。", "……大概。", "好吧，确实有一点。"];
+const personalityTags = [
+  { label: "INFJ", x: 7, y: 18, tone: "serious" },
+  { label: "极度认真", x: 18, y: 38, tone: "serious" },
+  { label: "责任感", x: 5, y: 61, tone: "serious" },
+  { label: "靠谱", x: 27, y: 72, tone: "serious" },
+  { label: "耐心", x: 31, y: 23, tone: "serious" },
+  { label: "二把手", x: 10, y: 82, tone: "serious" },
+  { label: "ENFJ", x: 79, y: 16, tone: "playful" },
+  { label: "极度放飞", x: 68, y: 36, tone: "playful" },
+  { label: "背包客", x: 84, y: 54, tone: "playful" },
+  { label: "搞笑女", x: 62, y: 69, tone: "playful" },
+  { label: "急着出发", x: 78, y: 82, tone: "playful" },
+  { label: "好奇心", x: 56, y: 23, tone: "playful" },
+];
 
 export default function Home() {
   const [activeCase, setActiveCase] = useState("inventory");
   const [activeExperience, setActiveExperience] = useState(0);
   const [unhingedMode, setUnhingedMode] = useState(false);
-  const [aboutHoverLine, setAboutHoverLine] = useState(0);
+  const [answerVisible, setAnswerVisible] = useState(false);
   const [activeAboutChapter, setActiveAboutChapter] = useState(0);
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
@@ -184,7 +197,21 @@ export default function Home() {
   const carouselDrag = useRef<{ pointerId: number; startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const carouselScrollFrame = useRef<number | null>(null);
   const suppressCarouselClick = useRef(false);
+  const personalityBoard = useRef<HTMLDivElement | null>(null);
+  const personalityDrag = useRef<{ pointerId: number; element: HTMLButtonElement; offsetX: number; offsetY: number } | null>(null);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
+
+  const movePersonalityTag = (event: ReactPointerEvent<HTMLButtonElement>) => {
+    const drag = personalityDrag.current;
+    const board = personalityBoard.current;
+    if (!drag || !board || drag.pointerId !== event.pointerId) return;
+    const boardRect = board.getBoundingClientRect();
+    const tagRect = drag.element.getBoundingClientRect();
+    const left = Math.min(Math.max(0, event.clientX - boardRect.left - drag.offsetX), boardRect.width - tagRect.width);
+    const top = Math.min(Math.max(0, event.clientY - boardRect.top - drag.offsetY), boardRect.height - tagRect.height);
+    drag.element.style.left = `${left}px`;
+    drag.element.style.top = `${top}px`;
+  };
 
   const revealTimelineScrollbar = (scroller: HTMLDivElement) => {
     const indicator = timelineScrollIndicator.current;
@@ -647,34 +674,22 @@ export default function Home() {
 
       <section className={`about-story section ${unhingedMode ? "is-unhinged" : ""}`} id="about">
         <div className="shell">
-          <header className="section-head about-section-head">
-            <div><p className="section-id">02 / ABOUT ME</p><h2>认真生活，<br />偶尔不太正经。</h2></div>
-            <p>工作时把一件事认真到底，生活里保留一点玩心和好奇。看起来矛盾，其实都是同一个我。</p>
-          </header>
+          <div className="about-story-topline"><span>02 / ABOUT ME</span><span>PERSONAL ARCHIVE</span></div>
 
           <div className="about-hero">
             <div className="about-hero-copy">
-              <p>Hi, I’m Yuan.</p>
-              <h3><span>A serious person</span><small>with a</small><strong>slightly unserious</strong><em>side.</em></h3>
-              <blockquote>“你是怎么做到，工作的时候这么投入，<br />玩的时候又这么颠？”</blockquote>
-              <button
-                className="about-answer"
-                type="button"
-                onMouseEnter={() => setAboutHoverLine((value) => (value + 1) % aboutHoverLines.length)}
-                onFocus={() => setAboutHoverLine((value) => (value + 1) % aboutHoverLines.length)}
-              >{aboutHoverLines[aboutHoverLine]}</button>
+              <h2 className="about-poster-title"><span className="poster-intro">Hi, I’m <b>Yuan.</b></span><span className="poster-primary">A <strong>serious</strong> person</span><span className="poster-bridge">with a slightly</span><span className="poster-final"><strong>unserious</strong> side.</span></h2>
             </div>
             <div className="about-portrait">
-              <span>下一站：<br />认真生活，也认真玩。</span>
               <img src="/media/about-bus-character.png" alt="戴着飞行帽、拎着野花铁桶并抓住公交吊环的 Yuan IP 形象" />
             </div>
           </div>
 
-          <div className="about-duality">
-            <div><small>工作状态</small><strong>极度专注</strong><span>责任感 · 靠谱 · 耐心 · 二把手</span></div>
-            <p><span>Somehow,</span>I’m both.</p>
-            <div><small>生活状态</small><strong>极度放飞</strong><span>背包客 · 搞笑女 · 急着出发</span></div>
-            <div className="about-personality-meter"><span>INFJ</span><i><b /></i><span>ENFJ</span><small>社交电量取决于心情、任务和咖啡因摄入量。</small></div>
+          <div className={`about-question ${answerVisible ? "has-answer" : ""}`}>
+            <small>前同事问我</small>
+            <h3>“你是怎么做到，工作的时候这么投入，<br />玩的时候又这么颠？”</h3>
+            <button type="button" onClick={() => setAnswerVisible((value) => !value)} aria-expanded={answerVisible}>{answerVisible ? "好吧，被你看到了" : "别偷看答案"}</button>
+            <div className="question-answer" aria-hidden={!answerVisible}><p>天生的吧。</p><span>算命先生说我八字火旺土多，责任感太强，重感情和承诺……</span></div>
           </div>
 
           <div className="single-threaded">
@@ -733,6 +748,33 @@ export default function Home() {
             <h3>认真，但不总是严肃。<br />靠谱，但偶尔很颠。</h3>
             <span>我喜欢把正在做的事情，认真做到自己满意。然后，再去做下一件。</span>
           </div>
+
+          <section className="personality-playground">
+            <header><small>最后，轮到你回答</small><h3>你眼里的我，<br />是什么样的？</h3><p>拖动标签，把它们放到你觉得合适的位置。没有标准答案。</p></header>
+            <div className="personality-board" ref={personalityBoard}>
+              <div className="board-side board-serious"><span>INFJ / 工作模式</span></div>
+              <div className="board-question"><span>Somehow,</span><strong>I’m both.</strong><small>把标签拖到这里</small></div>
+              <div className="board-side board-playful"><span>ENFJ / 生活模式</span></div>
+              {personalityTags.map((tag) => <button
+                type="button"
+                className={`personality-tag ${tag.tone}`}
+                style={{ left: `${tag.x}%`, top: `${tag.y}%` }}
+                key={tag.label}
+                onPointerDown={(event) => {
+                  const rect = event.currentTarget.getBoundingClientRect();
+                  personalityDrag.current = { pointerId: event.pointerId, element: event.currentTarget, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top };
+                  event.currentTarget.setPointerCapture(event.pointerId);
+                  event.currentTarget.classList.add("is-dragging");
+                }}
+                onPointerMove={movePersonalityTag}
+                onPointerUp={(event) => {
+                  event.currentTarget.classList.remove("is-dragging");
+                  event.currentTarget.releasePointerCapture(event.pointerId);
+                  personalityDrag.current = null;
+                }}
+              >{tag.label}</button>)}
+            </div>
+          </section>
         </div>
         <button className="about-mode-toggle" type="button" onClick={() => setUnhingedMode((value) => !value)} aria-pressed={unhingedMode}>
           <span>{unhingedMode ? "UNHINGED MODE" : "SERIOUS MODE"}</span><i>{unhingedMode ? "切回认真" : "点一下试试"}</i>
