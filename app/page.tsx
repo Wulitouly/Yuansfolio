@@ -647,12 +647,15 @@ export default function Home() {
 
       <section className={`about-story section ${unhingedMode ? "is-unhinged" : ""}`} id="about">
         <div className="shell">
-          <div className="about-story-topline"><span>02 / ABOUT ME</span><span>人物档案 · 持续更新</span></div>
+          <header className="section-head about-section-head">
+            <div><p className="section-id">02 / ABOUT ME</p><h2>认真生活，<br />偶尔不太正经。</h2></div>
+            <p>工作时把一件事认真到底，生活里保留一点玩心和好奇。看起来矛盾，其实都是同一个我。</p>
+          </header>
 
           <div className="about-hero">
             <div className="about-hero-copy">
               <p>Hi, I’m Yuan.</p>
-              <h2>A serious person with a<br />slightly unserious side.</h2>
+              <h3><span>A serious person</span><small>with a</small><strong>slightly unserious</strong><em>side.</em></h3>
               <blockquote>“你是怎么做到，工作的时候这么投入，<br />玩的时候又这么颠？”</blockquote>
               <button
                 className="about-answer"
@@ -662,8 +665,8 @@ export default function Home() {
               >{aboutHoverLines[aboutHoverLine]}</button>
             </div>
             <div className="about-portrait">
-              <span>认真生活的人，<br />不一定时时刻刻都很严肃。</span>
-              <img src={unhingedMode ? "/ip-music.webp" : "/ip-wave.webp"} alt="Yuan 的个人 IP 形象" />
+              <span>下一站：<br />认真生活，也认真玩。</span>
+              <img src="/media/about-bus-character.png" alt="戴着飞行帽、拎着野花铁桶并抓住公交吊环的 Yuan IP 形象" />
             </div>
           </div>
 
