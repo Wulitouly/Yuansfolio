@@ -463,3 +463,23 @@
 .question-slide.has-answer .answer-note{transform:translateY(-7px) rotate(-1.2deg)}
 .question-slide .answer-stage .question-answer{pointer-events:none}
 @media(max-width:620px){.poster-support{margin-top:24px;padding:2px 0 2px 13px}.poster-support p{font-size:9.5px;line-height:1.7}.poster-support span{margin-top:4px;font-size:8px;line-height:1.55}}
+
+/* From chapter three onward the story becomes a full-width editorial spread. */
+.about-deck-wide .about-slide-window{right:0}
+.question-slide h3 .playful-character{display:inline-block;padding:0;color:#a96f7d;transform:translateY(-2px) rotate(8deg);transform-origin:55% 80%}
+.focus-slide{justify-content:center;padding:54px 3% 76px 1%}
+.focus-editorial{width:min(96%,1030px);display:grid;grid-template-columns:1.16fr .84fr;gap:96px;align-items:center}
+.focus-main>span{display:flex;align-items:center;gap:14px;color:#a96f7d;font-family:"Avenir Next","SF Pro Text",Inter,sans-serif;font-size:11px;font-weight:500;letter-spacing:.08em}
+.focus-main>span:after{content:"";width:52px;height:1px;background:rgba(184,120,134,.48)}
+.focus-slide .focus-main h3{margin:28px 0 0;color:#3f3a3e;font-family:"Avenir Next","SF Pro Display",Inter,"HarmonyOS Sans SC","PingFang SC",sans-serif;font-size:clamp(50px,5.4vw,76px);font-weight:400;line-height:1.17;letter-spacing:-.055em}
+.focus-slide .focus-main h3 em{color:#7f6e79;font-style:normal;font-weight:500}
+.focus-side{padding-left:38px;border-left:1px solid rgba(41,36,42,.14)}
+.focus-side>p{max-width:390px;margin:0 0 34px;color:#6f696d;font-family:"HarmonyOS Sans SC","Alibaba PuHuiTi","Source Han Sans SC","PingFang SC",sans-serif;font-size:13px;line-height:1.9}
+.focus-observations{border-top:1px solid rgba(41,36,42,.14)}
+.focus-observations>div{padding:17px 0;display:grid;grid-template-columns:52px 1fr;gap:14px;align-items:start;border-bottom:1px solid rgba(41,36,42,.14)}
+.focus-observations small{color:#a96f7d;font-size:9px;letter-spacing:.12em}
+.focus-observations strong{color:#555054;font-family:"HarmonyOS Sans SC","Alibaba PuHuiTi","Source Han Sans SC","PingFang SC",sans-serif;font-size:12px;font-weight:450;line-height:1.65}
+.focus-slide .focus-sequence{width:min(94%,1030px);margin:62px 0 0;display:grid;grid-template-columns:auto 1fr auto 1fr auto;align-items:center;gap:18px;color:#8e878b;font-family:"Avenir Next","SF Pro Text",Inter,sans-serif;font-size:10px;font-weight:500;letter-spacing:.13em}
+.focus-slide .focus-sequence i{height:1px;background:linear-gradient(90deg,rgba(184,120,134,.5),rgba(41,36,42,.1))}
+@media(max-width:900px){.focus-editorial{gap:46px}.focus-slide .focus-main h3{font-size:54px}.focus-side{padding-left:28px}}
+@media(max-width:620px){.about-deck-wide .about-slide-window{inset:0}.focus-slide{justify-content:flex-start;padding:48px 4% 120px}.focus-editorial{width:100%;display:block}.focus-main>span{font-size:9px}.focus-slide .focus-main h3{margin-top:22px;font-size:39px;line-height:1.22}.focus-side{margin-top:31px;padding:24px 0 0;border-left:0;border-top:1px solid rgba(41,36,42,.14)}.focus-side>p{margin-bottom:20px;font-size:11px;line-height:1.75}.focus-observations>div{padding:12px 0}.focus-observations strong{font-size:10px}.focus-slide .focus-sequence{width:100%;margin-top:30px;gap:8px;font-size:7px;letter-spacing:.06em}}
