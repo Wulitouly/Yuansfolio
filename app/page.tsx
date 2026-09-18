@@ -207,6 +207,7 @@ export default function Home() {
     setAboutAdvancing(true);
     if (aboutAdvanceTimer.current) window.clearTimeout(aboutAdvanceTimer.current);
     setAboutSlide((current) => (current + 1) % 5);
+    setAnswerVisible(false);
     setActiveAboutChapter(null);
     aboutAdvanceTimer.current = window.setTimeout(() => setAboutAdvancing(false), 420);
   };
@@ -699,7 +700,7 @@ export default function Home() {
             </div>
             <div className="about-deck-character" aria-hidden="true"><img className="character-static" src="/media/about-character-rest-user.png" alt="" /></div>
             <button className={`about-next-page ${aboutAdvancing ? "is-turning" : ""}`} type="button" onClick={advanceAboutSlide} aria-label="翻到下一页"><span>点这翻页</span><i aria-hidden="true" /></button>
-            <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3,4].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { setAboutSlide(index); setActiveAboutChapter(null); }} />)}</div>
+            <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3,4].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { setAboutSlide(index); setAnswerVisible(false); setActiveAboutChapter(null); }} />)}</div>
           </div>
         </div>
       </section>

@@ -423,3 +423,29 @@
 @media(max-width:900px){.poster-slide .new-poster-title{width:min(100%,650px)}.new-poster-title .poster-work{font-size:49px}.new-poster-title .poster-life{font-size:45px}.poster-support{margin-left:0}.question-slide h3{font-size:39px}.answer-stage{margin-left:6%}}
 @media(max-width:620px){.poster-slide{padding-top:48px;padding-bottom:230px}.poster-slide .new-poster-title{display:flex;gap:8px}.new-poster-title .poster-intro{font-size:22px}.new-poster-title .poster-intro b{font-size:39px}.new-poster-title .poster-work{font-size:34px}.new-poster-title .poster-life{padding-left:5%;font-size:32px}.poster-support{width:94%;margin-top:21px;grid-template-columns:1fr;gap:8px;padding-top:10px}.poster-support p{font-size:10px}.poster-support span{padding:0;border:0;font-size:7px}.question-slide{padding:58px 3% 230px}.question-kicker small{font-size:14px}.question-slide h3{margin:24px 0 23px;font-size:29px}.answer-stage{width:92%;height:108px;margin-left:8%}.question-slide .answer-stage .question-answer span{font-size:10px}}
 @media(prefers-reduced-motion:reduce){.answer-note,.question-slide .answer-stage .question-answer{transition:none}}
+
+/* About poster: a light outdoor-editorial rhythm instead of a dense typeset block. */
+.poster-slide{position:relative;isolation:isolate;padding-top:2px;padding-bottom:52px}
+.poster-slide:before{content:"";position:absolute;z-index:-1;left:-10%;top:10%;width:103%;height:78%;border-radius:0 46% 30% 0;background:radial-gradient(circle at 18% 22%,rgba(255,255,255,.7),transparent 31%),linear-gradient(128deg,rgba(222,229,216,.76),rgba(235,230,214,.48) 62%,rgba(245,242,237,0) 92%);opacity:.72;pointer-events:none}
+.poster-slide:after{content:"";position:absolute;z-index:-1;left:-8%;top:12%;width:92%;height:74%;border-radius:0 44% 30% 0;background:repeating-linear-gradient(8deg,rgba(79,88,72,.025) 0,rgba(79,88,72,.025) 1px,transparent 1px,transparent 6px);mix-blend-mode:multiply;pointer-events:none}
+.poster-slide .poster-note{margin-bottom:30px;color:#6f786d;font-family:"HarmonyOS Sans SC","Alibaba PuHuiTi","Source Han Sans SC","PingFang SC",sans-serif;font-size:11px;font-weight:400;letter-spacing:.11em}
+.poster-slide .new-poster-title{width:min(100%,760px);row-gap:15px;font-family:"Avenir Next","SF Pro Display",Inter,Poppins,"Nunito Sans",sans-serif}
+.new-poster-title .poster-intro{margin-bottom:4px;color:#626765;font-family:inherit;font-size:34px;font-weight:400;line-height:1.18;letter-spacing:-.035em}
+.new-poster-title .poster-intro b{font-family:inherit;font-size:56px;font-weight:600}
+.new-poster-title .poster-work{font-family:inherit;font-size:clamp(50px,4.6vw,68px);font-weight:400;line-height:1.1;letter-spacing:-.055em}
+.new-poster-title .poster-work b{font-size:1.13em;font-weight:600}
+.new-poster-title .poster-work strong{font-family:inherit;font-weight:450}
+.new-poster-title .poster-life{padding-top:3px;padding-left:9%;font-family:inherit;font-size:clamp(45px,4.15vw,62px);font-weight:400;line-height:1.12;letter-spacing:-.045em}
+.new-poster-title .poster-life em{font-family:inherit;font-size:1.13em;font-weight:600}
+.poster-support{width:min(94%,700px);margin-top:38px;padding-top:17px;grid-template-columns:1.1fr 1px .9fr;gap:22px;border-top:1px solid rgba(82,91,78,.25)}
+.poster-support:before{content:"";grid-column:2;width:1px;height:100%;background:rgba(82,91,78,.18)}
+.poster-support p{grid-column:1;grid-row:1;margin:0;color:#737a73;font-family:"HarmonyOS Sans SC","Alibaba PuHuiTi","Source Han Sans SC","PingFang SC",sans-serif;font-size:11px;font-weight:350;line-height:2;letter-spacing:.05em}
+.poster-support span{grid-column:3;grid-row:1;margin:0;padding:0;border:0;color:#989d97;font-family:"Avenir Next","SF Pro Text",Inter,Poppins,sans-serif;font-size:9px;font-weight:300;line-height:1.9;letter-spacing:.045em}
+
+.answer-note{width:176px;height:57px;color:#695f65}
+.answer-note:before{border-color:rgba(105,83,94,.66);box-shadow:0 7px 17px rgba(70,57,63,.035)}
+.answer-note:after{border-bottom-color:rgba(184,120,134,.42)}
+.answer-note span{font-size:11px;font-weight:500}
+
+@media(max-width:900px){.poster-slide .new-poster-title{width:min(100%,670px)}.poster-support{grid-template-columns:1.08fr 1px .92fr}}
+@media(max-width:620px){.poster-slide{padding-top:45px;padding-bottom:230px}.poster-slide:before{left:-7%;top:7%;width:108%;height:61%;border-radius:0 35% 26% 0}.poster-slide:after{height:58%}.poster-slide .poster-note{margin-bottom:20px;font-size:9px}.poster-slide .new-poster-title{gap:11px}.new-poster-title .poster-intro{font-size:22px}.new-poster-title .poster-intro b{font-size:40px}.new-poster-title .poster-work{font-size:34px;line-height:1.12}.new-poster-title .poster-life{padding-left:4%;font-size:32px}.poster-support{margin-top:24px;padding-top:12px;grid-template-columns:1fr;gap:5px}.poster-support:before{display:none}.poster-support p,.poster-support span{grid-column:1;grid-row:auto}.poster-support p{font-size:9px;line-height:1.75}.poster-support span{font-size:7px;line-height:1.6}}
