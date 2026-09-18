@@ -489,3 +489,31 @@
 .focus-slide .focus-sequence i{height:1px;background:linear-gradient(90deg,rgba(184,120,134,.5),rgba(41,36,42,.1))}
 @media(max-width:900px){.focus-main{width:57%;margin-left:3%}.focus-slide .focus-main h3{font-size:49px}.focus-character{right:0;bottom:6%;width:47%;height:91%;opacity:.34}.focus-slide .focus-sequence{left:3%;right:3%;grid-template-columns:1fr 54px 1fr 54px 1fr;gap:16px}}
 @media(max-width:620px){.about-deck-wide .about-slide-window{inset:0}.question-slide h3{line-height:1.58}.focus-slide{justify-content:flex-start;padding:46px 0 118px}.focus-editorial{min-height:490px;align-items:flex-start}.focus-main{width:86%;margin-left:4%}.focus-main>span{font-size:9px}.focus-slide .focus-main h3{margin-top:27px;font-size:37px;line-height:1.17}.focus-slide .focus-main h3 em{margin-top:8px}.focus-main>p{max-width:72%;margin-top:30px;font-size:10.5px;line-height:2}.focus-character{right:1%;bottom:12%;width:60%;height:48%;opacity:.23}.focus-slide .focus-sequence{left:3%;right:3%;bottom:55px;grid-template-columns:1fr 18px 1fr 18px 1fr;gap:5px;font-size:6.5px;letter-spacing:.045em}}
+
+/* Chapter four: three tactile journals rather than flat navigation cards. */
+.label-slide{justify-content:center;padding:34px 2.5% 72px}
+.label-slide>span{font-family:"Avenir Next","SF Pro Text",Inter,sans-serif;font-size:10px;letter-spacing:.12em}
+.label-slide>h3{margin:13px 0 27px;font-size:clamp(38px,3.7vw,52px);line-height:1.16;letter-spacing:-.035em}
+.label-slide .label-portals{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,4vw,62px);align-items:center;perspective:1500px}
+.label-slide .journal-book{position:relative;min-height:354px;padding:0;border:0;background:transparent;color:#fff;text-align:left;cursor:pointer;transform-style:preserve-3d;filter:drop-shadow(0 20px 18px rgba(53,42,45,.16));transition:transform .42s cubic-bezier(.2,.75,.2,1),filter .3s ease}
+.label-slide .journal-book:before{content:"";position:absolute;z-index:0;inset:8px 0 0 12px;border-radius:3px 11px 11px 3px;background:#6e5b51;box-shadow:8px 9px 0 #9b8879}
+.label-slide .journal-book:after{content:"";position:absolute;z-index:1;left:9px;right:-7px;bottom:-8px;height:16px;border-radius:0 0 10px 4px;background:repeating-linear-gradient(0deg,#eee7da 0,#eee7da 2px,#d7cdbd 2px,#d7cdbd 3px);transform:skewX(-24deg);transform-origin:left top}
+.journal-cover{position:absolute;z-index:2;inset:0 8px 9px 0;display:block;overflow:hidden;border:1px solid rgba(255,255,255,.22);border-radius:3px 10px 10px 3px;background:#78665e;box-shadow:inset 10px 0 18px rgba(37,28,29,.2),inset -2px 0 rgba(255,255,255,.18)}
+.journal-cover:before{content:"";position:absolute;z-index:2;inset:0;background:linear-gradient(90deg,rgba(24,18,20,.28),transparent 9%,transparent 90%,rgba(255,255,255,.1)),linear-gradient(180deg,rgba(31,25,27,.05) 34%,rgba(31,24,27,.82) 100%)}
+.journal-cover:after{content:"";position:absolute;z-index:3;left:13px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.24);box-shadow:3px 0 8px rgba(22,16,18,.25)}
+.journal-cover img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.78) contrast(.95);transition:transform .65s cubic-bezier(.2,.75,.2,1),filter .35s ease}
+.journal-cover small,.journal-cover strong,.journal-cover em{position:absolute;z-index:4;left:28px;right:22px;display:block;text-shadow:0 2px 12px rgba(29,21,24,.38)}
+.journal-cover small{top:23px;color:rgba(255,255,255,.82);font:500 8px/1 "Avenir Next","SF Pro Text",sans-serif;letter-spacing:.16em}
+.journal-cover strong{bottom:57px;margin:0;color:#fff;font:500 clamp(25px,2.45vw,35px)/1 Georgia,"Songti SC",serif;letter-spacing:-.035em}
+.journal-cover em{bottom:29px;margin:0;color:rgba(255,255,255,.88);font:400 10px/1.5 "HarmonyOS Sans SC","PingFang SC",sans-serif;letter-spacing:.055em}
+.label-slide .journal-book.book-1{transform:translateY(8px) rotateY(7deg) rotateZ(-2.2deg)}
+.label-slide .journal-book.book-2{transform:translateY(-7px) rotateZ(.8deg)}
+.label-slide .journal-book.book-3{transform:translateY(10px) rotateY(-7deg) rotateZ(2.1deg)}
+.label-slide .journal-book.book-1 .journal-cover img{object-position:center 30%}
+.label-slide .journal-book.book-2 .journal-cover img{object-position:center 46%}
+.label-slide .journal-book.book-3 .journal-cover img{object-position:center 39%}
+.label-slide .journal-book:hover,.label-slide .journal-book:focus-visible{z-index:4;outline:0;transform:translateY(-14px) rotateY(0) rotateZ(0) scale(1.025);filter:drop-shadow(0 28px 23px rgba(53,42,45,.23))}
+.label-slide .journal-book:hover .journal-cover img,.label-slide .journal-book:focus-visible .journal-cover img{transform:scale(1.045);filter:saturate(.92) contrast(1)}
+.label-slide .journal-book:focus-visible .journal-cover{outline:2px solid rgba(184,120,134,.72);outline-offset:5px}
+@media(max-width:900px){.label-slide{padding:38px 1.5% 76px}.label-slide>h3{margin-bottom:32px;font-size:42px}.label-slide .label-portals{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.label-slide .journal-book{min-height:330px}.journal-cover strong{font-size:27px}.journal-cover em{font-size:9px}}
+@media(max-width:620px){.label-slide{padding:43px 2% 115px}.label-slide>span{font-size:7px}.label-slide>h3{margin:12px 0 26px;font-size:30px}.label-slide .label-portals{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.label-slide .journal-book{min-height:250px}.label-slide .journal-book:nth-child(n){transform:none}.label-slide .journal-book:before{inset:5px 0 0 6px;box-shadow:4px 6px 0 #9b8879}.label-slide .journal-book:after{left:5px;right:-3px;bottom:-5px;height:10px}.journal-cover{inset:0 4px 6px 0}.journal-cover:after{left:7px}.journal-cover small{left:13px;right:8px;top:14px;font-size:5px}.journal-cover strong{left:13px;right:8px;bottom:43px;font-size:clamp(14px,4vw,19px)}.journal-cover em{left:13px;right:7px;bottom:18px;font-size:6.5px;line-height:1.35}.label-slide .journal-book:hover,.label-slide .journal-book:focus-visible{transform:translateY(-7px) scale(1.02)}}
