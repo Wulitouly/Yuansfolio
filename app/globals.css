@@ -525,11 +525,45 @@
 .label-slide.is-opening-journal>span,.label-slide.is-opening-journal>h3{opacity:0;transform:translateY(-12px)}
 .label-portals.is-opening{pointer-events:none}
 .label-portals.is-opening .journal-book:not(.is-opening){opacity:0;transform:scale(.9);filter:blur(2px)}
-.label-slide .journal-book.is-opening{z-index:12;background:transparent;animation:journalToCenter 1.25s cubic-bezier(.22,.72,.18,1) both;filter:drop-shadow(0 30px 28px rgba(53,42,45,.25))}
-.label-slide .journal-book.is-opening .journal-cover{animation:journalCoverOpen .78s cubic-bezier(.34,.04,.18,1) .4s both}
+.label-slide .journal-book.is-opening{z-index:12;background:transparent;animation:journalToCenter 1.12s cubic-bezier(.2,.82,.2,1) both;filter:drop-shadow(0 30px 28px rgba(53,42,45,.25))}
+.label-slide .journal-book.is-opening .journal-cover{animation:journalCoverOpen .72s cubic-bezier(.18,.72,.2,1) .32s both}
 .label-slide .journal-book.is-opening .journal-cover img{transform:none}
-@keyframes journalToCenter{0%{transform:var(--journal-rest)}42%,100%{transform:translate(var(--journal-dx,0),var(--journal-dy,0)) rotateY(0) rotateZ(0) scale(1.08)}}
-@keyframes journalCoverOpen{0%,12%{transform:rotateY(0)}100%{transform:rotateY(-158deg);box-shadow:18px 10px 25px rgba(46,34,38,.18)}}
+@keyframes journalToCenter{0%{transform:var(--journal-rest)}55%,100%{transform:translate(var(--journal-dx,0),var(--journal-dy,0)) rotateY(0) rotateZ(0) scale(1.08)}}
+@keyframes journalCoverOpen{0%{transform:rotateY(0)}100%{transform:rotateY(-168deg);box-shadow:18px 10px 25px rgba(46,34,38,.18)}}
 @media(max-width:900px){.label-slide{padding:38px 1.5% 76px}.label-slide>h3{margin-bottom:32px;font-size:42px}.label-slide .label-portals{grid-template-columns:repeat(3,minmax(0,1fr));gap:22px}.label-slide .journal-book{min-height:0;aspect-ratio:4/5}.journal-cover strong{font-size:27px}.journal-cover em{font-size:9px}}
 @media(max-width:620px){.label-slide{padding:43px 2% 115px}.label-slide>span{font-size:7px}.label-slide>h3{margin:12px 0 26px;font-size:30px}.label-slide .label-portals{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.label-slide .journal-book{min-height:0;aspect-ratio:4/5}.label-slide .journal-book:nth-child(n){transform:none}.label-slide .journal-book:before{inset:5px 0 0 6px;box-shadow:4px 6px 0 #9b8879}.label-slide .journal-book:after{left:5px;right:-3px;bottom:-5px;height:10px}.journal-cover{inset:0 4px 6px 0}.journal-cover:after{left:7px}.journal-cover small{left:13px;right:8px;top:14px;font-size:5px}.journal-cover strong{left:13px;right:8px;bottom:43px;font-size:clamp(14px,4vw,19px)}.journal-cover em{left:13px;right:7px;bottom:18px;font-size:6.5px;line-height:1.35}.label-slide .journal-book:hover,.label-slide .journal-book:focus-visible{background:transparent;transform:translateY(-7px) scale(1.02)}}
 @media(prefers-reduced-motion:reduce){.label-slide .journal-book.is-opening,.label-slide .journal-book.is-opening .journal-cover{animation:none}.label-slide.is-opening-journal>span,.label-slide.is-opening-journal>h3{transition:none}}
+
+/* The selected cover becomes the left page of the same journal. */
+.label-slide .journal-detail{position:relative;width:100%;min-height:0;padding:0;background:transparent;animation:none}
+.journal-detail .label-back{position:absolute;z-index:8;left:50%;top:-29px;margin:0;transform:translateX(-50%);color:#83777d;font:500 9px/1.2 "HarmonyOS Sans SC","PingFang SC",sans-serif;letter-spacing:.08em;transition:color .2s ease}
+.journal-detail .label-back:hover,.journal-detail .label-back:focus-visible{color:var(--rose);outline:0}
+.journal-detail-spread{position:relative;width:min(100%,1030px);height:510px;margin:0 auto;display:grid;grid-template-columns:43% 57%;overflow:hidden;border:1px solid rgba(115,94,83,.22);border-radius:7px 16px 16px 7px;background:#f8f1e5;box-shadow:0 28px 45px rgba(55,42,44,.16),0 5px 0 #d9cbb7,0 8px 0 #eee5d7;transform-origin:center center;animation:journalSpreadIn .72s cubic-bezier(.2,.82,.2,1) both}
+.journal-detail-spread:before{content:"";position:absolute;z-index:6;left:43%;top:0;bottom:0;width:34px;transform:translateX(-50%);background:linear-gradient(90deg,rgba(63,46,42,.16),rgba(255,255,255,.18) 39%,rgba(92,69,59,.15) 53%,transparent 100%);pointer-events:none}
+.journal-detail-spread:after{content:"";position:absolute;z-index:7;left:calc(43% - 1px);top:0;bottom:0;width:1px;background:rgba(85,65,57,.2);box-shadow:1px 0 rgba(255,255,255,.62);pointer-events:none}
+.journal-detail-visual{position:relative;min-width:0;overflow:hidden;background:#514844}
+.journal-detail-visual img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 37%;filter:saturate(.77) contrast(.94)}
+.detail-1 .journal-detail-visual img{object-position:center 46%}
+.detail-2 .journal-detail-visual img{object-position:center 40%}
+.journal-detail-shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(28,20,22,.22),transparent 14%),linear-gradient(180deg,rgba(24,18,20,.02) 45%,rgba(31,24,27,.82) 100%)}
+.journal-detail-visual>small,.journal-detail-visual>strong,.journal-detail-visual>em{position:absolute;z-index:2;left:35px;right:28px;display:block;text-shadow:0 2px 12px rgba(29,21,24,.38)}
+.journal-detail-visual>small{top:31px;color:rgba(255,255,255,.8);font:500 8px/1 "Avenir Next","SF Pro Text",sans-serif;letter-spacing:.18em}
+.journal-detail-visual>strong{bottom:69px;color:#fff;font:500 38px/1 Georgia,"Songti SC",serif;letter-spacing:-.04em}
+.journal-detail-visual>em{bottom:38px;color:rgba(255,255,255,.86);font:400 10px/1.5 "HarmonyOS Sans SC","PingFang SC",sans-serif;letter-spacing:.06em}
+.journal-detail-page{position:relative;min-width:0;padding:48px 48px 38px 55px;background:radial-gradient(circle at 82% 14%,rgba(255,255,255,.72),transparent 30%),repeating-linear-gradient(0deg,transparent 0,transparent 31px,rgba(112,91,79,.055) 32px),linear-gradient(100deg,#f5eddf,#fbf6ec 30%,#f8f1e5)}
+.journal-detail-page:after{content:"";position:absolute;right:24px;top:23px;width:45px;height:30px;border:1px solid rgba(169,117,128,.24);border-radius:50%;transform:rotate(-9deg)}
+.journal-detail-page>small{color:var(--rose);font:500 9px/1 "Avenir Next","SF Pro Text",sans-serif;letter-spacing:.12em}
+.journal-detail-page h3{margin:18px 0 21px;color:#40393e;font:500 clamp(38px,3.5vw,50px)/1.03 Georgia,"Songti SC",serif;letter-spacing:-.045em}
+.journal-detail-page>p{max-width:510px;margin:0;color:#6f666b;font:400 12px/2 "HarmonyOS Sans SC","PingFang SC",sans-serif;letter-spacing:.02em}
+.journal-detail-page .mini-receipts{margin-top:25px;grid-template-columns:repeat(3,1fr);gap:8px}
+.journal-detail-page .mini-receipts blockquote{min-height:100px;padding:15px 13px;border:1px solid rgba(119,95,84,.1);background:rgba(255,255,255,.5);box-shadow:0 7px 15px rgba(63,49,57,.035);font-size:10px}
+.journal-detail-page .mini-receipts span{margin-bottom:11px}
+.journal-detail-page .travel-stamps{margin-top:34px;gap:12px}
+.journal-detail-page .travel-stamps span{display:grid;width:60px;height:60px;padding:0;place-items:center;border:1px dashed rgba(145,94,108,.45);color:#7c686e;font-size:9px;transform:rotate(-4deg)}
+.journal-detail-page .travel-stamps span:nth-child(even){transform:rotate(5deg)}
+.journal-detail-page .playful-quote{margin:53px 0 0;color:var(--rose);font-size:30px}
+@keyframes journalSpreadIn{0%{opacity:.7;transform:scale(.47,.72)}100%{opacity:1;transform:scale(1)}}
+
+@media(max-width:900px){.journal-detail-spread{height:485px;grid-template-columns:40% 60%}.journal-detail-spread:before{left:40%}.journal-detail-spread:after{left:calc(40% - 1px)}.journal-detail-page{padding:42px 34px 34px 42px}.journal-detail-page h3{font-size:39px}.journal-detail-page .mini-receipts{grid-template-columns:1fr;gap:6px}.journal-detail-page .mini-receipts blockquote{min-height:0;padding:11px 13px}.journal-detail-page .mini-receipts span{display:inline;margin:0 10px 0 0}.journal-detail-visual>strong{font-size:31px}}
+@media(max-width:620px){.label-slide .journal-detail{padding:35px 0 0}.journal-detail .label-back{top:4px}.journal-detail-spread{width:100%;height:455px;grid-template-columns:36% 64%;border-radius:4px 10px 10px 4px}.journal-detail-spread:before{left:36%;width:22px}.journal-detail-spread:after{left:calc(36% - 1px)}.journal-detail-visual>small,.journal-detail-visual>strong,.journal-detail-visual>em{left:13px;right:9px}.journal-detail-visual>small{top:18px;font-size:5px}.journal-detail-visual>strong{bottom:48px;font-size:20px}.journal-detail-visual>em{bottom:24px;font-size:6.5px}.journal-detail-page{padding:31px 17px 27px 25px}.journal-detail-page:after{right:10px;top:14px;width:28px;height:19px}.journal-detail-page>small{font-size:6px}.journal-detail-page h3{margin:14px 0 17px;font-size:27px;line-height:1.08}.journal-detail-page>p{font-size:9px;line-height:1.8}.journal-detail-page .mini-receipts{margin-top:18px}.journal-detail-page .mini-receipts blockquote{padding:8px;font-size:8px}.journal-detail-page .travel-stamps{margin-top:23px;gap:7px}.journal-detail-page .travel-stamps span{width:42px;height:42px;font-size:7px}.journal-detail-page .playful-quote{margin-top:38px;font-size:20px}}
+@media(prefers-reduced-motion:reduce){.journal-detail-spread{animation:none}}
