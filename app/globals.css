@@ -504,6 +504,17 @@
 .journal-inside i,.journal-inside b{position:absolute;z-index:1;display:block;border:1px solid rgba(169,117,128,.28);border-radius:50%}
 .journal-inside i{right:15%;top:18%;width:37px;height:26px;transform:rotate(-12deg)}
 .journal-inside b{left:18%;bottom:19%;width:52px;height:34px;transform:rotate(7deg)}
+.journal-inside:has(.journal-page-copy):before,.journal-inside:has(.journal-page-copy):after{display:none}
+.journal-inside .journal-page-copy{position:relative;z-index:2;height:100%;padding:30px 24px 22px;color:#4e454a;background:radial-gradient(circle at 82% 14%,rgba(255,255,255,.72),transparent 30%),repeating-linear-gradient(0deg,transparent 0,transparent 23px,rgba(112,91,79,.06) 24px),linear-gradient(100deg,#f5eddf,#fbf6ec 32%,#f8f1e5);overflow:hidden}
+.journal-inside .journal-page-copy small{color:var(--rose);font:500 7px/1 "Avenir Next","SF Pro Text",sans-serif;letter-spacing:.12em}
+.journal-inside .journal-page-copy h3{margin:13px 0 15px;font:500 24px/1.04 Georgia,"Songti SC",serif;letter-spacing:-.045em}
+.journal-inside .journal-page-copy p{margin:0;color:#756b70;font:400 8px/1.8 "HarmonyOS Sans SC","PingFang SC",sans-serif}
+.journal-inside .journal-page-copy .mini-receipts{margin-top:15px;display:grid;grid-template-columns:1fr;gap:4px}
+.journal-inside .journal-page-copy .mini-receipts blockquote{min-height:0;margin:0;padding:6px 8px;background:rgba(255,255,255,.46);font-size:6px;line-height:1.4;box-shadow:none}
+.journal-inside .journal-page-copy .mini-receipts span{display:inline;margin:0 6px 0 0;font-size:5px}
+.journal-inside .journal-page-copy .travel-stamps{margin-top:18px;gap:5px}
+.journal-inside .journal-page-copy .travel-stamps span{padding:5px 7px;font-size:6px}
+.journal-inside .journal-page-copy .playful-quote{margin:28px 0 0;color:var(--rose);font-size:17px}
 .journal-cover{position:absolute;z-index:2;inset:0 8px 9px 0;display:block;overflow:hidden;border:1px solid rgba(255,255,255,.22);border-radius:3px 10px 10px 3px;background:#78665e;box-shadow:inset 10px 0 18px rgba(37,28,29,.2),inset -2px 0 rgba(255,255,255,.18);transform-origin:left center;transform-style:preserve-3d;backface-visibility:visible}
 .journal-cover:before{content:"";position:absolute;z-index:2;inset:0;background:linear-gradient(90deg,rgba(24,18,20,.28),transparent 9%,transparent 90%,rgba(255,255,255,.1)),linear-gradient(180deg,rgba(31,25,27,.05) 34%,rgba(31,24,27,.82) 100%)}
 .journal-cover:after{content:"";position:absolute;z-index:3;left:13px;top:0;bottom:0;width:1px;background:rgba(255,255,255,.24);box-shadow:3px 0 8px rgba(22,16,18,.25)}
@@ -538,7 +549,7 @@
 .label-slide .journal-detail{position:relative;width:100%;min-height:0;padding:0;background:transparent;animation:none}
 .journal-detail .label-back{position:absolute;z-index:8;left:50%;top:-29px;margin:0;transform:translateX(-50%);color:#83777d;font:500 9px/1.2 "HarmonyOS Sans SC","PingFang SC",sans-serif;letter-spacing:.08em;transition:color .2s ease}
 .journal-detail .label-back:hover,.journal-detail .label-back:focus-visible{color:var(--rose);outline:0}
-.journal-detail-spread{position:relative;width:min(100%,1030px);height:510px;margin:0 auto;display:grid;grid-template-columns:43% 57%;overflow:hidden;border:1px solid rgba(115,94,83,.22);border-radius:7px 16px 16px 7px;background:#f8f1e5;box-shadow:0 28px 45px rgba(55,42,44,.16),0 5px 0 #d9cbb7,0 8px 0 #eee5d7;transform-origin:center center;animation:journalSpreadIn .72s cubic-bezier(.2,.82,.2,1) both}
+.journal-detail-spread{position:relative;width:min(100%,1030px);height:510px;margin:0 auto;display:grid;grid-template-columns:43% 57%;overflow:hidden;border:1px solid rgba(115,94,83,.22);border-radius:7px 16px 16px 7px;background:#f8f1e5;box-shadow:0 28px 45px rgba(55,42,44,.16),0 5px 0 #d9cbb7,0 8px 0 #eee5d7;transform-origin:center center}
 .journal-detail-spread:before{content:"";position:absolute;z-index:6;left:43%;top:0;bottom:0;width:34px;transform:translateX(-50%);background:linear-gradient(90deg,rgba(63,46,42,.16),rgba(255,255,255,.18) 39%,rgba(92,69,59,.15) 53%,transparent 100%);pointer-events:none}
 .journal-detail-spread:after{content:"";position:absolute;z-index:7;left:calc(43% - 1px);top:0;bottom:0;width:1px;background:rgba(85,65,57,.2);box-shadow:1px 0 rgba(255,255,255,.62);pointer-events:none}
 .journal-detail-visual{position:relative;min-width:0;overflow:hidden;background:#514844}
@@ -552,9 +563,9 @@
 .journal-detail-visual>em{bottom:38px;color:rgba(255,255,255,.86);font:400 10px/1.5 "HarmonyOS Sans SC","PingFang SC",sans-serif;letter-spacing:.06em}
 .journal-detail-page{position:relative;min-width:0;padding:48px 48px 38px 55px;background:radial-gradient(circle at 82% 14%,rgba(255,255,255,.72),transparent 30%),repeating-linear-gradient(0deg,transparent 0,transparent 31px,rgba(112,91,79,.055) 32px),linear-gradient(100deg,#f5eddf,#fbf6ec 30%,#f8f1e5)}
 .journal-detail-page:after{content:"";position:absolute;right:24px;top:23px;width:45px;height:30px;border:1px solid rgba(169,117,128,.24);border-radius:50%;transform:rotate(-9deg)}
-.journal-detail-page>small{color:var(--rose);font:500 9px/1 "Avenir Next","SF Pro Text",sans-serif;letter-spacing:.12em}
+.journal-detail-page .journal-page-copy>small{color:var(--rose);font:500 9px/1 "Avenir Next","SF Pro Text",sans-serif;letter-spacing:.12em}
 .journal-detail-page h3{margin:18px 0 21px;color:#40393e;font:500 clamp(38px,3.5vw,50px)/1.03 Georgia,"Songti SC",serif;letter-spacing:-.045em}
-.journal-detail-page>p{max-width:510px;margin:0;color:#6f666b;font:400 12px/2 "HarmonyOS Sans SC","PingFang SC",sans-serif;letter-spacing:.02em}
+.journal-detail-page .journal-page-copy>p{max-width:510px;margin:0;color:#6f666b;font:400 12px/2 "HarmonyOS Sans SC","PingFang SC",sans-serif;letter-spacing:.02em}
 .journal-detail-page .mini-receipts{margin-top:25px;grid-template-columns:repeat(3,1fr);gap:8px}
 .journal-detail-page .mini-receipts blockquote{min-height:100px;padding:15px 13px;border:1px solid rgba(119,95,84,.1);background:rgba(255,255,255,.5);box-shadow:0 7px 15px rgba(63,49,57,.035);font-size:10px}
 .journal-detail-page .mini-receipts span{margin-bottom:11px}
@@ -562,8 +573,13 @@
 .journal-detail-page .travel-stamps span{display:grid;width:60px;height:60px;padding:0;place-items:center;border:1px dashed rgba(145,94,108,.45);color:#7c686e;font-size:9px;transform:rotate(-4deg)}
 .journal-detail-page .travel-stamps span:nth-child(even){transform:rotate(5deg)}
 .journal-detail-page .playful-quote{margin:53px 0 0;color:var(--rose);font-size:30px}
-@keyframes journalSpreadIn{0%{opacity:.7;transform:scale(.47,.72)}100%{opacity:1;transform:scale(1)}}
+::view-transition-group(journal-cover),::view-transition-group(journal-page){animation-duration:.62s;animation-timing-function:cubic-bezier(.2,.78,.2,1)}
+::view-transition-old(journal-cover),::view-transition-new(journal-cover),::view-transition-old(journal-page),::view-transition-new(journal-page){height:100%;object-fit:cover;animation-duration:.62s;animation-timing-function:cubic-bezier(.2,.78,.2,1)}
+::view-transition-old(journal-cover),::view-transition-old(journal-page){animation-name:journalOldPageFade}
+::view-transition-new(journal-cover),::view-transition-new(journal-page){animation-name:journalNewPageReveal}
+@keyframes journalOldPageFade{0%{opacity:1}72%{opacity:.62}100%{opacity:0}}
+@keyframes journalNewPageReveal{0%{opacity:.38}38%{opacity:.72}100%{opacity:1}}
 
 @media(max-width:900px){.journal-detail-spread{height:485px;grid-template-columns:40% 60%}.journal-detail-spread:before{left:40%}.journal-detail-spread:after{left:calc(40% - 1px)}.journal-detail-page{padding:42px 34px 34px 42px}.journal-detail-page h3{font-size:39px}.journal-detail-page .mini-receipts{grid-template-columns:1fr;gap:6px}.journal-detail-page .mini-receipts blockquote{min-height:0;padding:11px 13px}.journal-detail-page .mini-receipts span{display:inline;margin:0 10px 0 0}.journal-detail-visual>strong{font-size:31px}}
-@media(max-width:620px){.label-slide .journal-detail{padding:35px 0 0}.journal-detail .label-back{top:4px}.journal-detail-spread{width:100%;height:455px;grid-template-columns:36% 64%;border-radius:4px 10px 10px 4px}.journal-detail-spread:before{left:36%;width:22px}.journal-detail-spread:after{left:calc(36% - 1px)}.journal-detail-visual>small,.journal-detail-visual>strong,.journal-detail-visual>em{left:13px;right:9px}.journal-detail-visual>small{top:18px;font-size:5px}.journal-detail-visual>strong{bottom:48px;font-size:20px}.journal-detail-visual>em{bottom:24px;font-size:6.5px}.journal-detail-page{padding:31px 17px 27px 25px}.journal-detail-page:after{right:10px;top:14px;width:28px;height:19px}.journal-detail-page>small{font-size:6px}.journal-detail-page h3{margin:14px 0 17px;font-size:27px;line-height:1.08}.journal-detail-page>p{font-size:9px;line-height:1.8}.journal-detail-page .mini-receipts{margin-top:18px}.journal-detail-page .mini-receipts blockquote{padding:8px;font-size:8px}.journal-detail-page .travel-stamps{margin-top:23px;gap:7px}.journal-detail-page .travel-stamps span{width:42px;height:42px;font-size:7px}.journal-detail-page .playful-quote{margin-top:38px;font-size:20px}}
-@media(prefers-reduced-motion:reduce){.journal-detail-spread{animation:none}}
+@media(max-width:620px){.label-slide .journal-detail{padding:35px 0 0}.journal-detail .label-back{top:4px}.journal-detail-spread{width:100%;height:455px;grid-template-columns:36% 64%;border-radius:4px 10px 10px 4px}.journal-detail-spread:before{left:36%;width:22px}.journal-detail-spread:after{left:calc(36% - 1px)}.journal-detail-visual>small,.journal-detail-visual>strong,.journal-detail-visual>em{left:13px;right:9px}.journal-detail-visual>small{top:18px;font-size:5px}.journal-detail-visual>strong{bottom:48px;font-size:20px}.journal-detail-visual>em{bottom:24px;font-size:6.5px}.journal-detail-page{padding:31px 17px 27px 25px}.journal-detail-page:after{right:10px;top:14px;width:28px;height:19px}.journal-detail-page .journal-page-copy>small{font-size:6px}.journal-detail-page h3{margin:14px 0 17px;font-size:27px;line-height:1.08}.journal-detail-page .journal-page-copy>p{font-size:9px;line-height:1.8}.journal-detail-page .mini-receipts{margin-top:18px}.journal-detail-page .mini-receipts blockquote{padding:8px;font-size:8px}.journal-detail-page .travel-stamps{margin-top:23px;gap:7px}.journal-detail-page .travel-stamps span{width:42px;height:42px;font-size:7px}.journal-detail-page .playful-quote{margin-top:38px;font-size:20px}}
+@media(prefers-reduced-motion:reduce){::view-transition-group(journal-cover),::view-transition-group(journal-page),::view-transition-old(journal-cover),::view-transition-new(journal-cover),::view-transition-old(journal-page),::view-transition-new(journal-page){animation-duration:.01ms}}

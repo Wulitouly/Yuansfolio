@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, PointerEvent as ReactPointerEvent } from "react";
+import { flushSync } from "react-dom";
 import { BookHeart, ChevronDown, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
 
 const outline = [
@@ -171,6 +172,14 @@ const aboutJournals = [
   { label: "Vivid", note: "生活别太严肃", image: "/media/journal-vivid.jpg" },
 ];
 
+function JournalPageContent({ index, preview = false }: { index: number; preview?: boolean }) {
+  return <div className={preview ? "journal-page-copy is-preview" : "journal-page-copy"}>
+    {index === 0 && <><small>01 / RELIABLE</small><h3>People trust me<br />with things.</h3><p>我不一定最喜欢站在台前，但通常是那个会默默把事情接住的人。既然交给我了，就认真把它做好。</p><div className="mini-receipts">{aboutReceipts.map(([source, quote]) => <blockquote key={source}><span>{source}</span>{quote}</blockquote>)}</div></>}
+    {index === 1 && <><small>02 / BOUNDLESS</small><h3>I wanted to go.<br />So I went.</h3><p>一个人查路线、订住宿、赶飞机、坐夜车，在陌生的城市里迷路，再自己找到路。</p><div className="travel-stamps">{travelStops.map((stop) => <span key={stop}>{stop}</span>)}</div></>}
+    {index === 2 && <><small>03 / VIVID</small><h3>I like comedy.<br />A lot.</h3><p>脱口秀、喜剧、话剧，还有一些没有必要但很好笑的东西。</p><blockquote className="playful-quote">认真生活，偶尔发疯。</blockquote></>}
+  </div>;
+}
+
 const personalityTags = [
   { label: "INFJ", x: 7, y: 18, tone: "serious" },
   { label: "极度认真", x: 18, y: 38, tone: "serious" },
@@ -240,9 +249,16 @@ export default function Home() {
     setOpeningAboutChapter(index);
     if (journalOpenTimer.current) window.clearTimeout(journalOpenTimer.current);
     journalOpenTimer.current = window.setTimeout(() => {
-      setActiveAboutChapter(index);
-      setOpeningAboutChapter(null);
-    }, 1120);
+      const updateJournal = () => {
+        flushSync(() => {
+          setActiveAboutChapter(index);
+          setOpeningAboutChapter(null);
+        });
+      };
+      const viewTransitionDocument = document as Document & { startViewTransition?: (callback: () => void) => void };
+      if (viewTransitionDocument.startViewTransition) viewTransitionDocument.startViewTransition(updateJournal);
+      else updateJournal();
+    }, 1020);
   };
 
   const movePersonalityTag = (event: ReactPointerEvent<HTMLButtonElement>) => {
@@ -726,20 +742,18 @@ export default function Home() {
                 {aboutSlide === 1 && <div className={`about-slide-copy question-slide ${answerVisible ? "has-answer" : ""}`}><div className="question-kicker"><small>前同事问我</small><i /></div><h3><span>“你是怎么做到，</span><span>工作的时候这么<span className="question-emphasis">投入</span>，</span><span>玩的时候又这么<span className="playful-character">颠</span>？”</span></h3><div className="answer-stage"><button className="answer-note" type="button" onClick={() => setAnswerVisible(true)} aria-expanded={answerVisible} aria-hidden={answerVisible} tabIndex={answerVisible ? -1 : 0}><span>别偷看答案</span></button><div className="question-answer" aria-hidden={!answerVisible}><p>天生的吧。</p><span>开玩笑啦，请继续看……</span></div></div></div>}
                 {aboutSlide === 2 && <div className="about-slide-copy focus-slide"><div className="focus-editorial"><div className="focus-main"><span>Focus is how I move.</span><h3><span>我是个</span><br /><em>单线程</em><span>的人。</span></h3><p>同一时间，我通常只能认真做好一件事。<br />所以一旦开始，我就很容易一头扎进去。<br />先把眼前这一件事弄明白。再去想下一件。</p></div><div className="focus-character" aria-hidden="true"><img src="/media/about-character-reading-v1.png" alt="" /></div></div><div className="focus-sequence"><span>ONE THING</span><i /><span>GO DEEP</span><i /><span>MOVE FORWARD</span></div></div>}
                 {aboutSlide === 3 && <div className={`about-slide-copy label-slide ${openingAboutChapter !== null ? "is-opening-journal" : ""}`}>
-                  {activeAboutChapter === null ? <><span>TRIOS · THREE CHAPTERS OF ME</span><h3>挑一本顺眼的，<br />跟你唠唠我。</h3><div className={`label-portals ${openingAboutChapter !== null ? "is-opening" : ""}`}>{aboutJournals.map((book, index) => <button type="button" ref={(element) => { journalBooks.current[index] = element; }} className={`journal-book book-${index + 1} ${openingAboutChapter === index ? "is-opening" : ""}`} key={book.label} onClick={() => openAboutJournal(index)} aria-label={`打开 ${book.label} 手账`}><span className="journal-inside" aria-hidden="true"><i /><b /></span><span className="journal-cover"><img src={book.image} alt="" /><small>CHAPTER 0{index + 1}</small><strong>{book.label}</strong><em>{book.note}</em></span></button>)}</div></> : <div className={`label-detail journal-detail detail-${activeAboutChapter}`}>
+                  {activeAboutChapter === null ? <><span>TRIOS · THREE CHAPTERS OF ME</span><h3>挑一本顺眼的，<br />跟你唠唠我。</h3><div className={`label-portals ${openingAboutChapter !== null ? "is-opening" : ""}`}>{aboutJournals.map((book, index) => <button type="button" ref={(element) => { journalBooks.current[index] = element; }} className={`journal-book book-${index + 1} ${openingAboutChapter === index ? "is-opening" : ""}`} key={book.label} onClick={() => openAboutJournal(index)} aria-label={`打开 ${book.label} 手账`}><span className="journal-inside" style={openingAboutChapter === index ? { viewTransitionName: "journal-page" } as CSSProperties : undefined}><JournalPageContent index={index} preview /></span><span className="journal-cover" style={openingAboutChapter === index ? { viewTransitionName: "journal-cover" } as CSSProperties : undefined}><img src={book.image} alt="" /><small>CHAPTER 0{index + 1}</small><strong>{book.label}</strong><em>{book.note}</em></span></button>)}</div></> : <div className={`label-detail journal-detail detail-${activeAboutChapter}`}>
                     <button className="label-back" type="button" onClick={() => setActiveAboutChapter(null)}>← 合上手账</button>
                     <div className="journal-detail-spread">
-                      <div className="journal-detail-visual">
+                      <div className="journal-detail-visual" style={{ viewTransitionName: "journal-cover" } as CSSProperties}>
                         <img src={aboutJournals[activeAboutChapter].image} alt={`${aboutJournals[activeAboutChapter].label} 手账封面人物`} />
                         <span className="journal-detail-shade" aria-hidden="true" />
                         <small>CHAPTER 0{activeAboutChapter + 1}</small>
                         <strong>{aboutJournals[activeAboutChapter].label}</strong>
                         <em>{aboutJournals[activeAboutChapter].note}</em>
                       </div>
-                      <div className="journal-detail-page">
-                        {activeAboutChapter === 0 && <><small>01 / RELIABLE</small><h3>People trust me<br />with things.</h3><p>我不一定最喜欢站在台前，但通常是那个会默默把事情接住的人。既然交给我了，就认真把它做好。</p><div className="mini-receipts">{aboutReceipts.map(([source, quote]) => <blockquote key={source}><span>{source}</span>{quote}</blockquote>)}</div></>}
-                        {activeAboutChapter === 1 && <><small>02 / BOUNDLESS</small><h3>I wanted to go.<br />So I went.</h3><p>一个人查路线、订住宿、赶飞机、坐夜车，在陌生的城市里迷路，再自己找到路。</p><div className="travel-stamps">{travelStops.map((stop) => <span key={stop}>{stop}</span>)}</div></>}
-                        {activeAboutChapter === 2 && <><small>03 / VIVID</small><h3>I like comedy.<br />A lot.</h3><p>脱口秀、喜剧、话剧，还有一些没有必要但很好笑的东西。</p><blockquote className="playful-quote">认真生活，偶尔发疯。</blockquote></>}
+                      <div className="journal-detail-page" style={{ viewTransitionName: "journal-page" } as CSSProperties}>
+                        <JournalPageContent index={activeAboutChapter} />
                       </div>
                     </div>
                   </div>}
