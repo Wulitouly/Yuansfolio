@@ -583,3 +583,56 @@
 @media(max-width:900px){.journal-detail-spread{height:485px;grid-template-columns:40% 60%}.journal-detail-spread:before{left:40%}.journal-detail-spread:after{left:calc(40% - 1px)}.journal-detail-page{padding:42px 34px 34px 42px}.journal-detail-page h3{font-size:39px}.journal-detail-page .mini-receipts{grid-template-columns:1fr;gap:6px}.journal-detail-page .mini-receipts blockquote{min-height:0;padding:11px 13px}.journal-detail-page .mini-receipts span{display:inline;margin:0 10px 0 0}.journal-detail-visual>strong{font-size:31px}}
 @media(max-width:620px){.label-slide .journal-detail{padding:35px 0 0}.journal-detail .label-back{top:4px}.journal-detail-spread{width:100%;height:455px;grid-template-columns:36% 64%;border-radius:4px 10px 10px 4px}.journal-detail-spread:before{left:36%;width:22px}.journal-detail-spread:after{left:calc(36% - 1px)}.journal-detail-visual>small,.journal-detail-visual>strong,.journal-detail-visual>em{left:13px;right:9px}.journal-detail-visual>small{top:18px;font-size:5px}.journal-detail-visual>strong{bottom:48px;font-size:20px}.journal-detail-visual>em{bottom:24px;font-size:6.5px}.journal-detail-page{padding:31px 17px 27px 25px}.journal-detail-page:after{right:10px;top:14px;width:28px;height:19px}.journal-detail-page .journal-page-copy>small{font-size:6px}.journal-detail-page h3{margin:14px 0 17px;font-size:27px;line-height:1.08}.journal-detail-page .journal-page-copy>p{font-size:9px;line-height:1.8}.journal-detail-page .mini-receipts{margin-top:18px}.journal-detail-page .mini-receipts blockquote{padding:8px;font-size:8px}.journal-detail-page .travel-stamps{margin-top:23px;gap:7px}.journal-detail-page .travel-stamps span{width:42px;height:42px;font-size:7px}.journal-detail-page .playful-quote{margin-top:38px;font-size:20px}}
 @media(prefers-reduced-motion:reduce){::view-transition-group(journal-cover),::view-transition-group(journal-page),::view-transition-old(journal-cover),::view-transition-new(journal-cover),::view-transition-old(journal-page),::view-transition-new(journal-page){animation-duration:.01ms}}
+
+/* Real material lives on additional leaves, keeping the chapter opener intact. */
+.journal-detail-page{padding-bottom:72px;overflow:hidden}
+.journal-leaf{height:100%;animation:journalLeafIn .48s cubic-bezier(.22,.78,.2,1) both;transform-origin:left center}
+.journal-material-page{height:100%;color:#443d41}
+.journal-material-page header{position:relative;z-index:3;margin:0 0 20px}
+.journal-material-page header small{color:var(--rose);font:500 8px/1 "Avenir Next","SF Pro Text",sans-serif;letter-spacing:.15em}
+.journal-material-page header h3{margin:11px 0 0;font-size:clamp(29px,2.7vw,39px);line-height:1.05}
+.journal-material-page header p{margin:8px 0 0;color:#968b90;font:400 8px/1.6 "HarmonyOS Sans SC","PingFang SC",sans-serif}
+.journal-leaf-nav{position:absolute;z-index:9;left:55px;right:42px;bottom:23px;display:flex;align-items:center;gap:20px;border-top:1px solid rgba(111,89,80,.16);padding-top:12px}
+.journal-leaf-nav button{display:flex;align-items:center;gap:6px;padding:0;border:0;background:transparent;color:#968b90;font:500 9px/1 "HarmonyOS Sans SC","PingFang SC",sans-serif;cursor:pointer;transition:color .2s ease}
+.journal-leaf-nav button i{font:500 7px/1 "Avenir Next",sans-serif;font-style:normal;letter-spacing:.1em}
+.journal-leaf-nav button.active{color:var(--rose)}
+.journal-leaf-nav button:focus-visible{outline:1px solid rgba(184,120,134,.48);outline-offset:5px}
+.evidence-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;align-items:start}
+.scrap-photo,.letter-piece,.travel-shot,.vivid-shot{position:relative;padding:0;border:0;background:transparent;cursor:zoom-in;text-align:left}
+.scrap-photo{transform:rotate(-1.4deg)}
+.scrap-photo:nth-child(2){margin-top:14px;transform:rotate(1.2deg)}
+.scrap-photo:nth-child(3){transform:rotate(-.5deg)}
+.scrap-photo:before{content:"";position:absolute;z-index:2;left:50%;top:-5px;width:35px;height:11px;background:rgba(221,204,171,.62);transform:translateX(-50%) rotate(-2deg);box-shadow:0 1px rgba(255,255,255,.48)}
+.scrap-photo img{display:block;width:100%;height:176px;object-fit:cover;object-position:center;border:7px solid rgba(255,255,255,.82);box-shadow:0 8px 18px rgba(67,51,56,.11);filter:saturate(.72) contrast(.94)}
+.scrap-photo span,.letter-piece span{display:block;margin-top:8px;color:#81757b;font:400 8px/1.45 "HarmonyOS Sans SC","PingFang SC",sans-serif;text-align:center}
+.letter-stack{position:relative;height:292px;margin-top:5px}
+.letter-piece{position:absolute;width:57%;filter:drop-shadow(0 12px 16px rgba(65,48,53,.12))}
+.letter-piece img{display:block;width:100%;height:255px;object-fit:cover;border:6px solid rgba(255,255,255,.76)}
+.letter-piece.letter-1{left:0;top:1px;transform:rotate(-2.3deg)}
+.letter-piece.letter-2{right:0;top:18px;transform:rotate(3deg)}
+.letter-piece:hover,.letter-piece:focus-visible{z-index:3;transform:rotate(0) translateY(-5px);outline:0}
+.travel-gallery header,.vivid-gallery header{margin-bottom:13px}
+.travel-mosaic,.vivid-mosaic{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:93px;gap:6px}
+.travel-shot,.vivid-shot{overflow:hidden;border:3px solid rgba(255,255,255,.75);box-shadow:0 5px 12px rgba(67,51,56,.09)}
+.travel-shot img,.vivid-shot img{width:100%;height:100%;object-fit:cover;transition:transform .45s cubic-bezier(.2,.75,.2,1),filter .25s ease}
+.travel-shot span,.vivid-shot span{position:absolute;left:6px;right:4px;bottom:5px;color:#fff;font:500 6px/1.2 "HarmonyOS Sans SC","PingFang SC",sans-serif;text-shadow:0 1px 6px rgba(0,0,0,.8);opacity:0;transform:translateY(4px);transition:.25s ease}
+.travel-shot:after,.vivid-shot:after{content:"";position:absolute;inset:55% 0 0;background:linear-gradient(transparent,rgba(25,18,20,.5));opacity:0;transition:opacity .25s ease}
+.travel-shot:hover img,.travel-shot:focus-visible img,.vivid-shot:hover img,.vivid-shot:focus-visible img{transform:scale(1.07);filter:saturate(1.04)}
+.travel-shot:hover:after,.travel-shot:focus-visible:after,.travel-shot:hover span,.travel-shot:focus-visible span,.vivid-shot:hover:after,.vivid-shot:focus-visible:after,.vivid-shot:hover span,.vivid-shot:focus-visible span{z-index:2;opacity:1;transform:none}
+.travel-shot.shot-1,.vivid-shot.vivid-1{grid-row:span 2}
+.travel-shot.shot-4,.vivid-shot.vivid-6{grid-column:span 2}
+.travel-writing header{margin-bottom:16px}
+.travel-note-list{display:grid;gap:10px}
+.travel-note-list article{display:grid;grid-template-columns:27px 1fr;gap:13px;padding:0 0 10px;border-bottom:1px solid rgba(111,89,80,.12)}
+.travel-note-list article>span{color:rgba(184,120,134,.65);font:italic 18px/1 Georgia,serif}
+.travel-note-list strong{display:block;margin-bottom:3px;color:#554b50;font:500 10px/1.2 "HarmonyOS Sans SC","PingFang SC",sans-serif}
+.travel-note-list p{margin:0;color:#776d72;font:400 9px/1.7 "Songti SC",serif}
+.material-lightbox{position:fixed;z-index:1200;inset:0;display:grid;place-items:center;padding:6vh 8vw;background:rgba(31,27,29,.78);backdrop-filter:blur(9px);animation:materialFadeIn .25s ease both}
+.material-lightbox>button{position:absolute;right:4vw;top:4vh;padding:8px 12px;border:1px solid rgba(255,255,255,.35);border-radius:999px;background:rgba(255,255,255,.08);color:#fff;font-size:10px;cursor:pointer}
+.material-lightbox img{display:block;max-width:min(1100px,84vw);max-height:86vh;object-fit:contain;border:8px solid rgba(255,255,255,.9);box-shadow:0 28px 65px rgba(0,0,0,.35)}
+@keyframes journalLeafIn{0%{opacity:.2;transform:perspective(900px) rotateY(-7deg) translateX(-8px)}100%{opacity:1;transform:none}}
+@keyframes materialFadeIn{from{opacity:0}to{opacity:1}}
+
+@media(max-width:900px){.journal-leaf-nav{left:42px;right:30px}.scrap-photo img{height:150px}.letter-piece img{height:230px}.travel-mosaic,.vivid-mosaic{grid-auto-rows:84px}.journal-material-page header h3{font-size:31px}}
+@media(max-width:620px){.journal-detail-page{padding-bottom:58px}.journal-leaf-nav{left:25px;right:12px;bottom:15px;gap:10px;padding-top:8px}.journal-leaf-nav button{font-size:7px}.journal-leaf-nav button i{display:none}.journal-material-page header{margin-bottom:11px}.journal-material-page header small{font-size:5px}.journal-material-page header h3{margin-top:7px;font-size:20px}.journal-material-page header p{font-size:6px}.evidence-grid{gap:4px}.scrap-photo img{height:115px;border-width:3px}.scrap-photo span,.letter-piece span{margin-top:4px;font-size:5px}.letter-stack{height:245px}.letter-piece{width:70%}.letter-piece img{height:205px;border-width:3px}.travel-mosaic,.vivid-mosaic{grid-auto-rows:66px;gap:3px}.travel-shot,.vivid-shot{border-width:1px}.travel-note-list{gap:7px}.travel-note-list article{grid-template-columns:18px 1fr;gap:7px;padding-bottom:6px}.travel-note-list article>span{font-size:12px}.travel-note-list strong{font-size:7px}.travel-note-list p{font-size:6.8px;line-height:1.55}.material-lightbox{padding:7vh 4vw}.material-lightbox img{max-width:92vw;border-width:4px}}
+@media(prefers-reduced-motion:reduce){.journal-leaf,.material-lightbox{animation:none}.travel-shot img,.vivid-shot img{transition:none}}

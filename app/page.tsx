@@ -172,6 +172,51 @@ const aboutJournals = [
   { label: "Vivid", note: "生活别太严肃", image: "/media/journal-vivid.jpg" },
 ];
 
+const reliableReviews = [
+  { src: "/media/about-materials/reliable-review-01.webp", alt: "顾客称赞服务热心周到的聊天摘录", caption: "服务，是被记住的细节" },
+  { src: "/media/about-materials/reliable-review-02.webp", alt: "顾客称赞认真负责和耐心的聊天摘录", caption: "认真、负责，也有耐心" },
+  { src: "/media/about-materials/reliable-review-03.webp", alt: "雇主认可工作表现的聊天摘录", caption: "来自雇主的认可" },
+];
+
+const reliableLetters = [
+  { src: "/media/about-materials/reliable-letter.webp", alt: "洛杉矶教堂志愿服务推荐信节选", caption: "一年志愿服务后的推荐信" },
+  { src: "/media/about-materials/reliable-note.webp", alt: "志愿服务对象写下的手写感谢卡", caption: "离开时收到的手写留言" },
+];
+
+const travelPhotos = [
+  { src: "/media/about-materials/travel-kazbek.webp", alt: "格鲁吉亚卡兹别克山雪景", place: "卡兹别克山" },
+  { src: "/media/about-materials/travel-isfahan.webp", alt: "伊斯法罕夜晚的建筑群", place: "伊斯法罕" },
+  { src: "/media/about-materials/travel-cambodia.webp", alt: "柬埔寨吴哥窟旅行照片", place: "柬埔寨" },
+  { src: "/media/about-materials/travel-egypt.webp", alt: "埃及金字塔旅行照片", place: "开罗" },
+  { src: "/media/about-materials/travel-philippines.webp", alt: "菲律宾潜水旅行照片", place: "菲律宾" },
+  { src: "/media/about-materials/travel-australia.webp", alt: "澳大利亚与袋鼠合影", place: "澳大利亚" },
+  { src: "/media/about-materials/travel-oman.webp", alt: "阿曼街头当地人下棋", place: "马斯喀特" },
+  { src: "/media/about-materials/travel-sheki.webp", alt: "舍基秋日山城景色", place: "舍基" },
+];
+
+const travelNotes = [
+  { place: "阿拉木图", text: "旅行的目的于我而言，不完全是吃喝玩乐。更吸引我的是当地的生活方式，以及人与人之间真实的故事。" },
+  { place: "努库斯 → 阿克套", text: "没有躺着看到的风景，也没有不用脚走出来的路。困难一直都在，但怎么看待它，决定你能走多远。" },
+  { place: "马斯喀特", text: "这种慢旅行改变了我。我也在旅行中修行，学会松弛，正是这一程留给我的课题。" },
+];
+
+const vividPhotos = [
+  { src: "/media/about-materials/vivid-stage.webp", alt: "脱口秀舞台", caption: "一束灯，一支麦" },
+  { src: "/media/about-materials/vivid-ticket.webp", alt: "话剧目击证人票根", caption: "票根比纪念品更诚实" },
+  { src: "/media/about-materials/vivid-comedy.webp", alt: "仙人掌喜剧演出合影", caption: "现场的笑声" },
+  { src: "/media/about-materials/vivid-audience.webp", alt: "话剧演出现场", caption: "坐进另一个人的故事" },
+  { src: "/media/about-materials/vivid-poster.webp", alt: "演出票和海报", caption: "认真收藏不正经" },
+  { src: "/media/about-materials/vivid-show.webp", alt: "脱口秀演出现场", caption: "周日盲盒" },
+  { src: "/media/about-materials/vivid-theatre.webp", alt: "剧场观众与演员合影", caption: "散场以后" },
+  { src: "/media/about-materials/vivid-wall.webp", alt: "演出纪念照片墙", caption: "看过的故事留下来" },
+];
+
+const chapterTabs = [
+  ["自述", "好评", "推荐信"],
+  ["自述", "旅行相册", "沿途随笔"],
+  ["自述", "观演记录"],
+];
+
 function JournalPageContent({ index, preview = false }: { index: number; preview?: boolean }) {
   return <div className={preview ? "journal-page-copy is-preview" : "journal-page-copy"}>
     {index === 0 && <><small>01 / RELIABLE</small><h3>People trust me<br />with things.</h3><p>我不一定最喜欢站在台前，但通常是那个会默默把事情接住的人。既然交给我了，就认真把它做好。</p><div className="mini-receipts">{aboutReceipts.map(([source, quote]) => <blockquote key={source}><span>{source}</span>{quote}</blockquote>)}</div></>}
@@ -201,6 +246,8 @@ export default function Home() {
   const [answerVisible, setAnswerVisible] = useState(false);
   const [activeAboutChapter, setActiveAboutChapter] = useState<number | null>(null);
   const [openingAboutChapter, setOpeningAboutChapter] = useState<number | null>(null);
+  const [chapterLeaf, setChapterLeaf] = useState(0);
+  const [materialPreview, setMaterialPreview] = useState<{ src: string; alt: string } | null>(null);
   const [aboutSlide, setAboutSlide] = useState(0);
   const [aboutAdvancing, setAboutAdvancing] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
@@ -229,11 +276,14 @@ export default function Home() {
     setAnswerVisible(false);
     setActiveAboutChapter(null);
     setOpeningAboutChapter(null);
+    setChapterLeaf(0);
+    setMaterialPreview(null);
     aboutAdvanceTimer.current = window.setTimeout(() => setAboutAdvancing(false), 420);
   };
 
   const openAboutJournal = (index: number) => {
     if (openingAboutChapter !== null) return;
+    setChapterLeaf(0);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setActiveAboutChapter(index);
       return;
@@ -743,7 +793,7 @@ export default function Home() {
                 {aboutSlide === 2 && <div className="about-slide-copy focus-slide"><div className="focus-editorial"><div className="focus-main"><span>Focus is how I move.</span><h3><span>我是个</span><br /><em>单线程</em><span>的人。</span></h3><p>同一时间，我通常只能认真做好一件事。<br />所以一旦开始，我就很容易一头扎进去。<br />先把眼前这一件事弄明白。再去想下一件。</p></div><div className="focus-character" aria-hidden="true"><img src="/media/about-character-reading-v1.png" alt="" /></div></div><div className="focus-sequence"><span>ONE THING</span><i /><span>GO DEEP</span><i /><span>MOVE FORWARD</span></div></div>}
                 {aboutSlide === 3 && <div className={`about-slide-copy label-slide ${openingAboutChapter !== null ? "is-opening-journal" : ""}`}>
                   {activeAboutChapter === null ? <><span>TRIOS · THREE CHAPTERS OF ME</span><h3>挑一本顺眼的，<br />跟你唠唠我。</h3><div className={`label-portals ${openingAboutChapter !== null ? "is-opening" : ""}`}>{aboutJournals.map((book, index) => <button type="button" ref={(element) => { journalBooks.current[index] = element; }} className={`journal-book book-${index + 1} ${openingAboutChapter === index ? "is-opening" : ""}`} key={book.label} onClick={() => openAboutJournal(index)} aria-label={`打开 ${book.label} 手账`}><span className="journal-inside" style={openingAboutChapter === index ? { viewTransitionName: "journal-page" } as CSSProperties : undefined}><JournalPageContent index={index} preview /></span><span className="journal-cover" style={openingAboutChapter === index ? { viewTransitionName: "journal-cover" } as CSSProperties : undefined}><img src={book.image} alt="" /><small>CHAPTER 0{index + 1}</small><strong>{book.label}</strong><em>{book.note}</em></span></button>)}</div></> : <div className={`label-detail journal-detail detail-${activeAboutChapter}`}>
-                    <button className="label-back" type="button" onClick={() => setActiveAboutChapter(null)}>← 合上手账</button>
+                    <button className="label-back" type="button" onClick={() => { setActiveAboutChapter(null); setChapterLeaf(0); }}>← 合上手账</button>
                     <div className="journal-detail-spread">
                       <div className="journal-detail-visual" style={{ viewTransitionName: "journal-cover" } as CSSProperties}>
                         <img src={aboutJournals[activeAboutChapter].image} alt={`${aboutJournals[activeAboutChapter].label} 手账封面人物`} />
@@ -753,7 +803,17 @@ export default function Home() {
                         <em>{aboutJournals[activeAboutChapter].note}</em>
                       </div>
                       <div className="journal-detail-page" style={{ viewTransitionName: "journal-page" } as CSSProperties}>
-                        <JournalPageContent index={activeAboutChapter} />
+                        <div className="journal-leaf" key={`${activeAboutChapter}-${chapterLeaf}`}>
+                          {chapterLeaf === 0 && <JournalPageContent index={activeAboutChapter} />}
+                          {activeAboutChapter === 0 && chapterLeaf === 1 && <div className="journal-material-page reliable-evidence"><header><small>WORDS LEFT BEHIND</small><h3>认真做过的事，<br />会被人记住。</h3><p>已隐藏聊天对象的姓名、头像与其他个人信息。</p></header><div className="evidence-grid">{reliableReviews.map((item, index) => <button type="button" key={item.src} className={`scrap-photo scrap-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
+                          {activeAboutChapter === 0 && chapterLeaf === 2 && <div className="journal-material-page letter-page"><header><small>LETTERS I KEPT</small><h3>有些肯定，<br />我一直留着。</h3></header><div className="letter-stack">{reliableLetters.map((item, index) => <button type="button" key={item.src} className={`letter-piece letter-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
+                          {activeAboutChapter === 1 && chapterLeaf === 1 && <div className="journal-material-page travel-gallery"><header><small>THE ROAD SO FAR</small><h3>走过的路，<br />比地图更长。</h3></header><div className="travel-mosaic">{travelPhotos.map((item, index) => <button type="button" key={item.src} className={`travel-shot shot-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.place}</span></button>)}</div></div>}
+                          {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing"><header><small>NOTES FROM ELSEWHERE</small><h3>路过世界时，<br />我也在观察生活。</h3></header><div className="travel-note-list">{travelNotes.map((item, index) => <article key={item.place}><span>0{index + 1}</span><div><strong>{item.place}</strong><p>{item.text}</p></div></article>)}</div></div>}
+                          {activeAboutChapter === 2 && chapterLeaf === 1 && <div className="journal-material-page vivid-gallery"><header><small>LIVE, LAUGH, REPEAT</small><h3>认真生活，<br />也认真笑。</h3></header><div className="vivid-mosaic">{vividPhotos.map((item, index) => <button type="button" key={item.src} className={`vivid-shot vivid-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
+                        </div>
+                        <nav className="journal-leaf-nav" aria-label={`${aboutJournals[activeAboutChapter].label} 手账内页`}>
+                          {chapterTabs[activeAboutChapter].map((label, index) => <button type="button" key={label} className={chapterLeaf === index ? "active" : ""} onClick={() => setChapterLeaf(index)}><i>{String(index + 1).padStart(2, "0")}</i>{label}</button>)}
+                        </nav>
                       </div>
                     </div>
                   </div>}
@@ -763,7 +823,7 @@ export default function Home() {
             </div>
             {aboutSlide < 2 && <div className="about-deck-character" aria-hidden="true"><img className="character-static" src="/media/about-character-rest-user.png" alt="" /></div>}
             <button className={`about-next-page ${aboutAdvancing ? "is-turning" : ""}`} type="button" onClick={advanceAboutSlide} aria-label="翻到下一页"><span>点这翻页</span><i aria-hidden="true" /></button>
-            <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3,4].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { if (journalOpenTimer.current) window.clearTimeout(journalOpenTimer.current); setAboutSlide(index); setAnswerVisible(false); setActiveAboutChapter(null); setOpeningAboutChapter(null); }} />)}</div>
+            <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3,4].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { if (journalOpenTimer.current) window.clearTimeout(journalOpenTimer.current); setAboutSlide(index); setAnswerVisible(false); setActiveAboutChapter(null); setOpeningAboutChapter(null); setChapterLeaf(0); setMaterialPreview(null); }} />)}</div>
           </div>
         </div>
       </section>
@@ -809,6 +869,7 @@ export default function Home() {
 
       <footer className="footer shell"><p>© 2026 刘渊</p><p>有温度地理解 · 有逻辑地行动</p><a href="#top">回到顶部 ↑</a></footer>
       <div className={`toast ${copied ? "show" : ""}`} role="status" aria-live="polite">微信号已复制</div>
+      {materialPreview && <div className="material-lightbox" role="dialog" aria-modal="true" aria-label="查看素材大图" onClick={() => setMaterialPreview(null)}><button type="button" aria-label="关闭大图" onClick={() => setMaterialPreview(null)}>关闭</button><img src={materialPreview.src} alt={materialPreview.alt} onClick={(event) => event.stopPropagation()} /></div>}
     </main>
   );
 }
