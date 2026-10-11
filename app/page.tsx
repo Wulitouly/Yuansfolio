@@ -176,22 +176,22 @@ const reliableLetters = [
 ];
 
 const travelCountries = [
-  { name: "哈萨克斯坦", image: "/media/about-materials/travel-kazakhstan.webp", lat: 47, lon: 67 },
-  { name: "乌兹别克斯坦", image: "/media/about-materials/travel-uzbekistan.webp", lat: 41, lon: 42 },
-  { name: "阿塞拜疆", image: "/media/about-materials/travel-azerbaijan.webp", lat: 33, lon: 17 },
-  { name: "格鲁吉亚", image: "/media/about-materials/travel-kazbek.webp", lat: 51, lon: -5 },
-  { name: "亚美尼亚", image: "/media/about-materials/travel-armenia.webp", lat: 18, lon: -18 },
-  { name: "伊朗", image: "/media/about-materials/travel-isfahan.webp", lat: 5, lon: 7 },
-  { name: "阿曼", image: "/media/about-materials/travel-oman.webp", lat: -16, lon: 26 },
-  { name: "阿联酋", image: "/media/about-materials/travel-uae.webp", lat: -34, lon: 5 },
-  { name: "埃及", image: "/media/about-materials/travel-egypt.webp", lat: 8, lon: -44 },
-  { name: "菲律宾", image: "/media/about-materials/travel-philippines.webp", lat: -9, lon: 88 },
-  { name: "美国", image: "/media/about-materials/travel-usa.webp", lat: 42, lon: 155 },
-  { name: "马来西亚", image: "/media/about-materials/travel-malaysia.webp", lat: -27, lon: 112 },
-  { name: "新加坡", image: "/media/about-materials/travel-singapore.webp", lat: -49, lon: 132 },
-  { name: "泰国", image: "/media/about-materials/travel-thailand.webp", lat: 13, lon: 115 },
-  { name: "柬埔寨", image: "/media/about-materials/travel-cambodia.webp", lat: 31, lon: 116 },
-  { name: "澳大利亚", image: "/media/about-materials/travel-australia.webp", lat: -52, lon: -126 },
+  { name: "美国", image: "/media/about-materials/travel-usa.webp", x: 18, y: 38 },
+  { name: "埃及", image: "/media/about-materials/travel-egypt.webp", x: 52, y: 48 },
+  { name: "格鲁吉亚", image: "/media/about-materials/travel-kazbek.webp", x: 55, y: 35 },
+  { name: "亚美尼亚", image: "/media/about-materials/travel-armenia.webp", x: 57, y: 39 },
+  { name: "阿塞拜疆", image: "/media/about-materials/travel-azerbaijan.webp", x: 59, y: 36 },
+  { name: "伊朗", image: "/media/about-materials/travel-isfahan.webp", x: 60, y: 45 },
+  { name: "阿联酋", image: "/media/about-materials/travel-uae.webp", x: 63, y: 50 },
+  { name: "阿曼", image: "/media/about-materials/travel-oman.webp", x: 66, y: 53 },
+  { name: "哈萨克斯坦", image: "/media/about-materials/travel-kazakhstan.webp", x: 65, y: 31 },
+  { name: "乌兹别克斯坦", image: "/media/about-materials/travel-uzbekistan.webp", x: 63, y: 39 },
+  { name: "泰国", image: "/media/about-materials/travel-thailand.webp", x: 75, y: 57 },
+  { name: "柬埔寨", image: "/media/about-materials/travel-cambodia.webp", x: 77, y: 60 },
+  { name: "马来西亚", image: "/media/about-materials/travel-malaysia.webp", x: 76, y: 67 },
+  { name: "新加坡", image: "/media/about-materials/travel-singapore.webp", x: 78, y: 71 },
+  { name: "菲律宾", image: "/media/about-materials/travel-philippines.webp", x: 82, y: 56 },
+  { name: "澳大利亚", image: "/media/about-materials/travel-australia.webp", x: 85, y: 80 },
 ];
 
 type TravelJournal = { id: string; title: string; date: string; location: string; body: string };
@@ -216,7 +216,7 @@ const chapterTabs = [
 function JournalPageContent({ index, preview = false }: { index: number; preview?: boolean }) {
   return <div className={preview ? "journal-page-copy is-preview" : "journal-page-copy"}>
     {index === 0 && <><small>01 / RELIABLE</small><h3>People trust me<br />with things.</h3><p>我不一定最喜欢站在台前，但通常是那个会默默把事情接住的人。既然交给我了，就认真把它做好。</p></>}
-    {index === 1 && <><small>02 / BOUNDLESS</small><h3>I wanted to go.<br />So I went.</h3><p>我希望当我回首往事的时候，会因为自己已经看过世界而无憾。</p></>}
+    {index === 1 && <><small>02 / BOUNDLESS</small><h3>I wanted to go.<br />So I went.</h3><p>我希望，当我回首往事时，会因看过世界而无憾。</p></>}
     {index === 2 && <><small>03 / VIVID</small><h3>I like comedy.<br />A lot.</h3><p>认真生活，偶尔发疯。</p></>}
   </div>;
 }
@@ -244,10 +244,8 @@ export default function Home() {
   const [openingAboutChapter, setOpeningAboutChapter] = useState<number | null>(null);
   const [chapterLeaf, setChapterLeaf] = useState(0);
   const [materialPreview, setMaterialPreview] = useState<{ src: string; alt: string } | null>(null);
-  const [selectedCountry, setSelectedCountry] = useState(0);
-  const [globeRotation, setGlobeRotation] = useState({ x: -8, y: -54 });
   const [travelJournals, setTravelJournals] = useState<TravelJournal[]>([]);
-  const [selectedTravelJournal, setSelectedTravelJournal] = useState(0);
+  const [selectedTravelJournal, setSelectedTravelJournal] = useState<number | null>(null);
   const [aboutSlide, setAboutSlide] = useState(0);
   const [aboutAdvancing, setAboutAdvancing] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
@@ -258,8 +256,6 @@ export default function Home() {
   const experienceStage = useRef<HTMLDivElement | null>(null);
   const timelineScrollIndicator = useRef<HTMLSpanElement | null>(null);
   const timelineScrollTimer = useRef<number | null>(null);
-  const globeDrag = useRef<{ pointerId: number; startX: number; startY: number; rotationX: number; rotationY: number; moved: boolean } | null>(null);
-  const suppressGlobeClick = useRef(false);
   const carouselDrag = useRef<{ pointerId: number; startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const carouselScrollFrame = useRef<number | null>(null);
   const suppressCarouselClick = useRef(false);
@@ -286,6 +282,7 @@ export default function Home() {
   const openAboutJournal = (index: number) => {
     if (openingAboutChapter !== null) return;
     setChapterLeaf(0);
+    setSelectedTravelJournal(null);
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setActiveAboutChapter(index);
       return;
@@ -392,23 +389,8 @@ export default function Home() {
   const turnChapterLeaf = (event: ReactMouseEvent<HTMLDivElement>) => {
     if (activeAboutChapter === null) return;
     const target = event.target as HTMLElement;
-    if (target.closest("button, a, .travel-globe-stage, .travel-reader") || window.getSelection()?.toString()) return;
+    if (target.closest("button, a, .travel-map, .travel-journal-index, .travel-journal-article") || window.getSelection()?.toString()) return;
     setChapterLeaf((current) => (current + 1) % chapterTabs[activeAboutChapter].length);
-  };
-
-  const moveTravelGlobe = (event: ReactPointerEvent<HTMLDivElement>) => {
-    const drag = globeDrag.current;
-    if (!drag || drag.pointerId !== event.pointerId) return;
-    const deltaX = event.clientX - drag.startX;
-    const deltaY = event.clientY - drag.startY;
-    if (Math.abs(deltaX) + Math.abs(deltaY) > 5) {
-      drag.moved = true;
-      suppressGlobeClick.current = true;
-    }
-    setGlobeRotation({
-      x: Math.max(-62, Math.min(62, drag.rotationX - deltaY * .32)),
-      y: drag.rotationY + deltaX * .38,
-    });
   };
 
   const copyWechat = async () => {
@@ -436,6 +418,13 @@ export default function Home() {
       }, 120);
     }
   };
+
+  const travelJournalGroups = travelJournals.reduce<Record<string, Array<{ item: TravelJournal; index: number; city: string }>>>((groups, item, index) => {
+    const country = item.title.includes("→") ? "亚美尼亚 / 伊朗" : item.title.split("-")[0];
+    const city = item.title.includes("→") ? "陆路过境" : item.title.split("-").slice(1).join(" · ") || item.location;
+    (groups[country] ??= []).push({ item, index, city });
+    return groups;
+  }, {});
 
   return (
     <main>
@@ -824,7 +813,7 @@ export default function Home() {
                 {aboutSlide === 2 && <div className="about-slide-copy focus-slide"><div className="focus-editorial"><div className="focus-main"><span>Focus is how I move.</span><h3><span>我是个</span><br /><em>单线程</em><span>的人。</span></h3><p>同一时间，我通常只能认真做好一件事。<br />所以一旦开始，我就很容易一头扎进去。<br />先把眼前这一件事弄明白。再去想下一件。</p></div><div className="focus-character" aria-hidden="true"><img src="/media/about-character-reading-v1.png" alt="" /></div></div><div className="focus-sequence"><span>ONE THING</span><i /><span>GO DEEP</span><i /><span>MOVE FORWARD</span></div></div>}
                 {aboutSlide === 3 && <div className={`about-slide-copy label-slide ${openingAboutChapter !== null ? "is-opening-journal" : ""}`}>
                   {activeAboutChapter === null ? <><span>TRIOS · THREE CHAPTERS OF ME</span><h3>挑一本顺眼的，<br />跟你唠唠我。</h3><div className={`label-portals ${openingAboutChapter !== null ? "is-opening" : ""}`}>{aboutJournals.map((book, index) => <button type="button" ref={(element) => { journalBooks.current[index] = element; }} className={`journal-book book-${index + 1} ${openingAboutChapter === index ? "is-opening" : ""}`} key={book.label} onClick={() => openAboutJournal(index)} aria-label={`打开 ${book.label} 手账`}><span className="journal-inside" style={openingAboutChapter === index ? { viewTransitionName: "journal-page" } as CSSProperties : undefined}><JournalPageContent index={index} preview /></span><span className="journal-cover" style={openingAboutChapter === index ? { viewTransitionName: "journal-cover" } as CSSProperties : undefined}><img src={book.image} alt="" /><small>CHAPTER 0{index + 1}</small><strong>{book.label}</strong><em>{book.note}</em></span></button>)}</div></> : <div className={`label-detail journal-detail detail-${activeAboutChapter}`}>
-                    <button className="label-back" type="button" onClick={() => { setActiveAboutChapter(null); setChapterLeaf(0); }}>← 合上手账</button>
+                    <button className="label-back" type="button" onClick={() => { setActiveAboutChapter(null); setChapterLeaf(0); setSelectedTravelJournal(null); }}>← 合上手账</button>
                     <div className="journal-detail-spread" onClick={turnChapterLeaf}>
                       <div className="journal-detail-visual" style={{ viewTransitionName: "journal-cover" } as CSSProperties}>
                         <img src={aboutJournals[activeAboutChapter].image} alt={`${aboutJournals[activeAboutChapter].label} 手账封面人物`} />
@@ -838,8 +827,8 @@ export default function Home() {
                           {chapterLeaf === 0 && <JournalPageContent index={activeAboutChapter} />}
                           {activeAboutChapter === 0 && chapterLeaf === 1 && <div className="journal-material-page reliable-evidence"><header><small>WORDS LEFT BEHIND</small><h3>无论是顾客还是老板，<br />对我的评价永远是负责认真。</h3></header><div className="evidence-grid">{reliableReviews.map((item, index) => <button type="button" key={item.src} className={`scrap-photo scrap-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                           {activeAboutChapter === 0 && chapterLeaf === 2 && <div className="journal-material-page letter-page"><header><small>LETTERS I KEPT</small><h3>有些肯定，<br />我一直留着。</h3></header><div className="letter-stack">{reliableLetters.map((item, index) => <button type="button" key={item.src} className={`letter-piece letter-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
-                          {activeAboutChapter === 1 && chapterLeaf === 1 && <div className="journal-material-page travel-gallery globe-gallery"><header><small>THE COUNTRIES I CARRY</small><p>拖动地球，点一个国家看当时的照片。</p></header><div className="globe-layout"><div className="travel-globe-stage" aria-label="可拖动的旅行国家地球" onClick={(event) => event.stopPropagation()} onPointerDown={(event) => { suppressGlobeClick.current = false; globeDrag.current = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, rotationX: globeRotation.x, rotationY: globeRotation.y, moved: false }; event.currentTarget.setPointerCapture(event.pointerId); }} onPointerMove={moveTravelGlobe} onPointerUp={(event) => { event.currentTarget.releasePointerCapture(event.pointerId); globeDrag.current = null; }}><div className="travel-globe" style={{ "--globe-rx": `${globeRotation.x}deg`, "--globe-ry": `${globeRotation.y}deg` } as CSSProperties}><i className="globe-shell" aria-hidden="true" /><i className="globe-ring ring-a" aria-hidden="true" /><i className="globe-ring ring-b" aria-hidden="true" />{travelCountries.map((country, index) => <button type="button" key={country.name} className={`globe-country ${selectedCountry === index ? "active" : ""}`} style={{ "--country-lat": `${-country.lat}deg`, "--country-lon": `${country.lon}deg` } as CSSProperties} onClick={(event) => { event.stopPropagation(); if (!suppressGlobeClick.current) setSelectedCountry(index); suppressGlobeClick.current = false; }}><span>{country.name}</span></button>)}</div></div><button type="button" className="country-photo" onClick={(event) => { event.stopPropagation(); setMaterialPreview({ src: travelCountries[selectedCountry].image, alt: `${travelCountries[selectedCountry].name}旅行照片` }); }}><img src={travelCountries[selectedCountry].image} alt={`${travelCountries[selectedCountry].name}旅行照片`} /><span><small>此刻停在</small><strong>{travelCountries[selectedCountry].name}</strong><em>点击放大照片</em></span></button></div></div>}
-                          {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing"><header><small>NOTES FROM ELSEWHERE</small><h3>二十篇沿途随笔，<br />完整地留在这里。</h3></header><div className="travel-reader" onClick={(event) => event.stopPropagation()}><nav aria-label="旅行随笔目录">{travelJournals.map((item, index) => <button type="button" key={item.id} className={selectedTravelJournal === index ? "active" : ""} onClick={() => setSelectedTravelJournal(index)}><i>{item.id}</i><span>{item.title}</span></button>)}</nav><article>{travelJournals[selectedTravelJournal] ? <><header><small>{travelJournals[selectedTravelJournal].date || "TRAVEL NOTE"}</small><strong>{travelJournals[selectedTravelJournal].location}</strong></header><p>{travelJournals[selectedTravelJournal].body}</p></> : <p>随笔正在装订中……</p>}</article></div></div>}
+                          {activeAboutChapter === 1 && chapterLeaf === 1 && <div className="journal-material-page travel-gallery map-gallery"><header><small>WHERE I HAVE BEEN</small><p>地图上的玫瑰色坐标，是我真正走到过的地方。点击国家，翻看当时的照片。</p></header><div className="travel-map" onClick={(event) => event.stopPropagation()}><img src="/media/about-materials/world-map-blank.webp" alt="世界地图" />{travelCountries.map((country) => <button type="button" key={country.name} style={{ "--map-x": `${country.x}%`, "--map-y": `${country.y}%` } as CSSProperties} onClick={() => setMaterialPreview({ src: country.image, alt: `${country.name}旅行照片` })} aria-label={`查看${country.name}旅行照片`}><i /><span>{country.name}</span></button>)}</div></div>}
+                          {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing">{selectedTravelJournal === null ? <div className="travel-journal-index" onClick={(event) => event.stopPropagation()}><header><small>NOTES FROM ELSEWHERE</small><h3>不只是走马观花</h3><p>按国家收好，按城市翻开。点一个地名，读那一程的完整故事。</p></header><div className="journal-country-groups">{Object.entries(travelJournalGroups).map(([country, entries]) => <section key={country}><strong>{country}</strong><div>{entries.map(({ item, index, city }) => <button type="button" key={item.id} onClick={() => setSelectedTravelJournal(index)}><span>{city}</span><i>{item.date || "沿途记"}</i></button>)}</div></section>)}</div></div> : <article className="travel-journal-article" onClick={(event) => event.stopPropagation()}><button type="button" className="travel-article-back" onClick={() => setSelectedTravelJournal(null)}>← 返回随笔目录</button><header><small>{travelJournals[selectedTravelJournal]?.date || "TRAVEL NOTE"}</small><h3>{travelJournals[selectedTravelJournal]?.location}</h3></header><div><p>{travelJournals[selectedTravelJournal]?.body}</p></div></article>}</div>}
                           {activeAboutChapter === 2 && chapterLeaf === 1 && <div className="journal-material-page vivid-gallery"><header><small>LIVE, LAUGH, REPEAT</small><h3>认真生活，<br />也认真笑。</h3></header><div className="vivid-mosaic">{vividPhotos.map((item, index) => <button type="button" key={item.src} className={`vivid-shot vivid-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                         </div>
                         <nav className="journal-leaf-nav" aria-label={`${aboutJournals[activeAboutChapter].label} 手账内页`}>
