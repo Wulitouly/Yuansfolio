@@ -176,22 +176,22 @@ const reliableLetters = [
 ];
 
 const travelCountries = [
-  { name: "美国", image: "/media/about-materials/travel-usa.webp", x: 18, y: 38 },
-  { name: "埃及", image: "/media/about-materials/travel-egypt.webp", x: 52, y: 48 },
-  { name: "格鲁吉亚", image: "/media/about-materials/travel-kazbek.webp", x: 55, y: 35 },
-  { name: "亚美尼亚", image: "/media/about-materials/travel-armenia.webp", x: 57, y: 39 },
-  { name: "阿塞拜疆", image: "/media/about-materials/travel-azerbaijan.webp", x: 59, y: 36 },
-  { name: "伊朗", image: "/media/about-materials/travel-isfahan.webp", x: 60, y: 45 },
-  { name: "阿联酋", image: "/media/about-materials/travel-uae.webp", x: 63, y: 50 },
-  { name: "阿曼", image: "/media/about-materials/travel-oman.webp", x: 66, y: 53 },
-  { name: "哈萨克斯坦", image: "/media/about-materials/travel-kazakhstan.webp", x: 65, y: 31 },
-  { name: "乌兹别克斯坦", image: "/media/about-materials/travel-uzbekistan.webp", x: 63, y: 39 },
-  { name: "泰国", image: "/media/about-materials/travel-thailand.webp", x: 75, y: 57 },
-  { name: "柬埔寨", image: "/media/about-materials/travel-cambodia.webp", x: 77, y: 60 },
-  { name: "马来西亚", image: "/media/about-materials/travel-malaysia.webp", x: 76, y: 67 },
-  { name: "新加坡", image: "/media/about-materials/travel-singapore.webp", x: 78, y: 71 },
-  { name: "菲律宾", image: "/media/about-materials/travel-philippines.webp", x: 82, y: 56 },
-  { name: "澳大利亚", image: "/media/about-materials/travel-australia.webp", x: 85, y: 80 },
+  { name: "美国", image: "/media/about-materials/travel-usa.webp", x: 24.8, y: 25.8 },
+  { name: "埃及", image: "/media/about-materials/travel-egypt.webp", x: 58.1, y: 33.9 },
+  { name: "格鲁吉亚", image: "/media/about-materials/travel-kazbek.webp", x: 61, y: 24 },
+  { name: "亚美尼亚", image: "/media/about-materials/travel-armenia.webp", x: 61.5, y: 25.2 },
+  { name: "阿塞拜疆", image: "/media/about-materials/travel-azerbaijan.webp", x: 62.2, y: 25.2 },
+  { name: "伊朗", image: "/media/about-materials/travel-isfahan.webp", x: 64, y: 30.2 },
+  { name: "阿联酋", image: "/media/about-materials/travel-uae.webp", x: 64.6, y: 35.1 },
+  { name: "阿曼", image: "/media/about-materials/travel-oman.webp", x: 65.5, y: 37 },
+  { name: "哈萨克斯坦", image: "/media/about-materials/travel-kazakhstan.webp", x: 66.4, y: 20.3 },
+  { name: "乌兹别克斯坦", image: "/media/about-materials/travel-uzbekistan.webp", x: 66.3, y: 24.6 },
+  { name: "泰国", image: "/media/about-materials/travel-thailand.webp", x: 77.8, y: 40.7 },
+  { name: "柬埔寨", image: "/media/about-materials/travel-cambodia.webp", x: 79, y: 42.2 },
+  { name: "马来西亚", image: "/media/about-materials/travel-malaysia.webp", x: 78.3, y: 47.5 },
+  { name: "新加坡", image: "/media/about-materials/travel-singapore.webp", x: 78.9, y: 49.2 },
+  { name: "菲律宾", image: "/media/about-materials/travel-philippines.webp", x: 83.7, y: 42.6 },
+  { name: "澳大利亚", image: "/media/about-materials/travel-australia.webp", x: 86.2, y: 65.5 },
 ];
 
 type TravelJournal = { id: string; title: string; date: string; location: string; body: string };
@@ -828,7 +828,7 @@ export default function Home() {
                           {activeAboutChapter === 0 && chapterLeaf === 1 && <div className="journal-material-page reliable-evidence"><header><small>WORDS LEFT BEHIND</small><h3>无论是顾客还是老板，<br />对我的评价永远是负责认真。</h3></header><div className="evidence-grid">{reliableReviews.map((item, index) => <button type="button" key={item.src} className={`scrap-photo scrap-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                           {activeAboutChapter === 0 && chapterLeaf === 2 && <div className="journal-material-page letter-page"><header><small>LETTERS I KEPT</small><h3>有些肯定，<br />我一直留着。</h3></header><div className="letter-stack">{reliableLetters.map((item, index) => <button type="button" key={item.src} className={`letter-piece letter-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                           {activeAboutChapter === 1 && chapterLeaf === 1 && <div className="journal-material-page travel-gallery map-gallery"><header><small>WHERE I HAVE BEEN</small><p>地图上的玫瑰色坐标，是我真正走到过的地方。点击国家，翻看当时的照片。</p></header><div className="travel-map" onClick={(event) => event.stopPropagation()}><img src="/media/about-materials/world-map-blank.webp" alt="世界地图" />{travelCountries.map((country) => <button type="button" key={country.name} style={{ "--map-x": `${country.x}%`, "--map-y": `${country.y}%` } as CSSProperties} onClick={() => setMaterialPreview({ src: country.image, alt: `${country.name}旅行照片` })} aria-label={`查看${country.name}旅行照片`}><i /><span>{country.name}</span></button>)}</div></div>}
-                          {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing">{selectedTravelJournal === null ? <div className="travel-journal-index" onClick={(event) => event.stopPropagation()}><header><small>NOTES FROM ELSEWHERE</small><h3>不只是走马观花</h3><p>按国家收好，按城市翻开。点一个地名，读那一程的完整故事。</p></header><div className="journal-country-groups">{Object.entries(travelJournalGroups).map(([country, entries]) => <section key={country}><strong>{country}</strong><div>{entries.map(({ item, index, city }) => <button type="button" key={item.id} onClick={() => setSelectedTravelJournal(index)}><span>{city}</span><i>{item.date || "沿途记"}</i></button>)}</div></section>)}</div></div> : <article className="travel-journal-article" onClick={(event) => event.stopPropagation()}><button type="button" className="travel-article-back" onClick={() => setSelectedTravelJournal(null)}>← 返回随笔目录</button><header><small>{travelJournals[selectedTravelJournal]?.date || "TRAVEL NOTE"}</small><h3>{travelJournals[selectedTravelJournal]?.location}</h3></header><div><p>{travelJournals[selectedTravelJournal]?.body}</p></div></article>}</div>}
+                          {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing">{selectedTravelJournal === null ? <div className="travel-journal-index" onClick={(event) => event.stopPropagation()}><header><small>NOTES FROM ELSEWHERE</small><h3>不只是走马观花</h3><p>点开一个地名，看看我那时那刻的心境</p></header><div className="journal-country-groups">{Object.entries(travelJournalGroups).map(([country, entries]) => <section key={country}><strong>{country}</strong><div>{entries.map(({ item, index, city }) => <button type="button" key={item.id} onClick={() => setSelectedTravelJournal(index)}><span>{city}</span><i>{item.date || "沿途记"}</i></button>)}</div></section>)}</div></div> : <article className="travel-journal-article" onClick={(event) => event.stopPropagation()}><button type="button" className="travel-article-back" onClick={() => setSelectedTravelJournal(null)}>← 返回随笔目录</button><header><small>{travelJournals[selectedTravelJournal]?.date || "TRAVEL NOTE"}</small><h3>{travelJournals[selectedTravelJournal]?.location}</h3></header><div><p>{travelJournals[selectedTravelJournal]?.body}</p></div></article>}</div>}
                           {activeAboutChapter === 2 && chapterLeaf === 1 && <div className="journal-material-page vivid-gallery"><header><small>LIVE, LAUGH, REPEAT</small><h3>认真生活，<br />也认真笑。</h3></header><div className="vivid-mosaic">{vividPhotos.map((item, index) => <button type="button" key={item.src} className={`vivid-shot vivid-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                         </div>
                         <nav className="journal-leaf-nav" aria-label={`${aboutJournals[activeAboutChapter].label} 手账内页`}>

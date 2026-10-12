@@ -184,8 +184,8 @@
 .map-gallery{display:flex;flex-direction:column}
 .map-gallery>header{margin:0 0 6px}
 .map-gallery>header p{max-width:430px;margin:7px 0 0;color:#897d82;font-size:8px;line-height:1.65;letter-spacing:.02em}
-.travel-map{position:relative;flex:1;min-height:0;width:100%;overflow:visible;isolation:isolate}
-.travel-map>img{position:absolute;z-index:0;inset:2px 0 0;width:100%;height:100%;object-fit:contain;filter:sepia(.08) saturate(.6);opacity:.88;pointer-events:none}
+.travel-map{position:relative;flex:none;width:100%;aspect-ratio:1920/975;margin:auto 0;overflow:visible;isolation:isolate}
+.travel-map>img{position:absolute;z-index:0;inset:0;width:100%;height:100%;object-fit:fill;filter:sepia(.08) saturate(.6);opacity:.88;pointer-events:none}
 .travel-map>button{--map-x:50%;--map-y:50%;position:absolute;z-index:2;left:var(--map-x);top:var(--map-y);padding:0;border:0;background:transparent;transform:translate(-50%,-50%);color:#796a70;text-align:center}
 .travel-map>button i{position:relative;display:block;width:9px;height:9px;margin:0 auto 4px;border:2px solid #f7f0e5;border-radius:50%;background:#b87886;box-shadow:0 0 0 1px rgba(145,90,104,.45),0 3px 7px rgba(76,54,60,.18);transition:transform .2s ease,background .2s ease}
 .travel-map>button i:after{content:"";position:absolute;left:50%;top:7px;width:1px;height:7px;background:rgba(145,90,104,.55)}
@@ -193,27 +193,32 @@
 .travel-map>button:hover i,.travel-map>button:focus-visible i{transform:scale(1.35);background:#945d6a}
 .travel-map>button:hover span,.travel-map>button:focus-visible span{background:#945d6a;color:#fff;outline:0}
 .travel-map>button:focus-visible{outline:0}
-.travel-map>button:nth-of-type(4){transform:translate(-82%,-140%)}
-.travel-map>button:nth-of-type(5){transform:translate(-5%,10%)}
-.travel-map>button:nth-of-type(6){transform:translate(-90%,15%)}
-.travel-map>button:nth-of-type(7){transform:translate(-15%,15%)}
-.travel-map>button:nth-of-type(9){transform:translate(-50%,-115%)}
-.travel-map>button:nth-of-type(10){transform:translate(-112%,5%)}
-.travel-map>button:nth-of-type(13){transform:translate(-120%,10%)}
-.travel-map>button:nth-of-type(14){transform:translate(0,15%)}
+.travel-map>button:nth-of-type(3) span{transform:translate(-95%,-380%)}
+.travel-map>button:nth-of-type(4) span{transform:translate(-125%,25%)}
+.travel-map>button:nth-of-type(5) span{transform:translate(15%,-250%)}
+.travel-map>button:nth-of-type(7) span{transform:translate(-115%,0)}
+.travel-map>button:nth-of-type(8) span{transform:translate(20%,0)}
+.travel-map>button:nth-of-type(9) span{transform:translate(-30%,-280%)}
+.travel-map>button:nth-of-type(10) span{transform:translate(20%,25%)}
+.travel-map>button:nth-of-type(11) span{transform:translate(-115%,-30%)}
+.travel-map>button:nth-of-type(12) span{transform:translate(10%,-10%)}
+.travel-map>button:nth-of-type(13) span{transform:translate(-110%,-15%)}
+.travel-map>button:nth-of-type(14) span{transform:translate(10%,35%)}
 
 .travel-journal-index{height:100%;overflow:hidden}
-.travel-journal-index>header{margin:0 0 13px}
+.travel-journal-index>header{margin:0 0 17px}
 .travel-journal-index>header h3{margin:9px 0 6px;font-size:34px}
-.travel-journal-index>header p{margin:0;color:#897d82;font:400 8px/1.6 "HarmonyOS Sans SC","PingFang SC",sans-serif}
-.journal-country-groups{height:276px;padding-right:8px;display:grid;grid-template-columns:1fr 1fr;align-content:start;gap:0 23px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(152,116,125,.32) transparent}
-.journal-country-groups section{padding:9px 0 8px;display:grid;grid-template-columns:72px 1fr;gap:8px;border-top:1px solid rgba(111,89,80,.13)}
-.journal-country-groups section>strong{color:#4e4549;font:500 10px/1.45 "Songti SC","Noto Serif SC",serif}
-.journal-country-groups section>div{display:flex;flex-wrap:wrap;gap:4px 7px}
-.journal-country-groups button{padding:0;border:0;border-bottom:1px solid transparent;background:transparent;color:#7c7176;text-align:left;font:400 7px/1.35 "HarmonyOS Sans SC","PingFang SC",sans-serif}
-.journal-country-groups button span,.journal-country-groups button i{display:block}
-.journal-country-groups button i{margin-top:2px;color:#aaa0a4;font-size:5px;font-style:normal}
-.journal-country-groups button:hover,.journal-country-groups button:focus-visible{border-color:rgba(184,120,134,.65);color:var(--rose);outline:0}
+.travel-journal-index>header p{margin:0;color:#897d82;font:400 9px/1.6 "HarmonyOS Sans SC","PingFang SC",sans-serif}
+.journal-country-groups{height:268px;padding-right:13px;display:block;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(152,116,125,.32) transparent}
+.journal-country-groups section{padding:14px 0 12px;border-top:1px solid rgba(111,89,80,.17)}
+.journal-country-groups section>strong{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#51464b;font:500 14px/1.4 "Songti SC","Noto Serif SC",serif}
+.journal-country-groups section>strong:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(184,120,134,.28),transparent)}
+.journal-country-groups section>div{display:grid;gap:3px}
+.journal-country-groups button{width:100%;padding:9px 10px 9px 12px;display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:14px;border:0;border-left:2px solid transparent;background:rgba(255,255,255,.2);color:#5f555a;text-align:left;font:400 12px/1.35 "HarmonyOS Sans SC","PingFang SC",sans-serif;cursor:pointer;transition:background .2s ease,color .2s ease,padding .2s ease,border-color .2s ease}
+.journal-country-groups button span{display:block}
+.journal-country-groups button i{color:#aaa0a4;font-size:7px;font-style:normal}
+.journal-country-groups button:after{content:"打开 ↗";color:var(--rose);font-size:8px;letter-spacing:.06em;white-space:nowrap}
+.journal-country-groups button:hover,.journal-country-groups button:focus-visible{padding-left:17px;border-left-color:var(--rose);background:rgba(184,120,134,.1);color:#443b40;outline:0}
 .travel-journal-article{position:relative;height:100%;padding-top:19px;overflow:hidden}
 .travel-article-back{position:absolute;right:0;top:0;padding:0 0 4px;border:0;border-bottom:1px solid rgba(184,120,134,.35);background:transparent;color:#8f7d84;font:400 7px/1 "HarmonyOS Sans SC","PingFang SC",sans-serif}
 .travel-journal-article>header{margin:0 0 13px;padding-bottom:12px;border-bottom:1px solid rgba(111,89,80,.14)}
@@ -224,7 +229,7 @@
 
 @media(max-width:620px){
   .map-gallery>header p{font-size:6px}.travel-map>button i{width:7px;height:7px;margin-bottom:2px;border-width:1px}.travel-map>button span{padding:2px 3px;font-size:4.5px}
-  .travel-journal-index>header h3{font-size:22px}.travel-journal-index>header p{font-size:5.5px}.journal-country-groups{height:285px;grid-template-columns:1fr;gap:0}.journal-country-groups section{grid-template-columns:60px 1fr;padding:6px 0}.journal-country-groups section>strong{font-size:7px}.journal-country-groups button{font-size:5.5px}.travel-journal-article>header h3{font-size:19px}.travel-journal-article>div{height:320px;padding-right:7px}.travel-journal-article>div p{font-size:7px;line-height:1.8}
+  .travel-journal-index>header h3{font-size:22px}.travel-journal-index>header p{font-size:7px}.journal-country-groups{height:285px}.journal-country-groups section{padding:10px 0}.journal-country-groups section>strong{font-size:11px}.journal-country-groups button{padding:7px 7px 7px 9px;gap:8px;font-size:9px}.journal-country-groups button i,.journal-country-groups button:after{font-size:6px}.travel-journal-article>header h3{font-size:19px}.travel-journal-article>div{height:320px;padding-right:7px}.travel-journal-article>div p{font-size:7px;line-height:1.8}
 }
 
 /* Transparent puller treatment: the animation becomes part of the timeline, not a video panel. */
