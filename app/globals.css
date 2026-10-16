@@ -217,7 +217,12 @@
 .journal-country-groups button{width:100%;padding:10px 12px;display:block;border:0;background:rgba(255,255,255,.2);color:#5f555a;text-align:left;font:400 12px/1.35 "HarmonyOS Sans SC","PingFang SC",sans-serif;cursor:pointer;transition:background .2s ease,color .2s ease,padding .2s ease}
 .journal-country-groups button span{display:block}
 .journal-country-groups button:hover,.journal-country-groups button:focus-visible{padding-left:18px;background:rgba(184,120,134,.1);color:var(--rose);outline:0}
-.travel-journal-article{position:relative;height:100%;padding:19px 17px 34px 0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(152,116,125,.32) transparent}
+.travel-journal-article{position:relative;height:100%;padding:19px 17px 34px 0;overflow-y:auto;scrollbar-width:thin;scrollbar-color:transparent transparent}
+.travel-journal-article.is-scrolling{scrollbar-color:rgba(152,116,125,.42) transparent}
+.travel-journal-article::-webkit-scrollbar{width:5px}
+.travel-journal-article::-webkit-scrollbar-track{background:transparent}
+.travel-journal-article::-webkit-scrollbar-thumb{border-radius:999px;background:transparent}
+.travel-journal-article.is-scrolling::-webkit-scrollbar-thumb{background:rgba(152,116,125,.42)}
 .travel-article-back{position:absolute;right:0;top:0;padding:0 0 4px;border:0;border-bottom:1px solid rgba(184,120,134,.35);background:transparent;color:#8f7d84;font:400 7px/1 "HarmonyOS Sans SC","PingFang SC",sans-serif}
 .travel-journal-article>header{margin:0 0 13px;padding-bottom:12px;border-bottom:1px solid rgba(111,89,80,.14)}
 .travel-journal-article>header small{display:block;margin-bottom:7px;color:var(--rose);font:500 7px/1 "Avenir Next",sans-serif;letter-spacing:.12em}

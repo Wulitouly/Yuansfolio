@@ -246,6 +246,7 @@ export default function Home() {
   const [materialPreview, setMaterialPreview] = useState<{ src: string; alt: string } | null>(null);
   const [travelJournals, setTravelJournals] = useState<TravelJournal[]>([]);
   const [selectedTravelJournal, setSelectedTravelJournal] = useState<number | null>(null);
+  const [journalScrolling, setJournalScrolling] = useState(false);
   const [aboutSlide, setAboutSlide] = useState(0);
   const [aboutAdvancing, setAboutAdvancing] = useState(false);
   const [activeSection, setActiveSection] = useState("top");
@@ -263,6 +264,7 @@ export default function Home() {
   const personalityDrag = useRef<{ pointerId: number; element: HTMLButtonElement; offsetX: number; offsetY: number } | null>(null);
   const aboutAdvanceTimer = useRef<number | null>(null);
   const journalOpenTimer = useRef<number | null>(null);
+  const journalScrollTimer = useRef<number | null>(null);
   const journalBooks = useRef<(HTMLButtonElement | null)[]>([]);
   const selectedCase = lyzCases.find((item) => item.id === activeCase) ?? lyzCases[0];
 
@@ -338,6 +340,15 @@ export default function Home() {
     }, 650);
   };
 
+  const revealJournalScrollbar = () => {
+    setJournalScrolling(true);
+    if (journalScrollTimer.current !== null) window.clearTimeout(journalScrollTimer.current);
+    journalScrollTimer.current = window.setTimeout(() => {
+      setJournalScrolling(false);
+      journalScrollTimer.current = null;
+    }, 700);
+  };
+
   const centerExperience = (index: number, behavior: ScrollBehavior = "smooth") => {
     const carousel = experienceCarousel.current;
     const card = carousel?.querySelector<HTMLElement>(`[data-experience-index="${index}"]`);
@@ -361,6 +372,7 @@ export default function Home() {
     });
     return () => {
       window.clearTimeout(preloadTimer);
+      if (journalScrollTimer.current !== null) window.clearTimeout(journalScrollTimer.current);
       observer.disconnect();
     };
   }, []);
@@ -828,7 +840,7 @@ export default function Home() {
                           {activeAboutChapter === 0 && chapterLeaf === 1 && <div className="journal-material-page reliable-evidence"><header><small>WORDS LEFT BEHIND</small><h3>无论是顾客还是老板，<br />对我的评价永远是负责认真。</h3></header><div className="evidence-grid">{reliableReviews.map((item, index) => <button type="button" key={item.src} className={`scrap-photo scrap-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                           {activeAboutChapter === 0 && chapterLeaf === 2 && <div className="journal-material-page letter-page"><header><small>LETTERS I KEPT</small><h3>有些肯定，<br />我一直留着。</h3></header><div className="letter-stack">{reliableLetters.map((item, index) => <button type="button" key={item.src} className={`letter-piece letter-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                           {activeAboutChapter === 1 && chapterLeaf === 1 && <div className="journal-material-page travel-gallery map-gallery"><header><small>WHERE I HAVE BEEN</small><p>地图上的玫瑰色坐标，是我真正走到过的地方。点击国家，翻看当时的照片。</p></header><div className="travel-map" onClick={(event) => event.stopPropagation()}><img src="/media/about-materials/world-map-blank.webp" alt="世界地图" />{travelCountries.map((country) => <button type="button" key={country.name} style={{ "--map-x": `${country.x}%`, "--map-y": `${country.y}%` } as CSSProperties} onClick={() => setMaterialPreview({ src: country.image, alt: `${country.name}旅行照片` })} aria-label={`查看${country.name}旅行照片`}><i /><span>{country.name}</span></button>)}</div></div>}
-                          {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing">{selectedTravelJournal === null ? <div className="travel-journal-index" onClick={(event) => event.stopPropagation()}><header><small>NOTES FROM ELSEWHERE</small><h3>不只是走马观花</h3><p>点开一个地名，看看我那时那刻的心境</p></header><div className="journal-country-groups">{Object.entries(travelJournalGroups).map(([country, entries]) => <section key={country}><strong>{country}</strong><div>{entries.map(({ item, index, city }) => <button type="button" key={item.id} onClick={() => setSelectedTravelJournal(index)}><span>{city}</span></button>)}</div></section>)}</div></div> : <article className="travel-journal-article" onClick={(event) => event.stopPropagation()}><button type="button" className="travel-article-back" onClick={() => setSelectedTravelJournal(null)}>← 返回随笔目录</button><header>{travelJournals[selectedTravelJournal]?.date && <small>{travelJournals[selectedTravelJournal].date}</small>}<h3>{travelJournals[selectedTravelJournal]?.location}</h3></header><div><p>{travelJournals[selectedTravelJournal]?.body}</p></div></article>}</div>}
+                          {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing">{selectedTravelJournal === null ? <div className="travel-journal-index" onClick={(event) => event.stopPropagation()}><header><small>NOTES FROM ELSEWHERE</small><h3>不只是走马观花</h3><p>点开一个地名，看看我那时那刻的心境</p></header><div className="journal-country-groups">{Object.entries(travelJournalGroups).map(([country, entries]) => <section key={country}><strong>{country}</strong><div>{entries.map(({ item, index, city }) => <button type="button" key={item.id} onClick={() => setSelectedTravelJournal(index)}><span>{city}</span></button>)}</div></section>)}</div></div> : <article className={`travel-journal-article ${journalScrolling ? "is-scrolling" : ""}`} onScroll={revealJournalScrollbar} onClick={(event) => event.stopPropagation()}><button type="button" className="travel-article-back" onClick={() => setSelectedTravelJournal(null)}>← 返回随笔目录</button><header>{travelJournals[selectedTravelJournal]?.date && <small>{travelJournals[selectedTravelJournal].date}</small>}<h3>{travelJournals[selectedTravelJournal]?.location}</h3></header><div><p>{travelJournals[selectedTravelJournal]?.body}</p></div></article>}</div>}
                           {activeAboutChapter === 2 && chapterLeaf === 1 && <div className="journal-material-page vivid-gallery"><header><small>LIVE, LAUGH, REPEAT</small><h3>认真生活，<br />也认真笑。</h3></header><div className="vivid-mosaic">{vividPhotos.map((item, index) => <button type="button" key={item.src} className={`vivid-shot vivid-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                         </div>
                         <nav className="journal-leaf-nav" aria-label={`${aboutJournals[activeAboutChapter].label} 手账内页`}>
