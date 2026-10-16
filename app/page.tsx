@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import type { CSSProperties, MouseEvent as ReactMouseEvent, PointerEvent as ReactPointerEvent } from "react";
+import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
 import { flushSync } from "react-dom";
 import { BookHeart, ChevronDown, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
 
@@ -221,21 +221,6 @@ function JournalPageContent({ index, preview = false }: { index: number; preview
   </div>;
 }
 
-const personalityTags = [
-  { label: "INFJ", x: 7, y: 18, tone: "serious" },
-  { label: "极度认真", x: 18, y: 38, tone: "serious" },
-  { label: "责任感", x: 5, y: 61, tone: "serious" },
-  { label: "靠谱", x: 27, y: 72, tone: "serious" },
-  { label: "耐心", x: 31, y: 23, tone: "serious" },
-  { label: "二把手", x: 10, y: 82, tone: "serious" },
-  { label: "ENFJ", x: 79, y: 16, tone: "playful" },
-  { label: "极度放飞", x: 68, y: 36, tone: "playful" },
-  { label: "背包客", x: 84, y: 54, tone: "playful" },
-  { label: "搞笑女", x: 62, y: 69, tone: "playful" },
-  { label: "急着出发", x: 78, y: 82, tone: "playful" },
-  { label: "好奇心", x: 56, y: 23, tone: "playful" },
-];
-
 export default function Home() {
   const [activeCase, setActiveCase] = useState("inventory");
   const [activeExperience, setActiveExperience] = useState(0);
@@ -260,8 +245,6 @@ export default function Home() {
   const carouselDrag = useRef<{ pointerId: number; startX: number; startScrollLeft: number; moved: boolean } | null>(null);
   const carouselScrollFrame = useRef<number | null>(null);
   const suppressCarouselClick = useRef(false);
-  const personalityBoard = useRef<HTMLDivElement | null>(null);
-  const personalityDrag = useRef<{ pointerId: number; element: HTMLButtonElement; offsetX: number; offsetY: number } | null>(null);
   const aboutAdvanceTimer = useRef<number | null>(null);
   const journalOpenTimer = useRef<number | null>(null);
   const journalScrollTimer = useRef<number | null>(null);
@@ -272,7 +255,7 @@ export default function Home() {
     setAboutAdvancing(true);
     if (aboutAdvanceTimer.current) window.clearTimeout(aboutAdvanceTimer.current);
     if (journalOpenTimer.current) window.clearTimeout(journalOpenTimer.current);
-    setAboutSlide((current) => (current + 1) % 5);
+    setAboutSlide((current) => (current + 1) % 4);
     setAnswerVisible(false);
     setActiveAboutChapter(null);
     setOpeningAboutChapter(null);
@@ -310,18 +293,6 @@ export default function Home() {
       if (viewTransitionDocument.startViewTransition) viewTransitionDocument.startViewTransition(updateJournal);
       else updateJournal();
     }, 1020);
-  };
-
-  const movePersonalityTag = (event: ReactPointerEvent<HTMLButtonElement>) => {
-    const drag = personalityDrag.current;
-    const board = personalityBoard.current;
-    if (!drag || !board || drag.pointerId !== event.pointerId) return;
-    const boardRect = board.getBoundingClientRect();
-    const tagRect = drag.element.getBoundingClientRect();
-    const left = Math.min(Math.max(0, event.clientX - boardRect.left - drag.offsetX), boardRect.width - tagRect.width);
-    const top = Math.min(Math.max(0, event.clientY - boardRect.top - drag.offsetY), boardRect.height - tagRect.height);
-    drag.element.style.left = `${left}px`;
-    drag.element.style.top = `${top}px`;
   };
 
   const revealTimelineScrollbar = (scroller: HTMLDivElement) => {
@@ -816,7 +787,7 @@ export default function Home() {
 
       <section className="about-story section" id="about">
         <div className="shell">
-          <div className="about-story-topline"><span>02 / ABOUT ME</span><span>{String(aboutSlide + 1).padStart(2, "0")} / 05</span></div>
+          <div className="about-story-topline"><span>02 / ABOUT ME</span><span>{String(aboutSlide + 1).padStart(2, "0")} / 04</span></div>
           <div className={`about-deck ${aboutSlide >= 2 ? "about-deck-wide" : ""}`}>
             <div className="about-slide-window" aria-live="polite">
               <div className="about-slide" key={aboutSlide}>
@@ -840,7 +811,7 @@ export default function Home() {
                           {activeAboutChapter === 0 && chapterLeaf === 1 && <div className="journal-material-page reliable-evidence"><header><small>WORDS LEFT BEHIND</small><h3>无论是顾客还是老板，<br />对我的评价永远是负责认真。</h3></header><div className="evidence-grid">{reliableReviews.map((item, index) => <button type="button" key={item.src} className={`scrap-photo scrap-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                           {activeAboutChapter === 0 && chapterLeaf === 2 && <div className="journal-material-page letter-page"><header><small>LETTERS I KEPT</small><h3>有些肯定，<br />我一直留着。</h3></header><div className="letter-stack">{reliableLetters.map((item, index) => <button type="button" key={item.src} className={`letter-piece letter-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                           {activeAboutChapter === 1 && chapterLeaf === 1 && <div className="journal-material-page travel-gallery map-gallery"><header><small>WHERE I HAVE BEEN</small><p>地图上的玫瑰色坐标，是我真正走到过的地方。点击国家，翻看当时的照片。</p></header><div className="travel-map" onClick={(event) => event.stopPropagation()}><img src="/media/about-materials/world-map-blank.webp" alt="世界地图" />{travelCountries.map((country) => <button type="button" key={country.name} style={{ "--map-x": `${country.x}%`, "--map-y": `${country.y}%` } as CSSProperties} onClick={() => setMaterialPreview({ src: country.image, alt: `${country.name}旅行照片` })} aria-label={`查看${country.name}旅行照片`}><i /><span>{country.name}</span></button>)}</div></div>}
-                          {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing">{selectedTravelJournal === null ? <div className="travel-journal-index" onClick={(event) => event.stopPropagation()}><header><small>NOTES FROM ELSEWHERE</small><h3>不只是走马观花</h3><p>点开一个地名，看看我那时那刻的心境</p></header><div className="journal-country-groups">{Object.entries(travelJournalGroups).map(([country, entries]) => <section key={country}><strong>{country}</strong><div>{entries.map(({ item, index, city }) => <button type="button" key={item.id} onClick={() => setSelectedTravelJournal(index)}><span>{city}</span></button>)}</div></section>)}</div></div> : <article className={`travel-journal-article ${journalScrolling ? "is-scrolling" : ""}`} onScroll={revealJournalScrollbar} onClick={(event) => event.stopPropagation()}><button type="button" className="travel-article-back" onClick={() => setSelectedTravelJournal(null)}>← 返回随笔目录</button><header>{travelJournals[selectedTravelJournal]?.date && <small>{travelJournals[selectedTravelJournal].date}</small>}<h3>{travelJournals[selectedTravelJournal]?.location}</h3></header><div><p>{travelJournals[selectedTravelJournal]?.body}</p></div></article>}</div>}
+                          {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing">{selectedTravelJournal === null ? <div className="travel-journal-index" onClick={(event) => event.stopPropagation()}><header><small>NOTES FROM ELSEWHERE</small><h3>不只是走马观花</h3><p>点开一个地名，看看我那时那刻的心境</p></header><div className={`journal-country-groups ${journalScrolling ? "is-scrolling" : ""}`} onScroll={revealJournalScrollbar}>{Object.entries(travelJournalGroups).map(([country, entries]) => <section key={country}><strong>{country}</strong><div>{entries.map(({ item, index, city }) => <button type="button" key={item.id} onClick={() => setSelectedTravelJournal(index)}><span>{city}</span></button>)}</div></section>)}</div></div> : <article className={`travel-journal-article ${journalScrolling ? "is-scrolling" : ""}`} onScroll={revealJournalScrollbar} onClick={(event) => event.stopPropagation()}><button type="button" className="travel-article-back" onClick={() => setSelectedTravelJournal(null)}>← 返回随笔目录</button><header>{travelJournals[selectedTravelJournal]?.date && <small>{travelJournals[selectedTravelJournal].date}</small>}<h3>{travelJournals[selectedTravelJournal]?.location}</h3></header><div><p>{travelJournals[selectedTravelJournal]?.body}</p></div></article>}</div>}
                           {activeAboutChapter === 2 && chapterLeaf === 1 && <div className="journal-material-page vivid-gallery"><header><small>LIVE, LAUGH, REPEAT</small><h3>认真生活，<br />也认真笑。</h3></header><div className="vivid-mosaic">{vividPhotos.map((item, index) => <button type="button" key={item.src} className={`vivid-shot vivid-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                         </div>
                         <nav className="journal-leaf-nav" aria-label={`${aboutJournals[activeAboutChapter].label} 手账内页`}>
@@ -851,12 +822,11 @@ export default function Home() {
                     </div>
                   </div>}
                 </div>}
-                {aboutSlide === 4 && <div className="about-slide-copy personality-slide"><header><small>最后，轮到你回答</small><h3>你眼里的我，<br />是什么样的？</h3><p>拖动标签，把它们放到你觉得合适的位置。没有标准答案。</p></header><div className="personality-board" ref={personalityBoard}><div className="board-side board-serious"><span>INFJ / 工作模式</span></div><div className="board-question"><span>Somehow,</span><strong>I’m both.</strong><small>把标签拖到这里</small></div><div className="board-side board-playful"><span>ENFJ / 生活模式</span></div>{personalityTags.map((tag) => <button type="button" className={`personality-tag ${tag.tone}`} style={{ left: `${tag.x}%`, top: `${tag.y}%` }} key={tag.label} onPointerDown={(event) => { const rect = event.currentTarget.getBoundingClientRect(); personalityDrag.current = { pointerId: event.pointerId, element: event.currentTarget, offsetX: event.clientX - rect.left, offsetY: event.clientY - rect.top }; event.currentTarget.setPointerCapture(event.pointerId); event.currentTarget.classList.add("is-dragging"); }} onPointerMove={movePersonalityTag} onPointerUp={(event) => { event.currentTarget.classList.remove("is-dragging"); event.currentTarget.releasePointerCapture(event.pointerId); personalityDrag.current = null; }}>{tag.label}</button>)}</div></div>}
               </div>
             </div>
             {aboutSlide < 2 && <div className="about-deck-character" aria-hidden="true"><img className="character-static" src="/media/about-character-rest-user.png" alt="" /></div>}
             <button className={`about-next-page ${aboutAdvancing ? "is-turning" : ""}`} type="button" onClick={advanceAboutSlide} aria-label="翻到下一页"><span>点这翻页</span><i aria-hidden="true" /></button>
-            <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3,4].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { if (journalOpenTimer.current) window.clearTimeout(journalOpenTimer.current); setAboutSlide(index); setAnswerVisible(false); setActiveAboutChapter(null); setOpeningAboutChapter(null); setChapterLeaf(0); setMaterialPreview(null); }} />)}</div>
+            <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { if (journalOpenTimer.current) window.clearTimeout(journalOpenTimer.current); setAboutSlide(index); setAnswerVisible(false); setActiveAboutChapter(null); setOpeningAboutChapter(null); setChapterLeaf(0); setMaterialPreview(null); }} />)}</div>
           </div>
         </div>
       </section>

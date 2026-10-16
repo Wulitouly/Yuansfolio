@@ -209,7 +209,12 @@
 .travel-journal-index>header{margin:0 0 17px}
 .travel-journal-index>header h3{margin:9px 0 6px;font-size:34px}
 .travel-journal-index>header p{margin:0;color:#897d82;font:400 9px/1.6 "HarmonyOS Sans SC","PingFang SC",sans-serif}
-.journal-country-groups{height:268px;padding-right:13px;display:block;overflow-y:auto;scrollbar-width:thin;scrollbar-color:rgba(152,116,125,.32) transparent}
+.journal-country-groups{height:268px;padding-right:13px;display:block;overflow-y:auto;scrollbar-width:thin;scrollbar-color:transparent transparent}
+.journal-country-groups.is-scrolling{scrollbar-color:rgba(152,116,125,.42) transparent}
+.journal-country-groups::-webkit-scrollbar{width:5px}
+.journal-country-groups::-webkit-scrollbar-track{background:transparent}
+.journal-country-groups::-webkit-scrollbar-thumb{border-radius:999px;background:transparent}
+.journal-country-groups.is-scrolling::-webkit-scrollbar-thumb{background:rgba(152,116,125,.42)}
 .journal-country-groups section{padding:14px 0 12px;border-top:1px solid rgba(111,89,80,.17)}
 .journal-country-groups section>strong{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#51464b;font:500 14px/1.4 "Songti SC","Noto Serif SC",serif}
 .journal-country-groups section>strong:after{content:"";height:1px;flex:1;background:linear-gradient(90deg,rgba(184,120,134,.28),transparent)}
@@ -311,7 +316,7 @@
 .timeline-item:nth-child(11){--curve-y:7px}
 
 /* About me — a personal editorial rather than a second resume. */
-.about-story{position:relative;padding:124px 0 150px;overflow:hidden;background:#f0ece6;color:var(--ink);transition:background .45s ease}
+.about-story{position:relative;padding:124px 0 150px;overflow:hidden;background:var(--paper);color:var(--ink);transition:background .45s ease}
 .about-story-topline{padding-bottom:18px;display:flex;justify-content:space-between;border-bottom:1px solid rgba(41,36,42,.14);color:#8d8589;font-size:9px;letter-spacing:.08em}
 .about-hero{min-height:610px;display:grid;grid-template-columns:1.16fr .84fr;align-items:center;gap:60px}
 .about-hero-copy>p{margin:0 0 18px;color:var(--rose);font:500 19px Georgia,serif}
@@ -757,3 +762,6 @@
   .journal-detail-page>.journal-click-hint{display:none}.journal-detail-page .journal-page-copy:not(.is-preview){padding:8px 1px 28px}.journal-detail-page .journal-page-copy:not(.is-preview)>h3{margin-bottom:20px;font-size:29px}.journal-detail-page .journal-page-copy:not(.is-preview)>p{padding-top:16px;font-size:9px;line-height:1.85}
   .reliable-evidence header h3{font-size:17px}.globe-layout{grid-template-columns:52% 48%;gap:5px}.travel-globe-stage{height:240px}.travel-globe{width:150px;height:150px}.globe-country{transform:rotateY(var(--country-lon)) rotateX(var(--country-lat)) translateZ(76px)}.globe-country span{padding:3px 4px;font-size:5px}.country-photo{height:205px}.country-photo>span{left:10px;bottom:10px}.country-photo strong{font-size:16px}.travel-writing>header h3{font-size:17px}.travel-reader{height:275px;grid-template-columns:41% 59%}.travel-reader>nav button{grid-template-columns:15px 1fr;padding:5px 2px;font-size:5.5px}.travel-reader>article{padding:10px 5px 14px 10px}.travel-reader>article>p{font-size:6.5px;line-height:1.7}
 }
+
+/* Keep About Me on the same paper canvas as the adjoining sections. */
+.about-story{background:var(--paper)}
