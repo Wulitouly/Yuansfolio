@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
 import { flushSync } from "react-dom";
-import { BookHeart, ChevronDown, ImagePlus, Mail, MessageCircle, Phone } from "lucide-react";
+import { BookHeart, Mail, MessageCircle, Phone } from "lucide-react";
 
 const outline = [
   ["top", "00", "首页"],
@@ -141,17 +141,6 @@ const mintHighlights = [
   { title: "好评率第一", text: "实习接近尾声时，在老师好评率评比中获得第一，用户服务质量得到直接验证。" },
 ];
 
-const photoArchive = [
-  { period: "2017", title: "Massachusetts", note: "Dunkin’ Donuts · 工作与生活" },
-  { period: "2018", title: "英语教学", note: "海之子教育 · 山木培训" },
-  { period: "2019", title: "薄荷阅读", note: "社群运营 · 用户反馈" },
-  { period: "2019—2020", title: "北京快手", note: "知识库 · 内容作品 · 职场项目" },
-  { period: "2020—2023", title: "杭州好成绩", note: "增长活动 · 数据复盘 · 团队协作" },
-  { period: "2024", title: "菲律宾", note: "SMEAG · 学生管理与跨文化生活" },
-  { period: "2024—2026", title: "洛杉矶", note: "Matcha Village · 贰万猪脚饭" },
-  { period: "2026", title: "澳大利亚", note: "LYZ FOOD · 业务现场与工具成果" },
-];
-
 const education = [
   ["2026 — 至今", "悉尼大学", "计算机科学 · 硕士"],
   ["2024 — 2026", "圣莫妮卡学院", "数据科学 · Associate · GPA 4.0"],
@@ -237,7 +226,6 @@ export default function Home() {
   const [activeSection, setActiveSection] = useState("top");
   const [copied, setCopied] = useState(false);
   const [characterActive, setCharacterActive] = useState(false);
-  const [galleryOpen, setGalleryOpen] = useState(false);
   const experienceCarousel = useRef<HTMLDivElement | null>(null);
   const experienceStage = useRef<HTMLDivElement | null>(null);
   const timelineScrollIndicator = useRef<HTMLSpanElement | null>(null);
@@ -761,28 +749,6 @@ export default function Home() {
           </div>
         </div>
 
-        <div className={`experience-gallery ${galleryOpen ? "open" : ""}`}>
-          <button className="gallery-toggle" type="button" aria-expanded={galleryOpen} onClick={() => setGalleryOpen((current) => !current)}>
-            <span className="gallery-title"><strong>经历影集</strong><small>工作、教学与海外生活，都值得被看见。</small></span>
-            <span className="gallery-action">{galleryOpen ? "收起影集" : "查看照片档案"}<ChevronDown size={18} strokeWidth={1.4} /></span>
-          </button>
-          <div className="gallery-panel" aria-hidden={!galleryOpen}>
-            <div className="gallery-note">
-              <p>照片不再依附某一张工作卡，而是沿着整条经历时间线组织。</p>
-              <span>后续每个阶段建议放 1–3 张：现场、人物、作品或能说明当时状态的细节。</span>
-            </div>
-            <div className="gallery-grid">
-              {photoArchive.map((item, index) => (
-                <div className={`gallery-placeholder item-${index + 1}`} key={`${item.period}-${item.title}`}>
-                  <ImagePlus size={22} strokeWidth={1.3} aria-hidden="true" />
-                  <span>{item.period}</span>
-                  <strong>{item.title}</strong>
-                  <small>{item.note}</small>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
       </section>
 
       <section className="about-story section" id="about">

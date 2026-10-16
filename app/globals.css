@@ -765,3 +765,8 @@
 
 /* Keep About Me on the same paper canvas as the adjoining sections. */
 .about-story{background:var(--paper)}
+
+/* Let Work Experience flow directly into About Me without an archive divider. */
+#work{padding-bottom:68px}
+.about-story{padding-top:68px;border-top:0}
+@media(max-width:620px){#work{padding-bottom:52px}.about-story{padding-top:52px}}
