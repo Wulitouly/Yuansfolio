@@ -5,6 +5,9 @@ import type { CSSProperties, MouseEvent as ReactMouseEvent } from "react";
 import { flushSync } from "react-dom";
 import { BookHeart, Mail, MessageCircle, Phone } from "lucide-react";
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+const asset = (path: string) => `${basePath}${path}`;
+
 const outline = [
   ["top", "00", "首页"],
   ["work", "01", "工作经历"],
@@ -24,7 +27,7 @@ const lyzCases = [
     result: "约 2 分钟",
     note: "完成一次完整出库流程",
     tools: ["Python", "飞书 API", "Codex"],
-    image: "/ip-laptop.webp",
+    image: asset("/ip-laptop.webp"),
   },
   {
     id: "route",
@@ -36,7 +39,7 @@ const lyzCases = [
     result: "约 10 分钟",
     note: "完成约 30 单路线规划",
     tools: ["数据可视化", "AI 辅助开发", "业务校准"],
-    image: "/ip-map.webp",
+    image: asset("/ip-map.webp"),
   },
   {
     id: "invoice",
@@ -48,7 +51,7 @@ const lyzCases = [
     result: "10–20 秒",
     note: "完成单张发票处理",
     tools: ["自动化脚本", "批量处理", "流程设计"],
-    image: "/ip-files.webp",
+    image: asset("/ip-files.webp"),
   },
 ];
 
@@ -148,52 +151,52 @@ const education = [
 ];
 
 const aboutJournals = [
-  { label: "Reliable", note: "认真对待每一件小事", image: "/media/journal-reliable.jpg" },
-  { label: "Boundless", note: "用脚步丈量世界", image: "/media/journal-boundless.jpg" },
-  { label: "Vivid", note: "生活别太严肃", image: "/media/journal-vivid.jpg" },
+  { label: "Reliable", note: "认真对待每一件小事", image: asset("/media/journal-reliable.jpg") },
+  { label: "Boundless", note: "用脚步丈量世界", image: asset("/media/journal-boundless.jpg") },
+  { label: "Vivid", note: "生活别太严肃", image: asset("/media/journal-vivid.jpg") },
 ];
 
 const reliableReviews = [
-  { src: "/media/about-materials/reliable-review-01.webp", alt: "顾客称赞服务热心周到的聊天摘录", caption: "服务，是被记住的细节" },
-  { src: "/media/about-materials/reliable-review-02.webp", alt: "顾客称赞认真负责和耐心的聊天摘录", caption: "认真、负责，也有耐心" },
-  { src: "/media/about-materials/reliable-review-03.webp", alt: "雇主认可工作表现的聊天摘录", caption: "来自雇主的认可" },
+  { src: asset("/media/about-materials/reliable-review-01.webp"), alt: "顾客称赞服务热心周到的聊天摘录", caption: "服务，是被记住的细节" },
+  { src: asset("/media/about-materials/reliable-review-02.webp"), alt: "顾客称赞认真负责和耐心的聊天摘录", caption: "认真、负责，也有耐心" },
+  { src: asset("/media/about-materials/reliable-review-03.webp"), alt: "雇主认可工作表现的聊天摘录", caption: "来自雇主的认可" },
 ];
 
 const reliableLetters = [
-  { src: "/media/about-materials/reliable-letter.webp", alt: "洛杉矶教堂志愿服务推荐信节选", caption: "一年志愿服务后的推荐信" },
-  { src: "/media/about-materials/reliable-note.webp", alt: "志愿服务对象写下的手写感谢卡", caption: "离开时收到的手写留言" },
+  { src: asset("/media/about-materials/reliable-letter.webp"), alt: "洛杉矶教堂志愿服务推荐信节选", caption: "一年志愿服务后的推荐信" },
+  { src: asset("/media/about-materials/reliable-note.webp"), alt: "志愿服务对象写下的手写感谢卡", caption: "离开时收到的手写留言" },
 ];
 
 const travelCountries = [
-  { name: "美国", image: "/media/about-materials/travel-usa.webp", x: 24.8, y: 25.8 },
-  { name: "埃及", image: "/media/about-materials/travel-egypt.webp", x: 58.1, y: 33.9 },
-  { name: "格鲁吉亚", image: "/media/about-materials/travel-kazbek.webp", x: 61, y: 24 },
-  { name: "亚美尼亚", image: "/media/about-materials/travel-armenia.webp", x: 61.5, y: 25.2 },
-  { name: "阿塞拜疆", image: "/media/about-materials/travel-azerbaijan.webp", x: 62.2, y: 25.2 },
-  { name: "伊朗", image: "/media/about-materials/travel-isfahan.webp", x: 64, y: 30.2 },
-  { name: "阿联酋", image: "/media/about-materials/travel-uae.webp", x: 64.6, y: 35.1 },
-  { name: "阿曼", image: "/media/about-materials/travel-oman.webp", x: 65.5, y: 37 },
-  { name: "哈萨克斯坦", image: "/media/about-materials/travel-kazakhstan.webp", x: 66.4, y: 20.3 },
-  { name: "乌兹别克斯坦", image: "/media/about-materials/travel-uzbekistan.webp", x: 66.3, y: 24.6 },
-  { name: "泰国", image: "/media/about-materials/travel-thailand.webp", x: 77.8, y: 40.7 },
-  { name: "柬埔寨", image: "/media/about-materials/travel-cambodia.webp", x: 79, y: 42.2 },
-  { name: "马来西亚", image: "/media/about-materials/travel-malaysia.webp", x: 78.3, y: 47.5 },
-  { name: "新加坡", image: "/media/about-materials/travel-singapore.webp", x: 78.9, y: 49.2 },
-  { name: "菲律宾", image: "/media/about-materials/travel-philippines.webp", x: 83.7, y: 42.6 },
-  { name: "澳大利亚", image: "/media/about-materials/travel-australia.webp", x: 86.2, y: 65.5 },
+  { name: "美国", image: asset("/media/about-materials/travel-usa.webp"), x: 24.8, y: 25.8 },
+  { name: "埃及", image: asset("/media/about-materials/travel-egypt.webp"), x: 58.1, y: 33.9 },
+  { name: "格鲁吉亚", image: asset("/media/about-materials/travel-kazbek.webp"), x: 61, y: 24 },
+  { name: "亚美尼亚", image: asset("/media/about-materials/travel-armenia.webp"), x: 61.5, y: 25.2 },
+  { name: "阿塞拜疆", image: asset("/media/about-materials/travel-azerbaijan.webp"), x: 62.2, y: 25.2 },
+  { name: "伊朗", image: asset("/media/about-materials/travel-isfahan.webp"), x: 64, y: 30.2 },
+  { name: "阿联酋", image: asset("/media/about-materials/travel-uae.webp"), x: 64.6, y: 35.1 },
+  { name: "阿曼", image: asset("/media/about-materials/travel-oman.webp"), x: 65.5, y: 37 },
+  { name: "哈萨克斯坦", image: asset("/media/about-materials/travel-kazakhstan.webp"), x: 66.4, y: 20.3 },
+  { name: "乌兹别克斯坦", image: asset("/media/about-materials/travel-uzbekistan.webp"), x: 66.3, y: 24.6 },
+  { name: "泰国", image: asset("/media/about-materials/travel-thailand.webp"), x: 77.8, y: 40.7 },
+  { name: "柬埔寨", image: asset("/media/about-materials/travel-cambodia.webp"), x: 79, y: 42.2 },
+  { name: "马来西亚", image: asset("/media/about-materials/travel-malaysia.webp"), x: 78.3, y: 47.5 },
+  { name: "新加坡", image: asset("/media/about-materials/travel-singapore.webp"), x: 78.9, y: 49.2 },
+  { name: "菲律宾", image: asset("/media/about-materials/travel-philippines.webp"), x: 83.7, y: 42.6 },
+  { name: "澳大利亚", image: asset("/media/about-materials/travel-australia.webp"), x: 86.2, y: 65.5 },
 ];
 
 type TravelJournal = { id: string; title: string; date: string; location: string; body: string };
 
 const vividPhotos = [
-  { src: "/media/about-materials/vivid-stage.webp", alt: "脱口秀舞台", caption: "一束灯，一支麦" },
-  { src: "/media/about-materials/vivid-ticket.webp", alt: "话剧目击证人票根", caption: "票根比纪念品更诚实" },
-  { src: "/media/about-materials/vivid-comedy.webp", alt: "仙人掌喜剧演出合影", caption: "现场的笑声" },
-  { src: "/media/about-materials/vivid-audience.webp", alt: "话剧演出现场", caption: "坐进另一个人的故事" },
-  { src: "/media/about-materials/vivid-poster.webp", alt: "演出票和海报", caption: "认真收藏不正经" },
-  { src: "/media/about-materials/vivid-show.webp", alt: "脱口秀演出现场", caption: "周日盲盒" },
-  { src: "/media/about-materials/vivid-theatre.webp", alt: "剧场观众与演员合影", caption: "散场以后" },
-  { src: "/media/about-materials/vivid-wall.webp", alt: "演出纪念照片墙", caption: "看过的故事留下来" },
+  { src: asset("/media/about-materials/vivid-stage.webp"), alt: "脱口秀舞台", caption: "一束灯，一支麦" },
+  { src: asset("/media/about-materials/vivid-ticket.webp"), alt: "话剧目击证人票根", caption: "票根比纪念品更诚实" },
+  { src: asset("/media/about-materials/vivid-comedy.webp"), alt: "仙人掌喜剧演出合影", caption: "现场的笑声" },
+  { src: asset("/media/about-materials/vivid-audience.webp"), alt: "话剧演出现场", caption: "坐进另一个人的故事" },
+  { src: asset("/media/about-materials/vivid-poster.webp"), alt: "演出票和海报", caption: "认真收藏不正经" },
+  { src: asset("/media/about-materials/vivid-show.webp"), alt: "脱口秀演出现场", caption: "周日盲盒" },
+  { src: asset("/media/about-materials/vivid-theatre.webp"), alt: "剧场观众与演员合影", caption: "散场以后" },
+  { src: asset("/media/about-materials/vivid-wall.webp"), alt: "演出纪念照片墙", caption: "看过的故事留下来" },
 ];
 
 const chapterTabs = [
@@ -318,7 +321,7 @@ export default function Home() {
   useEffect(() => {
     const preloadTimer = window.setTimeout(() => {
       const hoverAnimation = new Image();
-      hoverAnimation.src = "/hero-3d-hover.webp";
+      hoverAnimation.src = asset("/hero-3d-hover.webp");
     }, 1200);
 
     const observer = new IntersectionObserver(
@@ -351,7 +354,7 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
-    fetch("/media/about-materials/travel-journals.json")
+    fetch(asset("/media/about-materials/travel-journals.json"))
       .then((response) => response.json())
       .then((entries: TravelJournal[]) => setTravelJournals(entries))
       .catch(() => setTravelJournals([]));
@@ -477,7 +480,7 @@ export default function Home() {
             <img
               key={characterActive ? "active" : "intro"}
               className="hero-animation"
-              src={characterActive ? "/hero-3d-hover.webp" : "/hero-3d-animation.webp"}
+              src={characterActive ? asset("/hero-3d-hover.webp") : asset("/hero-3d-animation.webp")}
               alt={characterActive ? "个人 IP 玩偶微笑挥手" : "个人 IP 玩偶走近并挥手"}
             />
           </button>
@@ -504,7 +507,7 @@ export default function Home() {
           </div>
           <div className="career-timeline-interaction">
             <div className="timeline-puller-art" aria-hidden="true">
-              <img src="/media/career-puller-static.png" alt="" />
+              <img src={asset("/media/career-puller-static.png")} alt="" />
             </div>
             <div
               className="timeline-scroller"
@@ -759,7 +762,7 @@ export default function Home() {
               <div className="about-slide" key={aboutSlide}>
                 {aboutSlide === 0 && <div className="about-slide-copy poster-slide"><div className="poster-note"><span>认真是底色，但不是全部</span><i /></div><h2 className="about-poster-title new-poster-title"><span className="poster-intro">Hi, I’m <b>Yuan.</b></span><span className="poster-work">I take <b>work</b> <strong>seriously.</strong></span><span className="poster-life"><em>Life?</em> Not always.</span></h2><div className="poster-support"><p>我把认真留给该认真的事，把不着调留给生活。</p><span>A serious person with a slightly unserious side.</span></div></div>}
                 {aboutSlide === 1 && <div className={`about-slide-copy question-slide ${answerVisible ? "has-answer" : ""}`}><div className="question-kicker"><small>前同事问我</small><i /></div><h3><span>“你是怎么做到，</span><span>工作的时候这么<span className="question-emphasis">投入</span>，</span><span>玩的时候又这么<span className="playful-character">颠</span>？”</span></h3><div className="answer-stage"><button className="answer-note" type="button" onClick={() => setAnswerVisible(true)} aria-expanded={answerVisible} aria-hidden={answerVisible} tabIndex={answerVisible ? -1 : 0}><span>别偷看答案</span></button><div className="question-answer" aria-hidden={!answerVisible}><p>天生的吧。</p><span>开玩笑啦，请继续看……</span></div></div></div>}
-                {aboutSlide === 2 && <div className="about-slide-copy focus-slide"><div className="focus-editorial"><div className="focus-main"><span>Focus is how I move.</span><h3><span>我是个</span><br /><em>单线程</em><span>的人。</span></h3><p>同一时间，我通常只能认真做好一件事。<br />所以一旦开始，我就很容易一头扎进去。<br />先把眼前这一件事弄明白。再去想下一件。</p></div><div className="focus-character" aria-hidden="true"><img src="/media/about-character-reading-v1.png" alt="" /></div></div><div className="focus-sequence"><span>ONE THING</span><i /><span>GO DEEP</span><i /><span>MOVE FORWARD</span></div></div>}
+                {aboutSlide === 2 && <div className="about-slide-copy focus-slide"><div className="focus-editorial"><div className="focus-main"><span>Focus is how I move.</span><h3><span>我是个</span><br /><em>单线程</em><span>的人。</span></h3><p>同一时间，我通常只能认真做好一件事。<br />所以一旦开始，我就很容易一头扎进去。<br />先把眼前这一件事弄明白。再去想下一件。</p></div><div className="focus-character" aria-hidden="true"><img src={asset("/media/about-character-reading-v1.png")} alt="" /></div></div><div className="focus-sequence"><span>ONE THING</span><i /><span>GO DEEP</span><i /><span>MOVE FORWARD</span></div></div>}
                 {aboutSlide === 3 && <div className={`about-slide-copy label-slide ${openingAboutChapter !== null ? "is-opening-journal" : ""}`}>
                   {activeAboutChapter === null ? <><span>TRIOS · THREE CHAPTERS OF ME</span><h3>挑一本顺眼的，<br />跟你唠唠我。</h3><div className={`label-portals ${openingAboutChapter !== null ? "is-opening" : ""}`}>{aboutJournals.map((book, index) => <button type="button" ref={(element) => { journalBooks.current[index] = element; }} className={`journal-book book-${index + 1} ${openingAboutChapter === index ? "is-opening" : ""}`} key={book.label} onClick={() => openAboutJournal(index)} aria-label={`打开 ${book.label} 手账`}><span className="journal-inside" style={openingAboutChapter === index ? { viewTransitionName: "journal-page" } as CSSProperties : undefined}><JournalPageContent index={index} preview /></span><span className="journal-cover" style={openingAboutChapter === index ? { viewTransitionName: "journal-cover" } as CSSProperties : undefined}><img src={book.image} alt="" /><small>CHAPTER 0{index + 1}</small><strong>{book.label}</strong><em>{book.note}</em></span></button>)}</div></> : <div className={`label-detail journal-detail detail-${activeAboutChapter}`}>
                     <button className="label-back" type="button" onClick={() => { setActiveAboutChapter(null); setChapterLeaf(0); setSelectedTravelJournal(null); }}>← 合上手账</button>
@@ -776,7 +779,7 @@ export default function Home() {
                           {chapterLeaf === 0 && <JournalPageContent index={activeAboutChapter} />}
                           {activeAboutChapter === 0 && chapterLeaf === 1 && <div className="journal-material-page reliable-evidence"><header><small>WORDS LEFT BEHIND</small><h3>无论是顾客还是老板，<br />对我的评价永远是负责认真。</h3></header><div className="evidence-grid">{reliableReviews.map((item, index) => <button type="button" key={item.src} className={`scrap-photo scrap-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                           {activeAboutChapter === 0 && chapterLeaf === 2 && <div className="journal-material-page letter-page"><header><small>LETTERS I KEPT</small><h3>有些肯定，<br />我一直留着。</h3></header><div className="letter-stack">{reliableLetters.map((item, index) => <button type="button" key={item.src} className={`letter-piece letter-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
-                          {activeAboutChapter === 1 && chapterLeaf === 1 && <div className="journal-material-page travel-gallery map-gallery"><header><small>WHERE I HAVE BEEN</small><p>地图上的玫瑰色坐标，是我真正走到过的地方。点击国家，翻看当时的照片。</p></header><div className="travel-map" onClick={(event) => event.stopPropagation()}><img src="/media/about-materials/world-map-blank.webp" alt="世界地图" />{travelCountries.map((country) => <button type="button" key={country.name} style={{ "--map-x": `${country.x}%`, "--map-y": `${country.y}%` } as CSSProperties} onClick={() => setMaterialPreview({ src: country.image, alt: `${country.name}旅行照片` })} aria-label={`查看${country.name}旅行照片`}><i /><span>{country.name}</span></button>)}</div></div>}
+                          {activeAboutChapter === 1 && chapterLeaf === 1 && <div className="journal-material-page travel-gallery map-gallery"><header><small>WHERE I HAVE BEEN</small><p>地图上的玫瑰色坐标，是我真正走到过的地方。点击国家，翻看当时的照片。</p></header><div className="travel-map" onClick={(event) => event.stopPropagation()}><img src={asset("/media/about-materials/world-map-blank.webp")} alt="世界地图" />{travelCountries.map((country) => <button type="button" key={country.name} style={{ "--map-x": `${country.x}%`, "--map-y": `${country.y}%` } as CSSProperties} onClick={() => setMaterialPreview({ src: country.image, alt: `${country.name}旅行照片` })} aria-label={`查看${country.name}旅行照片`}><i /><span>{country.name}</span></button>)}</div></div>}
                           {activeAboutChapter === 1 && chapterLeaf === 2 && <div className="journal-material-page travel-writing">{selectedTravelJournal === null ? <div className="travel-journal-index" onClick={(event) => event.stopPropagation()}><header><small>NOTES FROM ELSEWHERE</small><h3>不只是走马观花</h3><p>点开一个地名，看看我那时那刻的心境</p></header><div className={`journal-country-groups ${journalScrolling ? "is-scrolling" : ""}`} onScroll={revealJournalScrollbar}>{Object.entries(travelJournalGroups).map(([country, entries]) => <section key={country}><strong>{country}</strong><div>{entries.map(({ item, index, city }) => <button type="button" key={item.id} onClick={() => setSelectedTravelJournal(index)}><span>{city}</span></button>)}</div></section>)}</div></div> : <article className={`travel-journal-article ${journalScrolling ? "is-scrolling" : ""}`} onScroll={revealJournalScrollbar} onClick={(event) => event.stopPropagation()}><button type="button" className="travel-article-back" onClick={() => setSelectedTravelJournal(null)}>← 返回随笔目录</button><header>{travelJournals[selectedTravelJournal]?.date && <small>{travelJournals[selectedTravelJournal].date}</small>}<h3>{travelJournals[selectedTravelJournal]?.location}</h3></header><div><p>{travelJournals[selectedTravelJournal]?.body}</p></div></article>}</div>}
                           {activeAboutChapter === 2 && chapterLeaf === 1 && <div className="journal-material-page vivid-gallery"><header><small>LIVE, LAUGH, REPEAT</small><h3>认真生活，<br />也认真笑。</h3></header><div className="vivid-mosaic">{vividPhotos.map((item, index) => <button type="button" key={item.src} className={`vivid-shot vivid-${index + 1}`} onClick={() => setMaterialPreview({ src: item.src, alt: item.alt })}><img src={item.src} alt={item.alt} /><span>{item.caption}</span></button>)}</div></div>}
                         </div>
@@ -790,7 +793,7 @@ export default function Home() {
                 </div>}
               </div>
             </div>
-            {aboutSlide < 2 && <div className="about-deck-character" aria-hidden="true"><img className="character-static" src="/media/about-character-rest-user.png" alt="" /></div>}
+            {aboutSlide < 2 && <div className="about-deck-character" aria-hidden="true"><img className="character-static" src={asset("/media/about-character-rest-user.png")} alt="" /></div>}
             <button className={`about-next-page ${aboutAdvancing ? "is-turning" : ""}`} type="button" onClick={advanceAboutSlide} aria-label="翻到下一页"><span>点这翻页</span><i aria-hidden="true" /></button>
             <div className="about-deck-nav" aria-label="About Me 页面进度">{[0,1,2,3].map((index) => <button key={index} type="button" className={index === aboutSlide ? "active" : ""} aria-label={`转到第 ${index + 1} 页`} onClick={() => { if (journalOpenTimer.current) window.clearTimeout(journalOpenTimer.current); setAboutSlide(index); setAnswerVisible(false); setActiveAboutChapter(null); setOpeningAboutChapter(null); setChapterLeaf(0); setMaterialPreview(null); }} />)}</div>
           </div>
@@ -815,7 +818,7 @@ export default function Home() {
               <div><span>自动化</span><p>Python · API · AI Tools</p></div>
               <div><span>沟通</span><p>中文 · 英语 · 跨文化协作</p></div>
             </div>
-            <img src="/ip-celebrate.webp" alt="庆祝完成学习目标的 IP 玩偶" />
+            <img src={asset("/ip-celebrate.webp")} alt="庆祝完成学习目标的 IP 玩偶" />
           </div>
         </div>
       </section>
@@ -832,7 +835,7 @@ export default function Home() {
             <a href="tel:+8617616185335"><span>电话</span><strong>176 1618 5335</strong><i>↗</i></a>
             <button onClick={copyWechat}><span>微信</span><strong>yolohhly</strong><i>{copied ? "已复制 ✓" : "复制"}</i></button>
           </div>
-          <img className="contact-character" src="/ip-wave.webp" alt="挥手告别的 IP 玩偶" />
+          <img className="contact-character" src={asset("/ip-wave.webp")} alt="挥手告别的 IP 玩偶" />
         </div>
       </section>
 
